@@ -5,7 +5,7 @@
 
 class STObject {
 public:
-  bool insert(IdentRecord*, int);//FIXME: not sure if union is an int??
+  bool insert(IdentRecord*, IdType);//FIXME: don't know how to resolve the externally-defined enum type here
 
   void printST(void)const;//FIXME: not sure if const, it calls scopexit which may modify internal state
 private:
