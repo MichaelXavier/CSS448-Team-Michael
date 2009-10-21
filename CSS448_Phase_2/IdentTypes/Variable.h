@@ -1,14 +1,17 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 #include <iostream>
-#include "IdentRecord"
+#include "IdentRecord.h"
 
 class Variable : public IdentRecord {
 public:
+	Variable(string);
+	~Variable();
+
+	void display();
+	void setTypePtr(IdentRecord* type) {typePtr = type;}
 
 private:
-  //TODO: figure out how we want to store type
-  IdentRecord* value;//FIXME: not sure if this is how we will implement it
-  string name;//FIXME: not sure if we should use a string or char* or something else
-}
+	IdentRecord* typePtr;
+};
 #endif

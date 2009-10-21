@@ -1,13 +1,22 @@
 #ifndef RECORDTYPE_H
 #define RECORDTYPE_H
 #include <iostream>
-#include <list>//FIXME: might use a different lib elsewhere
-#include "IdentRecord"
+#include "IdentRecord.h"
+#include "STObject.h"
+
+using namespace std;
 
 class RecordType : public IdentRecord {
+
 public:
+	RecordType(string);
+	~RecordType();
+
+	void display();
+	void insertField(IdentRecord*, IdType);
 
 private:
-  list<IdentRecord*> data_members;//FIXME: stab in the dark at the implementation
-}
+
+	// possibly a list of record fields
+};
 #endif
