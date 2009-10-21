@@ -3,7 +3,7 @@
 // The type is not actually needed, but is included for clarity 
 // in this phase; it may be useful for debugging.
 enum IdType {arraytype, pointertype, recordtype, settype,
-             constant, variable, procedure, recordfield, parameter};
+             constant, variable, procedure, function, recordfield, parameter};
 
 // Simulates seeing identifiers in the right order as if you were
 // scanning a pascal program.  The hardcoded strings would be stored 
