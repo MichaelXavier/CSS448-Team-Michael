@@ -4,8 +4,9 @@
 
 class IdentRecord {
 public:
+  IdentRecord(char*);
 
 private:
-
+  string name;
 }
 #endif
