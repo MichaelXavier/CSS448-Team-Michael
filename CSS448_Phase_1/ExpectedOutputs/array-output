@@ -1,0 +1,196 @@
+yprogram  
+yident  arrays
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+ytype  
+yident  array1D
+yequal  
+yarray  
+yleftbracket  
+ynumber  1
+ydotdot  
+ynumber  5
+yrightbracket  
+yof  
+yident  integer
+ysemicolon  
+yident  array3D
+yequal  
+yarray  
+yleftbracket  
+ynumber  1
+ydotdot  
+ynumber  5
+ycomma  
+ynumber  2
+ydotdot  
+ynumber  3
+ycomma  
+ynumber  0
+ydotdot  
+ynumber  2
+yrightbracket  
+yof  
+yident  integer
+ysemicolon  
+yvar  
+yident  a
+ycolon  
+yident  array3D
+ysemicolon  
+yident  b
+ycolon  
+yarray  
+yleftbracket  
+ynumber  0
+ydotdot  
+ynumber  3
+yrightbracket  
+yof  
+yident  array1D
+ysemicolon  
+yident  i
+ycomma  
+yident  j
+ycomma  
+yident  k
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+ynumber  5
+ydo  
+yfor  
+yident  j
+yassign  
+ynumber  2
+yto  
+ynumber  3
+ydo  
+yfor  
+yident  k
+yassign  
+ynumber  0
+yto  
+ynumber  2
+ydo  
+yident  a
+yleftbracket  
+yident  i
+ycomma  
+yident  j
+ycomma  
+yident  k
+yrightbracket  
+yassign  
+yident  i
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  0
+yto  
+ynumber  3
+ydo  
+yfor  
+yident  j
+yassign  
+ynumber  1
+yto  
+ynumber  5
+ydo  
+yident  b
+yleftbracket  
+yident  i
+ycomma  
+yident  j
+yrightbracket  
+yassign  
+yident  i
+yplus  
+yident  j
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+ynumber  5
+ydo  
+yfor  
+yident  j
+yassign  
+ynumber  2
+yto  
+ynumber  3
+ydo  
+ybegin  
+yfor  
+yident  k
+yassign  
+ynumber  0
+yto  
+ynumber  2
+ydo  
+ywrite  
+yleftparen  
+yident  a
+yleftbracket  
+yident  i
+ycomma  
+yident  j
+ycomma  
+yident  k
+yrightbracket  
+ycomma  
+ystring  " "
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yend  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  0
+yto  
+ynumber  3
+ydo  
+ybegin  
+yfor  
+yident  j
+yassign  
+ynumber  1
+yto  
+ynumber  5
+ydo  
+ywrite  
+yleftparen  
+yident  b
+yleftbracket  
+yident  i
+ycomma  
+yident  j
+yrightbracket  
+ycomma  
+ystring  " "
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ydot  

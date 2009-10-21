@@ -1,0 +1,15 @@
+yprogram  
+yident  simplest2
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "Hellow world"
+yrightparen  
+yend  
+ydot  

@@ -1,0 +1,1 @@
+while (result = 56)

@@ -1,0 +1,15 @@
+(* simple comment *)
+    (*** lopsided comment *)
+  (* multiline
+    comment
+    here **)
+
+while
+:=
+
+(* this is a bad
+    multiline
+    comment
+    that
+    doesnt
+    end

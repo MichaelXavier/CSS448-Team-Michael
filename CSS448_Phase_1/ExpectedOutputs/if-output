@@ -1,0 +1,104 @@
+yprogram  
+yident  grade
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+yvar  
+yident  number
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  'Please enter an integer between 0 and 100'
+yrightparen  
+ysemicolon  
+yread  
+yleftparen  
+yident  number
+yrightparen  
+ysemicolon  
+ywhile  
+yleftparen  
+yident  number
+yless  
+ynumber  0
+yrightparen  
+yor  
+yleftparen  
+yident  number
+ygreater  
+ynumber  100
+yrightparen  
+ydo  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  'Try again please, integer between 0 and 100'
+yrightparen  
+ysemicolon  
+yread  
+yleftparen  
+yident  number
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+ywrite  
+yleftparen  
+ystring  "If this was a grade, you would receive a grade of:  "
+yrightparen  
+ysemicolon  
+yif  
+yident  number
+ygreaterequal  
+ynumber  90
+ythen  
+ywrite  
+yleftparen  
+ystring  'A'
+yrightparen  
+yelse  
+yif  
+yident  number
+ygreaterequal  
+ynumber  80
+ythen  
+ywrite  
+yleftparen  
+ystring  'B'
+yrightparen  
+yelse  
+yif  
+yident  number
+ygreaterequal  
+ynumber  70
+ythen  
+ywrite  
+yleftparen  
+ystring  'C'
+yrightparen  
+yelse  
+yif  
+yident  number
+ygreaterequal  
+ynumber  60
+ythen  
+ywrite  
+yleftparen  
+ystring  'D'
+yrightparen  
+yelse  
+ywrite  
+yleftparen  
+ystring  'F'
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yend  
+ydot  

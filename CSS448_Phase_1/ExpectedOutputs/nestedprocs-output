@@ -1,0 +1,228 @@
+yprogram  
+yident  nesting
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+yvar  
+yident  i
+ycomma  
+yident  j
+ycomma  
+yident  k
+ycolon  
+yident  integer
+ysemicolon  
+yprocedure  
+yident  procA
+ysemicolon  
+yvar  
+yident  i
+ycomma  
+yident  j
+ycolon  
+yident  integer
+ysemicolon  
+yprocedure  
+yident  procA2
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "in procA2"
+yrightparen  
+ysemicolon  
+yident  i
+yassign  
+ynumber  120
+ysemicolon  
+yident  j
+yassign  
+ynumber  121
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "i="
+ycomma  
+yident  i
+ycomma  
+ystring  "  j="
+ycomma  
+yident  j
+ycomma  
+ystring  "  k="
+ycomma  
+yident  k
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+yprocedure  
+yident  procA3
+ysemicolon  
+yvar  
+yident  i
+ycomma  
+yident  j
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "in procA3"
+yrightparen  
+ysemicolon  
+yident  i
+yassign  
+ynumber  130
+ysemicolon  
+yident  j
+yassign  
+ynumber  131
+ysemicolon  
+yident  k
+yassign  
+ynumber  132
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "i="
+ycomma  
+yident  i
+ycomma  
+ystring  "  j="
+ycomma  
+yident  j
+ycomma  
+ystring  "  k="
+ycomma  
+yident  k
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "in procA"
+yrightparen  
+ysemicolon  
+yident  i
+yassign  
+ynumber  10
+ysemicolon  
+yident  j
+yassign  
+ynumber  11
+ysemicolon  
+yident  k
+yassign  
+ynumber  12
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "i="
+ycomma  
+yident  i
+ycomma  
+ystring  "  j="
+ycomma  
+yident  j
+ycomma  
+ystring  "  k="
+ycomma  
+yident  k
+yrightparen  
+ysemicolon  
+yident  procA2
+ysemicolon  
+yident  procA3
+ysemicolon  
+yend  
+ysemicolon  
+yprocedure  
+yident  procB
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "in procB"
+yrightparen  
+ysemicolon  
+yident  i
+yassign  
+ynumber  20
+ysemicolon  
+yident  j
+yassign  
+ynumber  21
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "i="
+ycomma  
+yident  i
+ycomma  
+ystring  "  j="
+ycomma  
+yident  j
+ycomma  
+ystring  "  k="
+ycomma  
+yident  k
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "in main"
+yrightparen  
+ysemicolon  
+yident  i
+yassign  
+ynumber  1
+ysemicolon  
+yident  j
+yassign  
+ynumber  2
+ysemicolon  
+yident  k
+yassign  
+ynumber  3
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "i="
+ycomma  
+yident  i
+ycomma  
+ystring  "  j="
+ycomma  
+yident  j
+ycomma  
+ystring  "  k="
+ycomma  
+yident  k
+yrightparen  
+ysemicolon  
+yident  procA
+ysemicolon  
+yident  procB
+ysemicolon  
+yend  
+ydot  

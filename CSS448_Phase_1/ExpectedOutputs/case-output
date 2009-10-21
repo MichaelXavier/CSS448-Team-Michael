@@ -1,0 +1,93 @@
+yprogram  
+yident  caseRepeat
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+yvar  
+yident  number
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+yrepeat  
+ywriteln  
+yleftparen  
+ystring  'Enter year number, between 1 and 5, negative number to finish:'
+yrightparen  
+ysemicolon  
+yread  
+yleftparen  
+yident  number
+yrightparen  
+ysemicolon  
+yif  
+yleftparen  
+yident  number
+ygreaterequal  
+ynumber  1
+yrightparen  
+yand  
+yleftparen  
+yident  number
+ylessequal  
+ynumber  5
+yrightparen  
+ydo  
+ybegin  
+ycase  
+yident  number
+yof  
+ynumber  1
+ycolon  
+ywriteln  
+yleftparen  
+ystring  "First year student"
+yrightparen  
+ysemicolon  
+ynumber  2
+ycolon  
+ywriteln  
+yleftparen  
+ystring  "Sophomore"
+yrightparen  
+ysemicolon  
+ynumber  3
+ycolon  
+ywriteln  
+yleftparen  
+ystring  "Junior"
+yrightparen  
+ysemicolon  
+ynumber  4
+ycolon  
+ywriteln  
+yleftparen  
+ystring  "Senior"
+yrightparen  
+ysemicolon  
+ynumber  5
+ycolon  
+ybegin  
+ywriteln  
+yleftparen  
+ystring  "Congratulations, you have graduated ... "
+yrightparen  
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  "Graduate student???"
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ysemicolon  
+yuntil  
+yident  number
+yless  
+ynumber  0
+yend  
+ydot  

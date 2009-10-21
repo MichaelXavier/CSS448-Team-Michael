@@ -1,0 +1,102 @@
+yprogram  
+yident  setstuff
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+ytype  
+yident  Digit
+yequal  
+yset  
+yof  
+ynumber  0
+ydotdot  
+ynumber  9
+ysemicolon  
+yvar  
+yident  odds
+ycomma  
+yident  evens
+ycomma  
+yident  stuff
+ycomma  
+yident  morestuff
+ycolon  
+yident  Digit
+ysemicolon  
+ybegin  
+yident  odds
+yassign  
+yleftbracket  
+ynumber  1
+ycomma  
+ynumber  3
+ycomma  
+ynumber  5
+ycomma  
+ynumber  7
+ycomma  
+ynumber  9
+yrightbracket  
+ysemicolon  
+yident  evens
+yassign  
+yleftbracket  
+ynumber  0
+ycomma  
+ynumber  2
+ycomma  
+ynumber  4
+ycomma  
+ynumber  6
+ycomma  
+ynumber  8
+yrightbracket  
+ysemicolon  
+yident  stuff
+yassign  
+yleftbracket  
+yrightbracket  
+ysemicolon  
+yident  morestuff
+yassign  
+yident  odds
+yplus  
+yleftbracket  
+ynumber  2
+yrightbracket  
+ysemicolon  
+yif  
+ynumber  3
+yin  
+yident  morestuff
+ythen  
+ywriteln  
+yleftparen  
+ystring  "3 in the set"
+yrightparen  
+yelse  
+ywriteln  
+yleftparen  
+ystring  "3 not in the set"
+yrightparen  
+ysemicolon  
+yif  
+ynumber  4
+yin  
+yident  morestuff
+ythen  
+ywriteln  
+yleftparen  
+ystring  "4 in the set"
+yrightparen  
+yelse  
+ywriteln  
+yleftparen  
+ystring  "4 not in the set"
+yrightparen  
+ysemicolon  
+yend  
+ydot  

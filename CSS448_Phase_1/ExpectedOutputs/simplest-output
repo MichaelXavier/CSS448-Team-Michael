@@ -1,0 +1,11 @@
+yprogram  
+yident  simplest
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+ybegin  
+yend  
+ydot  

@@ -1,0 +1,527 @@
+yprogram  
+yident  list
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+yconst  
+yident  grades
+yequal  
+ynumber  5
+ysemicolon  
+yident  avgPosition
+yequal  
+ynumber  6
+ysemicolon  
+yident  size
+yequal  
+ynumber  4
+ysemicolon  
+ytype  
+yident  integerArray
+yequal  
+yarray  
+yleftbracket  
+ynumber  1
+ydotdot  
+yident  avgPosition
+yrightbracket  
+yof  
+yident  integer
+ysemicolon  
+yident  cellPtr
+yequal  
+ycaret  
+yident  cell
+ysemicolon  
+yident  cell
+yequal  
+yrecord  
+yident  id
+ycolon  
+yident  integer
+ysemicolon  
+yident  info
+ycolon  
+yident  integerArray
+ysemicolon  
+yident  next
+ycolon  
+yident  cellPtr
+ysemicolon  
+yend  
+ysemicolon  
+yvar  
+yident  list
+ycomma  
+yident  newrec
+ycolon  
+yident  cellPtr
+ysemicolon  
+yident  count
+ycomma  
+yident  classNum
+ycolon  
+yident  integer
+ysemicolon  
+yprocedure  
+yident  insert
+yleftparen  
+yvar  
+yident  list
+ycolon  
+yident  cellPtr
+ysemicolon  
+yident  newrec
+ycolon  
+yident  cellPtr
+yrightparen  
+ysemicolon  
+yvar  
+yident  current
+ycolon  
+yident  cellPtr
+ysemicolon  
+yident  found
+ycolon  
+yident  boolean
+ysemicolon  
+ybegin  
+yident  current
+yassign  
+yident  list
+ysemicolon  
+yident  found
+yassign  
+yfalse  
+ysemicolon  
+yif  
+yleftparen  
+yident  list
+yequal  
+ynil  
+yrightparen  
+ythen  
+yident  list
+yassign  
+yident  newrec
+yelse  
+yif  
+yleftparen  
+yident  newrec
+ycaret  
+ydot  
+yident  id
+yless  
+yident  list
+ycaret  
+ydot  
+yident  id
+yrightparen  
+ythen  
+ybegin  
+yident  newrec
+ycaret  
+ydot  
+yident  next
+yassign  
+yident  list
+ysemicolon  
+yident  list
+yassign  
+yident  newrec
+ysemicolon  
+yend  
+yelse  
+ybegin  
+ywhile  
+yleftparen  
+yident  current
+ynotequal  
+ynil  
+yrightparen  
+yand  
+yleftparen  
+ynot   
+yident  found
+yrightparen  
+ydo  
+ybegin  
+yif  
+yleftparen  
+yident  current
+ycaret  
+ydot  
+yident  next
+yequal  
+ynil  
+yrightparen  
+ythen  
+ybegin  
+yident  current
+ycaret  
+ydot  
+yident  next
+yassign  
+yident  newrec
+ysemicolon  
+yident  found
+yassign  
+ytrue  
+ysemicolon  
+yend  
+yelse  
+yif  
+yleftparen  
+yident  newrec
+ycaret  
+ydot  
+yident  id
+yless  
+yident  current
+ycaret  
+ydot  
+yident  next
+ycaret  
+ydot  
+yident  id
+yrightparen  
+ythen  
+ybegin  
+yident  newrec
+ycaret  
+ydot  
+yident  next
+yassign  
+yident  current
+ycaret  
+ydot  
+yident  next
+ysemicolon  
+yident  current
+ycaret  
+ydot  
+yident  next
+yassign  
+yident  newrec
+ysemicolon  
+yident  found
+yassign  
+ytrue  
+ysemicolon  
+yend  
+ysemicolon  
+yident  current
+yassign  
+yident  current
+ycaret  
+ydot  
+yident  next
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ysemicolon  
+yfunction  
+yident  average
+yleftparen  
+yident  newrec
+ycolon  
+yident  cellPtr
+yrightparen  
+ycolon  
+yident  integer
+ysemicolon  
+yvar  
+yident  i
+ycomma  
+yident  sum
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+yident  sum
+yassign  
+ynumber  0
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  grades
+ydo  
+yident  sum
+yassign  
+yident  sum
+yplus  
+yident  newrec
+ycaret  
+ydot  
+yident  info
+yleftbracket  
+yident  i
+yrightbracket  
+ysemicolon  
+yident  average
+yassign  
+yident  sum
+ydiv  
+yident  grades
+ysemicolon  
+yend  
+ysemicolon  
+yprocedure  
+yident  makeNewrec
+yleftparen  
+yvar  
+yident  newrec
+ycolon  
+yident  cellPtr
+yrightparen  
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+ynew  
+yleftparen  
+yident  newrec
+yrightparen  
+ysemicolon  
+yread  
+yleftparen  
+yident  newrec
+ycaret  
+ydot  
+yident  id
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  grades
+ydo  
+yread  
+yleftparen  
+yident  newrec
+ycaret  
+ydot  
+yident  info
+yleftbracket  
+yident  i
+yrightbracket  
+yrightparen  
+ysemicolon  
+yident  newrec
+ycaret  
+ydot  
+yident  info
+yleftbracket  
+yident  avgPosition
+yrightbracket  
+yassign  
+yident  average
+yleftparen  
+yident  newrec
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+yprocedure  
+yident  displayInfo
+yleftparen  
+yvar  
+yident  list
+ycolon  
+yident  cellPtr
+yrightparen  
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+yident  current
+ycolon  
+yident  cellPtr
+ysemicolon  
+ybegin  
+yident  current
+yassign  
+yident  list
+ysemicolon  
+yif  
+yleftparen  
+yident  list
+ynotequal  
+ynil  
+yrightparen  
+ythen  
+ybegin  
+ywrite  
+yleftparen  
+ystring  '            '
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  grades
+ydo  
+ywrite  
+yleftparen  
+ystring  'Grade     '
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+ywrite  
+yleftparen  
+ystring  'Student'
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  grades
+ydo  
+ywrite  
+yleftparen  
+yident  i
+yrightparen  
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  '        Average'
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  grades
+yplus  
+ynumber  2
+ydo  
+ywrite  
+yleftparen  
+ystring  '-----------'
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+ywhile  
+yleftparen  
+yident  current
+ynotequal  
+ynil  
+yrightparen  
+ydo  
+ybegin  
+ywrite  
+yleftparen  
+yident  current
+ycaret  
+ydot  
+yident  id
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yleftparen  
+yident  grades
+yplus  
+ynumber  1
+yrightparen  
+ydo  
+ywrite  
+yleftparen  
+yident  current
+ycaret  
+ydot  
+yident  info
+yleftbracket  
+yident  i
+yrightbracket  
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yident  current
+yassign  
+yident  current
+ycaret  
+ydot  
+yident  next
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ysemicolon  
+yend  
+ysemicolon  
+ybegin  
+yread  
+yleftparen  
+yident  classNum
+yrightparen  
+ysemicolon  
+yident  list
+yassign  
+ynil  
+ysemicolon  
+yfor  
+yident  count
+yassign  
+ynumber  1
+yto  
+yident  size
+ydo  
+ybegin  
+yident  makeNewrec
+yleftparen  
+yident  newrec
+yrightparen  
+ysemicolon  
+yident  insert
+yleftparen  
+yident  list
+ycomma  
+yident  newrec
+yrightparen  
+ysemicolon  
+yend  
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  'Here are the class grades for class:'
+ycomma  
+yident  classNum
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yident  displayInfo
+yleftparen  
+yident  list
+yrightparen  
+ysemicolon  
+yend  
+ydot  

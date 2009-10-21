@@ -1,0 +1,143 @@
+yprogram  
+yident  add
+yleftparen  
+yident  input
+ycomma  
+yident  output
+yrightparen  
+ysemicolon  
+yconst  
+yident  size
+yequal  
+ynumber  5
+ysemicolon  
+ytype  
+yident  intarray
+yequal  
+yarray  
+yleftbracket  
+ynumber  1
+ydotdot  
+yident  size
+yrightbracket  
+yof  
+yident  integer
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+yident  a
+ycolon  
+yident  intarray
+ysemicolon  
+yprocedure  
+yident  adder
+yleftparen  
+yvar  
+yident  a
+ycomma  
+yident  b
+ycolon  
+yident  intarray
+yrightparen  
+ysemicolon  
+yvar  
+yident  i
+ycolon  
+yident  integer
+ysemicolon  
+ybegin  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  size
+ydo  
+yident  b
+yleftbracket  
+yident  i
+yrightbracket  
+yassign  
+yident  a
+yleftbracket  
+yident  i
+yrightbracket  
+yplus  
+yident  b
+yleftbracket  
+yident  i
+yrightbracket  
+ysemicolon  
+yend  
+ysemicolon  
+ybegin  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  size
+ydo  
+yident  a
+yleftbracket  
+yident  i
+yrightbracket  
+yassign  
+yident  i
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  'The array before call to adder:'
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  size
+ydo  
+ywrite  
+yleftparen  
+yident  a
+yleftbracket  
+yident  i
+yrightbracket  
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yident  adder
+yleftparen  
+yident  a
+ycomma  
+yident  a
+yrightparen  
+ysemicolon  
+ywriteln  
+yleftparen  
+ystring  'The array after call to adder:'
+yrightparen  
+ysemicolon  
+yfor  
+yident  i
+yassign  
+ynumber  1
+yto  
+yident  size
+ydo  
+ywrite  
+yleftparen  
+yident  a
+yleftbracket  
+yident  i
+yrightbracket  
+yrightparen  
+ysemicolon  
+ywriteln  
+ysemicolon  
+yend  
+ydot  
