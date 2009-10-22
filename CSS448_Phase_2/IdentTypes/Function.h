@@ -1,13 +1,14 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 #include <iostream>
+#include <list>
 #include "IdentRecord"
 
 class Function : public IdentRecord {
 public:
 
 private:
-  //TODO: figure out how to store return type
-  //TODO: linked list or something to store parameter types
+  IdentRecord* returnType;
+  List<IdentRecord*> parameters;//FIXME: this implementation not set in stone
 }
 #endif
