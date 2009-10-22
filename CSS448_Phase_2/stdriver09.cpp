@@ -19,6 +19,7 @@ int main() {
    IdentRecord* recptr;     
    IdentRecord* pointerptr;     
    IdentRecord* procptr;     
+   IdentRecord* tempptr;     
 
    // create a table holding standard identifiers (sit): 
    //      integer, real, boolean, char
@@ -151,7 +152,7 @@ int main() {
    // scopeEntry
    procptr = new Procedure("proc2a");         //    procedure proc2a(...);
    something = st.insert(procptr, procedure);    
-                                              // var  
+                                              //    var  
    ptr = new Variable("count");               //      count: int3D;
    something = st.insert(ptr, variable);    
    look up "int3D" and set ptr's typeptr
@@ -168,7 +169,7 @@ int main() {
    // scopeEntry
    procptr = new Procedure("proc2b");         //    procedure proc2b(...);
    something = st.insert(procptr, procedure);    
-                                              // var  
+                                              //    var  
    ptr = new Variable("x2b");                 //      x2b: integer;
    something = st.insert(ptr, variable);    
    look up "integer" in st; if not there, get it from sit, in typeptr
@@ -179,7 +180,7 @@ int main() {
    // scopeEntry
    procptr = new Procedure("proc2c");         //    procedure proc2c(...);
    something = st.insert(procptr, procedure);    
-                                              // const
+                                              //    const
    ptr = new Constant("someconst");           //        someConst = 10; 
    something = st.insert(ptr, constant);     
    ptr->set the constant's value, the ConstFactor to 10
@@ -187,7 +188,7 @@ int main() {
    something = st.insert(ptr, constant);        
    ptr->set the constant's value, the ConstFactor to 20
 
-                                              // var  
+                                              //    var  
    ptr = new Variable("x2c");                 //      x2c: integer;
    something = st.insert(ptr, variable);    
    look up "integer" in st; if not there, get it from sit, in typeptr
@@ -198,7 +199,29 @@ int main() {
    something = st.insert(ptr, variable);    
                                               // produce error: "x2c" exists
 
+   // scopeEntry 
+   // could use new Function if desired
+   procptr = new Procedure("func2d");         //    function func2d(
+   something = st.insert(procptr, function);    
+                                              //      newrec: cellPtr): integer;
+   ptr = new Parameter("newrec");
+   look up "cellPtr" and set ptr's typeptr
+   something = procptr->insertParameter(ptr, parameter); 
+   look up "integer" in st; if not there, get it from sit, in typeptr
+   set pointer for the function return type to typeptr
+                                              //    var  
+                                              //      a: array [5..10] of real;
+   ptr = new Variable("a");               
+   something = st.insert(ptr, variable);    
+   tempptr = new ArrayType("NONAME");             
+   dimension initially set to one
+   ptr->set low of dim1 to ConstFactor of 5
+   ptr->set high of dim1 to ConstFactor of 10
+   look up "real" in st; if not there, get it from sit, in typeptr
+   ptr-> set array type to typeptr
+
    st.printST();
+   // scopeExit of func2d              // end of func2d
    // scopeExit of proc2c              // end of proc2c
    // scopeExit of proc2b              // end of proc2b
    // scopeExit of proc2a              // end of proc2a
