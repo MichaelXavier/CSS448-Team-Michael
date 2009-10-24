@@ -2,7 +2,7 @@
 #define STOBJECT_H
 #include <iostream>
 #include <vector>
-#include "IdentRecord.h"
+#include "IdentTypes/IdentRecord.h"
 
 enum IdType {arraytype, pointertype, recordtype, settype,
              constant, variable, procedure, function, recordfield, parameter};
@@ -14,6 +14,8 @@ public:
   void printST(void) const;//FIXME: not sure if const, it calls scopexit which may modify internal state
 
 private:
+  ScopeNode* currentScope;
+
   vector<IdentRecord*> identTable;
 
   void fillIdentTable(void);

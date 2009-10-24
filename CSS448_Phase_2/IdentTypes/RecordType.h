@@ -16,7 +16,6 @@ public:
 	void insertField(IdentRecord*, IdType);
 
 private:
-
-	// possibly a list of record fields
+  vector<RecordField*> members;
 };
 #endif

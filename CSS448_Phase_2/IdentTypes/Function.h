@@ -1,14 +1,20 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 #include <iostream>
-#include <list>
+#include <vector>
 #include "IdentRecord"
 
 class Function : public IdentRecord {
 public:
 
+	void insertParameter(IdentRecord*, IdType);
+
+  //calls strcmp on identrecord or operator==
+  bool hasConflictingParams(const IdentRecord*)const;
+
+  setReturnType(const IdentRecord*);
 private:
   IdentRecord* returnType;
-  List<IdentRecord*> parameters;//FIXME: this implementation not set in stone
+  vector<Parameter*> parameters;//FIXME: this implementation not set in stone
 }
 #endif
