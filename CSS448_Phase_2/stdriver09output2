@@ -1,0 +1,80 @@
+
+// Output should look similar to the following.
+// The indenting should be the same, but depending on how you
+// store identifiers, the order may be different (alphabetical is fine).
+// Procedure/funtion parameters would not be alphabetized as their order
+// is critical.
+// Use scope for indenting (3 spaces per scope).
+// All identifiers should be lowercase. Let me know if I missed one.
+
+// Alphabetized version, parameters in original order
+
+example 
+   cell
+      id integer
+      error: id already in ST      // printed during building, before printST()
+      info int3D
+      next cellPtr
+   cellptr ^ cell
+   classnum integer
+   count int3D
+   digit 0..9
+   grades 5
+   int3d 1..5, 2..3, 0..2 integer
+   list cellPtr
+   newrec cellPtr
+   size 4
+
+   proc1
+      var list cellptr
+      var thea int3d
+      rec cellptr
+      count integer
+      x1 integer
+      y integer
+
+   
+example 
+   cell
+      id integer
+      error: id already in ST      // printed during building, before printST()
+      info int3D
+      next cellPtr
+   cellptr ^ cell
+   classnum integer
+   count int3D
+   digit 0..9
+   grades 5
+   int3d 1..5, 2..3, 0..2 integer
+   list cellPtr
+   newrec cellPtr
+   size 4
+
+   proc2
+      count int3d
+      x2 integer
+      y integer
+      error: y already in ST      // printed during building, before printST()
+      z integer
+
+      proc2a
+         count int3d
+         x2a integer
+         y integer
+         z integer
+   
+         proc2b
+            x2b integer
+            y integer
+   
+            proc2c
+               someconst 10
+               theconst 20
+               x2c integer
+               error: x2c already in ST      // printed during building 
+               y integer
+
+               func2d integer
+                  newrec cellptr
+                  a 5..10 real
+

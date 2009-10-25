@@ -52,10 +52,10 @@ int main() {
    ptr-> set array type to typeptr
 
    pointerptr = new PointerType("cellptr");  //   cellPtr = ^cell;
-   something = st.insert(recptr, pointertype);            
+   something = st.insert(pointerptr, pointertype);            
    // have to hang onto pointerptr and identifier "cell" to set later
    recptr = new RecordType("cell");          //   cell = record 
-   something = st.insert(ptr, recordtype);    
+   something = st.insert(recptr, recordtype);    
    //now you have recptr to "cell" object, can set pointerptr's attribute
    ptr = new RecordField("id");              //      id: integer;
    something = recptr->insertField(ptr, recordfield);      
