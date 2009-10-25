@@ -4,6 +4,8 @@ ArrayType::ArrayType(const string& name) : IdentRecord(name) {
 	dimensions = 0;
 }
 
+ArrayType::~ArrayType(void) {
+}
 
 void ArrayType::display()
 {

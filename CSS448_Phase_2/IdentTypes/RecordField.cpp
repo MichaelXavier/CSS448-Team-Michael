@@ -2,7 +2,7 @@
 RecordField::RecordField(const string& name) : IdentRecord(name) {
 }
 
-RecordField::~RecordField(void) : IdentRecord() {
+RecordField::~RecordField(void) {
 }
 
 

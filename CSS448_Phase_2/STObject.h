@@ -2,6 +2,7 @@
 #define STOBJECT_H
 #include <iostream>
 #include <vector>
+#include "IdType.h"
 #include "IdentTypes/IdentRecord.h"
 #include "IdentTypes/ArrayType.h"
 #include "IdentTypes/BooleanType.h"
@@ -18,9 +19,6 @@
 #include "IdentTypes/RecordType.h"
 #include "IdentTypes/SetType.h"
 #include "IdentTypes/Variable.h"
-
-enum IdType {arraytype, pointertype, recordtype, settype,
-             constant, variable, procedure, function, recordfield, parameter};
 
 class STObject {
 public:

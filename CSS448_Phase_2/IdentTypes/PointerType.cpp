@@ -3,7 +3,7 @@
 PointerType::PointerType(const string& name) : IdentRecord(name) {
 }
 
-PointerType::~PointerType(void) : IdentRecord() {
+PointerType::~PointerType(void) {
 }
 
 void PointerType::display() {

@@ -5,7 +5,7 @@ SetType::SetType(const string& name) : IdentRecord(name) {
 	m_high = -1;
 }
 
-SetType::~SetType(void) : IdentSet() {
+SetType::~SetType(void) {
 }
 
 void SetType::display()

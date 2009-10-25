@@ -10,7 +10,7 @@ public:
 
 	void display();
 	void setTypePtr(IdentRecord* type) {typePtr = type;}
-	void setVar(bool var) {m_var = var;}
+	void setVar(bool var) {passByRef = var;}
 
 private:
 	IdentRecord* typePtr;

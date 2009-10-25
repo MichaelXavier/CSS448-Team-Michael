@@ -2,7 +2,7 @@
 Variable::Variable(const string& name) : IdentRecord(name) {
 }
 
-VariableType::~VariableType(void) : IdentRecord() {
+VariableType::~VariableType(void) {
 }
 
 void Variable::display() {

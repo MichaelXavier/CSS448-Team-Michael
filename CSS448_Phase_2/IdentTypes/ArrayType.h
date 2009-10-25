@@ -10,7 +10,7 @@ class ArrayType : public IdentRecord {
 
 public:
 	ArrayType(const string& name);
-	~ArrayType();
+	~ArrayType(void);
 
 	void display(); // Displays data
 	void addDimension(int, int); // Adds a dimension to the array

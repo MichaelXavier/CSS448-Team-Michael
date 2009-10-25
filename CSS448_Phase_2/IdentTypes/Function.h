@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "IdentRecord"
+#include "../IdType.h"
 
 class Function : public IdentRecord {
 public:

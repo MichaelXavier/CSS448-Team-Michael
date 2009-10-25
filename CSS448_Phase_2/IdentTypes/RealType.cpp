@@ -3,5 +3,5 @@
 RealType::RealType(const string& name) : IdentRecord(name) {
 }
 
-RealType::~RealType(void) : IdentRecord() {
+RealType::~RealType(void) {
 }

@@ -1,8 +1,10 @@
 #ifndef PROCEDURE_H
 #define PROCEDURE_H
 #include <iostream>
+#include <vector>
+#include "../IdType.h"
 #include "IdentRecord.h"
-#include "STObject.h"
+#include "Parameter.h"
 
 using namespace std;
 
@@ -11,7 +13,7 @@ public:
 	Procedure(const string& name);
 	~Procedure(void);
 
-	void display();
+	void display(void);
 	void insertParameter(IdentRecord*, IdType);
 	
   //calls strcmp on identrecord or operator==

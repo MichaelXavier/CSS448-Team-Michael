@@ -2,7 +2,7 @@
 RecordType::RecordType(const string& name) : IdentRecord(name) {
 }
 
-RecordType::~RecordType(void) : IdentRecord() {
+RecordType::~RecordType(void) {
 }
 
 void RecordType::display()

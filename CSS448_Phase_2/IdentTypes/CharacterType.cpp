@@ -3,5 +3,5 @@
 CharacterType::CharacterType(const string& name) : IdentRecord(name) {
 }
 
-CharacterType::~CharacterType(void) : IdentRecord() {
+CharacterType::~CharacterType(void) {
 }

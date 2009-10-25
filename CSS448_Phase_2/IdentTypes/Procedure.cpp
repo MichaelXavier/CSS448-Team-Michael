@@ -3,7 +3,7 @@
 Procedure::Procedure(const string& name) : IdentRecord(name) {
 }
 
-Procedure::~Procedure(void) : IdentRecord() {
+Procedure::~Procedure(void) {
 }
 
 

@@ -4,7 +4,7 @@ PointerType::PointerType(const string& name) : IdentRecord(name) {
 	passByRef = false;
 }
 
-PointerType::~PointerType(void) : IdentRecord() {
+PointerType::~PointerType(void) {
 }
 
 void Parameter::display()
