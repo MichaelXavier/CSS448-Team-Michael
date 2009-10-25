@@ -9,7 +9,7 @@ using namespace std;
 class ArrayType : public IdentRecord {
 
 public:
-	ArrayType(string);
+	ArrayType(const string& name);
 	~ArrayType();
 
 	void display(); // Displays data

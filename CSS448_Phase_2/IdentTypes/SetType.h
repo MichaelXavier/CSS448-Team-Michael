@@ -5,7 +5,7 @@
 
 class SetType : public IdentRecord {
 public:
-	SetType(string);
+	SetType(const string& name);
 	~SetType();
 
 	void display();

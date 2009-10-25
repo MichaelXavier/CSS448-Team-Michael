@@ -5,11 +5,11 @@
 
 class Variable : public IdentRecord {
 public:
-	Variable(string);
-	~Variable();
+	Variable(const string& name);
+	~Variable(void);
 
 	void display();
-	void setTypePtr(IdentRecord* type) {typePtr = type;}
+	void setTypePtr(IdentRecord* type);
 
 private:
 	IdentRecord* typePtr;

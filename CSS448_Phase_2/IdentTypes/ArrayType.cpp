@@ -1,8 +1,6 @@
 #include "ArrayType.h"
 
-ArrayType::ArrayType(string ident)
-{
-	identName = ident;
+ArrayType::ArrayType(const string& name) : IdentRecord(name) {
 	dimensions = 0;
 }
 

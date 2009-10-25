@@ -5,8 +5,8 @@
 
 class Parameter : public IdentRecord {
 public:
-	Parameter(string);
-	~Parameter();
+	Parameter(const string& name);
+	~Parameter(void);
 
 	void display();
 	void setTypePtr(IdentRecord* type) {typePtr = type;}
@@ -14,6 +14,6 @@ public:
 
 private:
 	IdentRecord* typePtr;
-	bool m_var;	// var = 0 means pass by value, var = 1 means pass by reference
+	bool passByRef;	// var = 0 means pass by value, var = 1 means pass by reference
 };
 #endif

@@ -10,14 +10,17 @@ using namespace std;
 
 class ScopeNode {
 public:
-  ScopeNode(void);
+  ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);
   ~ScopeNode(void);
-  bool recordExists(const IdentRecord*)const;
-  void insertScope(ScopeNode*);
-  void insertRecord(IdentRecord*);
+  bool recordExists(const IdentRecord* other)const;
+  void insertRecord(IdentRecord* other);
+  void insertScope(ScopeNode* new_scope);
 
   ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
+
+  int getDepth(void)const { return scopeDepth; }
 private:
+  int scopeDepth = 0;
   //Base scope-creating IdentRecord which encompasses this scope
   //Would presumably be either a function on procedure, can be NULL for a toplevel
   //scope

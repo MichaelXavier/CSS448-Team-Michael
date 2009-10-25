@@ -1,5 +1,6 @@
-ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent) {
+ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent, int depth) {
   scopeRoot = root; 
+  scopeDepth = depth; 
   parent = parentScope;//Can be NULL
 }
 

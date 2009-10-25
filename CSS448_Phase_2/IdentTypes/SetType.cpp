@@ -1,10 +1,11 @@
 #include "SetType.h"
 
-SetType::SetType(string ident)
-{
-	identName = ident;
+SetType::SetType(const string& name) : IdentRecord(name) {
 	m_low = -1;
 	m_high = -1;
+}
+
+SetType::~SetType(void) : IdentSet() {
 }
 
 void SetType::display()

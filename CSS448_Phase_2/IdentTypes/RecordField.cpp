@@ -1,8 +1,8 @@
 #include "RecordField.h"
+RecordField::RecordField(const string& name) : IdentRecord(name) {
+}
 
-RecordField::RecordField(string ident)
-{
-	identName = ident;
+RecordField::~RecordField(void) : IdentRecord() {
 }
 
 

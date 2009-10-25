@@ -7,11 +7,11 @@
 // Note: not sure if this class is correct
 class PointerType : public IdentRecord {
 public:
-	PointerType(string);
-	~PointerType();
+	PointerType(const string& name);
+	~PointerType(void);
 	
 	void display();
-	void setPointObj(IdentRecord* obj) {pointsToObj = obj;}
+	void setPointObj(IdentRecord* obj);
 
 private:
   //Because pointers can be declared before their types are, it would seem that we need to also store the declared type for

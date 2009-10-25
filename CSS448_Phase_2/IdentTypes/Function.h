@@ -6,6 +6,8 @@
 
 class Function : public IdentRecord {
 public:
+	Function(const string& name);		// Constructor
+	~Function(void);				// Destructor
 
 	void insertParameter(IdentRecord*, IdType);
 

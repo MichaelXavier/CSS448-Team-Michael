@@ -3,17 +3,6 @@ STObject::STObject(void) {
   //TODO: initialize other stuff here
 }
 
-STObject::fillIdentTable(void) {
-  /*identTable.push_back(new ArrayType());//FIXME: does vector deallocate?
-  identTable.push_back(new IntegerType());
-  identTable.push_back(new PointerType());
-  identTable.push_back(new RealType());
-  identTable.push_back(new RecordType());
-  identTable.push_back(new SetType());
-  identTable.push_back(new StringType());*/
-  //TODO: are there more types?
-}
-
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?
 //it is setting the current scope to the new nested scope. perhaps we don't
 //need scopeEntry or if we do, it will take 
@@ -32,4 +21,12 @@ bool insert(IdentRecord* new_rec, IdType type) {
     default:
       currentScope->insertRecord(new_rec)
   }
+}
+
+STObject::fillIdentTable(void) {
+  //fill in the SIT with primitives
+  identTable.push_back(new IntegerType());
+  identTable.push_back(new RealType());
+  identTable.push_back(new CharacterType());
+  //TODO: are there more types?
 }

@@ -1,12 +1,20 @@
 #include "PointerType.h"
 
-PointerType::PointerType(string ident)
-{
-	identName = ident;
+PointerType::PointerType(const string& name) : IdentRecord(name) {
 }
 
+PointerType::~PointerType(void) : IdentRecord() {
+}
 
-void PointerType::display()
-{
+void PointerType::display() {
 	//cout << identName << " " << pointsToObj->getName();
+}
+
+void Variable::setPointObj(IdentRecord* obj) {
+  if (obj != NULL) {
+    //FIXME: throw exception?
+    return;
+  } else {
+    typePtr = obj;
+  }
 }

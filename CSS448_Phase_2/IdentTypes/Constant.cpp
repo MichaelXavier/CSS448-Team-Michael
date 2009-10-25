@@ -1,14 +1,12 @@
 #include "Constant.h"
 
+ConstantType::ConstantType(const string& name) : IdentRecord(name) {
+}
 
-// Constructor, sets the identifier name to the parameter value
-Constant::Constant(string ident)
-{
-	identName = ident;
+ConstantType::~ConstantType(void) : IdentRecord() {
 }
 
 // Prints the identifier name and then the value stored in the constant
-void Constant::display()
-{
+void Constant::display() {
 	cout << identName << " " << constFactor;
 }

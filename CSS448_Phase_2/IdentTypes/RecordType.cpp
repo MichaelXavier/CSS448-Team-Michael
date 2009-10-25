@@ -1,8 +1,8 @@
 #include "RecordType.h"
+RecordType::RecordType(const string& name) : IdentRecord(name) {
+}
 
-RecordType::RecordType(string ident)
-{
-	identName = ident;
+RecordType::~RecordType(void) : IdentRecord() {
 }
 
 void RecordType::display()

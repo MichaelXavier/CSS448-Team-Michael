@@ -4,6 +4,8 @@
 #include "IdentRecord"
 
 class IntegerType : public IdentRecord {
+	IntegerType(const string& name);
+	~IntegerType(void);
 public:
 
 private:

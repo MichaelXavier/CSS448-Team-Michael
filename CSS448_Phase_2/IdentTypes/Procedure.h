@@ -8,8 +8,8 @@ using namespace std;
 
 class Procedure : public IdentRecord {
 public:
-	Procedure(string);
-	~Procedure();
+	Procedure(const string& name);
+	~Procedure(void);
 
 	void display();
 	void insertParameter(IdentRecord*, IdType);

@@ -6,10 +6,13 @@
 class Constant : public IdentRecord {
 
 public:
-	Constant(string ident);		// Constructor
-	~Constant();				// Destructor
+	Constant(const string& name);		// Constructor
+	~Constant(void);				// Destructor
 
 	void display();
+
+  //TODO: not sure if this is the proper interface for constFactor
+  void setConstFactor(int value) { constFactor = value; }
 
 private:
 	int constFactor;			// The integer value of the const, NOTE: may need to be a union

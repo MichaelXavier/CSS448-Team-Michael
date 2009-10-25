@@ -1,5 +1,12 @@
 #include "IdentRecord.h"
 
+IdentRecord::IdentRecord(const string& name) {
+  identName = name;
+}
+
+IdentRecord::~IdentRecord(void) {
+  //TODO
+}
 
 // Compares the this and parameter's ident name.
 // Returns -1 if this identname > rhs identname, 0 if this identname == rhs identname,

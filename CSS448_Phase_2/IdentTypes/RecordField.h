@@ -7,7 +7,7 @@ using namespace std;
 
 class RecordField : public IdentRecord {
 public:
-	RecordField(string);
+	RecordField(const string& name);
 	~RecordField();
 
 	void display();					 // Displays data

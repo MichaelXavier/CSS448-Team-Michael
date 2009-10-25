@@ -5,6 +5,8 @@
 
 class RealType : public IdentRecord {
 public:
+	RealType(const string& name);
+  ~RealType(void);
 
 private:
 }

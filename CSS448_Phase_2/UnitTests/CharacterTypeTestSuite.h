@@ -1,10 +1,10 @@
 //StringTypeTestSuite.h
 #include <cxxtest/TestSuite.h>
-#include "../IdentTypes/StringType.h"
+#include "../IdentTypes/CharacterType.h"
 
 using namespace std;
 
-class StringTypeTestSuite : public CxxTest::TestSuite 
+class CharacterTypeTestSuite : public CxxTest::TestSuite 
 {
 public:
 

@@ -1,9 +1,9 @@
 #include "Procedure.h"
 
+Procedure::Procedure(const string& name) : IdentRecord(name) {
+}
 
-Procedure::Procedure(string ident)
-{
-	identName = ident;
+Procedure::~Procedure(void) : IdentRecord() {
 }
 
 

@@ -9,7 +9,7 @@ using namespace std;
 class RecordType : public IdentRecord {
 
 public:
-	RecordType(string);
+	RecordType(const string& name);
 	~RecordType();
 
 	void display();

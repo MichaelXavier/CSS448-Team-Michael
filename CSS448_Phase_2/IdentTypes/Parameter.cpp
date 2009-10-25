@@ -1,15 +1,17 @@
 #include "Parameter.h"
 
-Parameter::Parameter(string ident)
-{
-	identName = ident;
-	m_var = false;
+PointerType::PointerType(const string& name) : IdentRecord(name) {
+	passByRef = false;
+}
+
+PointerType::~PointerType(void) : IdentRecord() {
 }
 
 void Parameter::display()
 {
-	if(m_var == true)
+	if(passByRef) {
 		cout << "var ";
+  }
 
 	cout << identName << " " << typePtr->getName(); 
 }
