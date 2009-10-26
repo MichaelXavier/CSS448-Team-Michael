@@ -1,9 +1,29 @@
+#include <iostream>
+#include "STObject.h"
+
+#include "IdentTypes/IdentRecord.h"
+#include "IdentTypes/ArrayType.h"
+#include "IdentTypes/BooleanType.h"
+#include "IdentTypes/CharacterType.h"
+#include "IdentTypes/Constant.h"
+#include "IdentTypes/Function.h"
+#include "IdentTypes/IdentRecord.h"
+#include "IdentTypes/IntegerType.h"
+#include "IdentTypes/Parameter.h"
+#include "IdentTypes/PointerType.h"
+#include "IdentTypes/Procedure.h"
+#include "IdentTypes/RealType.h"
+#include "IdentTypes/RecordField.h"
+#include "IdentTypes/RecordType.h"
+#include "IdentTypes/SetType.h"
+#include "IdentTypes/Variable.h"
+
+
+using namespace std;
 
 // These are the types of identifiers stored. 
 // The type is not actually needed, but is included for clarity 
 // in this phase; it may be useful for debugging.
-enum IdType {arraytype, pointertype, recordtype, settype,
-             constant, variable, procedure, function, recordfield, parameter};
 
 // Simulates seeing identifiers in the right order as if you were
 // scanning a pascal program.  The hardcoded strings would be stored 
@@ -12,123 +32,129 @@ enum IdType {arraytype, pointertype, recordtype, settype,
 // The numbers would be stored in some associated variable from LEX string.
 // I will refer to names in grammar for attributes stored.
 // Adjust as needed for your implementation.
+
 int main() {
-   STObject st;
-   IdentRecord* ptr;           // or IdentObject or IdentNode
-   IdentRecord* typeptr;     
-   IdentRecord* recptr;     
-   IdentRecord* pointerptr;     
-   IdentRecord* procptr;     
-   IdentRecord* tempptr;     
+   STObject st;  
+
+   Constant* tempConst;
+   ArrayType* tempArray;
+   Parameter* tempParam;
+   PointerType* tempPointer;
+   RecordField* tempField;
+   RecordType* tempRecord;
+   SetType* tempSet;
+   Variable* tempVariable;
+   Procedure* tempProcedure;
+
+   bool something;
 
    // create a table holding standard identifiers (sit): 
    //      integer, real, boolean, char
 
    // something could be bool or ptr
    // assume first insert is the program, possible scopeEntry
-   ptr = new Procedure("example");           // program example(...);
-   something = st.insert(ptr, procedure);    
-                                             // const  
-   ptr = new Constant("grades");             //       grades = 5;
-   something = st.insert(ptr, constant);     
-   ptr->set the constant's value, the ConstFactor to 5
-   ptr = new Constant("size");               //       size = 4;
-   something = st.insert(ptr, constant);        
-   ptr->set the constant's value, the ConstFactor to 4
+   tempProcedure = new Procedure("example");           // program example(...);
+   something = st.insert(tempProcedure, procedure);    
+                                             
+   tempConst = new Constant("grades");             //       grades = 5; 
+   something = st.insert(tempConst, constant);     
+   tempConst->SetConstValue(5);
+   tempConst = new Constant("size");
+   something = st.insert(tempConst, constant);        
+   tempConst->SetConstValue(5);
 
-                                             // type 
-   ptr = new ArrayType("int3d");             //   int3D = array [1..5,2..3,0..2]
-   something = st.insert(ptr, arraytype);    //           of integer;
-   dimension initially set to one
-   ptr->set low of dim1 to ConstFactor of 1
-   ptr->set high of dim1 to ConstFactor of 5
-   now you get to know it has 2 dimensions
-   ptr->set low of dim2 to ConstFactor of 2
-   ptr->set high of dim2 to ConstFactor of 3
-   now you get to know it has 3 dimensions
-   ptr->set low of dim3 to ConstFactor of 0
-   ptr->set high of dim3 to ConstFactor of 2
-   look up "integer" in st; if not there, get it from sit, in typeptr
-   ptr-> set array type to typeptr
 
-   pointerptr = new PointerType("cellptr");  //   cellPtr = ^cell;
-   something = st.insert(pointerptr, pointertype);            
+												// type 
+   tempArray = new ArrayType("int3d");             //   int3D = array [1..5,2..3,0..2]
+   something = st.insert(tempArray, arraytype);    //           of integer;
+   tempArray->addDimension(1, 5);
+   tempArray->addDimension(2, 3);
+   tempArray->addDimension(0, 2);
+   // lookup type integer
+//   tempArray->setTypePtr("integer");
+
+
+   tempPointer = new PointerType("cellptr");  //   cellPtr = ^cell;
+   something = st.insert(tempPointer, pointertype);            
    // have to hang onto pointerptr and identifier "cell" to set later
-   recptr = new RecordType("cell");          //   cell = record 
-   something = st.insert(recptr, recordtype);    
+   tempRecord = new RecordType("cell");          //   cell = record 
+   something = st.insert(tempRecord, recordtype);    
    //now you have recptr to "cell" object, can set pointerptr's attribute
-   ptr = new RecordField("id");              //      id: integer;
-   something = recptr->insertField(ptr, recordfield);      
-   look up "integer" in st; if not there, get it from sit, in typeptr
-   ptr-> set type to typeptr
-   ptr = new RecordField("info");            //      info: int3D;
-   something = recptr->insertField(ptr, recordfield);    
-   look up "int3D" in st, in typeptr
-   ptr-> set type to typeptr
-   ptr = new RecordField("id");              //      id: real;
-   something = recptr->insertField(ptr, recordfield); 
+   tempField = new RecordField("id");              //      id: integer;
+   something = tempRecord->insertField(tempField, recordfield);      
+   // find typeptr integer
+   tempField = new RecordField("info");            //      info: int3D;
+   something = tempRecord->insertField(tempField, recordfield);    
+   // find typeptr "int3D"
+   tempField = new RecordField("id");              //      id: real;
+   something = tempRecord->insertField(tempField, recordfield); 
+   // find typeptr real
                                              // produce error: "id" exists
-   ptr = new RecordField("next");            //      next: cellPtr;
-   something = recptr->insertField(ptr, recordfield);    
-   look up "cellPtr" in st, in typeptr
-   ptr-> set type to typeptr
+   tempField = new RecordField("next");            //      next: cellPtr;
+   something = tempRecord->insertField(tempField, recordfield);    
+   // find type ptr "cellptr"
                                              //   end;
 
    // note that we will assume that sets are limited to 256 ordinal items
-   ptr = new SetType("digit");               //   Digit = set of 0..9;
-   something = st.insert(ptr, settype);    
-   set ptr's range to go from 0 to 9
+   tempSet = new SetType("digit");               //   Digit = set of 0..9;
+   something = st.insert(tempSet, settype);    
+   tempSet->setRange(0,9);
 
                                              // var  
-   ptr = new Variable("list");               //      list: cellPtr;
-   something = st.insert(ptr, variable);    
-   look up "cellPtr" in st, in typeptr
-   ptr-> set type to typeptr
-   ptr = new Variable("newrec");             //      newrec: cellPtr;
-   something = st.insert(ptr, variable);    
-   look up "cellPtr" in st, in typeptr
-   ptr-> set type to typeptr
-   ptr = new Variable("count");              //      count: int3D;
-   something = st.insert(ptr, variable);    
-   look up "int3D" in st, in typeptr
-   ptr-> set type to typeptr
-   ptr = new Variable("classnum");           //      classNum: integer;
-   something = st.insert(ptr, variable);    
-   look up "integer" in st; if not there, get it from sit, in typeptr
-   ptr-> set type to typeptr
+   tempVariable = new Variable("list");               //      list: cellPtr;
+   something = st.insert(tempVariable, variable);    
+   // look up "cellPtr" in st, in typeptr
+   // ptr-> set type to typeptr
+   tempVariable = new Variable("newrec");             //      newrec: cellPtr;
+   something = st.insert(tempVariable, variable);    
+   // look up "cellPtr" in st, in typeptr
+  //  ptr-> set type to typeptr
+   tempVariable = new Variable("count");              //      count: int3D;
+   something = st.insert(tempVariable, variable);    
+   // look up "int3D" in st, in typeptr
+   // ptr-> set type to typeptr
+   tempVariable = new Variable("classnum");           //      classNum: integer;
+   something = st.insert(tempVariable, variable);    
+  //  look up "integer" in st; if not there, get it from sit, in typeptr
+  //  ptr-> set type to typeptr
 
    // scopeEntry
    // use bool tag for parameters that are "var", pass by reference
    // no "var" means pass by value
-   procptr = new Procedure("proc1");      // procedure proc1(var list: cellPtr;
+   tempProcedure = new Procedure("proc1");      // procedure proc1(var list: cellPtr;
                                           //                 var theA: int3D;
                                           //                      rec: cellPtr);
-   something = st.insert(procptr, procedure);    
-   ptr = new Parameter("list");
-   look up "cellPtr" and set ptr's typeptr
-   something = procptr->insertParameter(ptr, parameter); 
-   ptr = new Parameter("thea");
-   look up "int3D" and set ptr's typeptr
-   something = procptr->insertParameter(ptr, parameter); 
-   ptr = new Parameter("rec");
-   look up "cellPtr" and set ptr's typeptr
-   something = procptr->insertParameter(ptr, parameter); 
+   something = st.insert(tempProcedure, procedure);    
+   tempParam = new Parameter("list");
+   // look up "cellPtr" and set ptr's typeptr
+   // use bool to say whether var (pass by reference)
+   something = tempProcedure->insertParameter(tempParam, parameter, true); 
+   tempParam = new Parameter("thea");
+  // look up "int3D" and set ptr's typeptr
+   something = tempProcedure->insertParameter(tempParam, parameter, true); 
+   tempParam = new Parameter("rec");
+  // look up "cellPtr" and set ptr's typeptr
+  // lack of var in parameter (pass by value)
+   something = tempProcedure->insertParameter(tempParam, parameter, false); 
 
                                              // var  
-   ptr = new Variable("count");              //      count: integer;
-   something = st.insert(ptr, variable);    
-   don't forget to search for locals in the param list, repeat names not allowed
-   look up "integer" in st; if not there, get it from sit, in typeptr
-   ptr = new Variable("x1");                 //      x1: integer;
-   something = st.insert(ptr, variable);    
-   look up "integer" in st; if not there, get it from sit, in typeptr
-   ptr = new Variable("y");                  //      y: integer;
-   something = st.insert(ptr, variable);    
-   look up "integer" in st; if not there, get it from sit, in typeptr
+   tempVariable = new Variable("count");              //      count: integer;
+   something = st.insert(tempVariable, variable);    
+   // don't forget to search for locals in the param list, repeat names not allowed
+   // look up "integer" in st; if not there, get it from sit, in typeptr
+   tempVariable = new Variable("x1");                 //      x1: integer;
+   something = st.insert(tempVariable, variable);    
+   // look up "integer" in st; if not there, get it from sit, in typeptr
+   tempVariable = new Variable("y");                  //      y: integer;
+   something = st.insert(tempVariable, variable);    
+ //  look up "integer" in st; if not there, get it from sit, in typeptr
 
    st.printST();
    // scopeExit of proc1                     // end of proc1
    
+
+
+/*************
    // scopeEntry
    procptr = new Procedure("proc2");         // procedure proc2(...);
    something = st.insert(procptr, procedure);    
@@ -206,7 +232,7 @@ int main() {
                                               //      newrec: cellPtr): integer;
    ptr = new Parameter("newrec");
    look up "cellPtr" and set ptr's typeptr
-   something = procptr->insertParameter(ptr, parameter); 
+   something = procptr->insertParameter(ptr, parameter, false); 
    look up "integer" in st; if not there, get it from sit, in typeptr
    set pointer for the function return type to typeptr
                                               //    var  
@@ -228,6 +254,8 @@ int main() {
    // scopeExit of proc2               // end of proc2
    // scopeExit of example             // end of example
 
+   */
    return 0;
 }
+
 
