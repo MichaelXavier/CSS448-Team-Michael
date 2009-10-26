@@ -17,6 +17,10 @@ public:
   //Needed by the map used in ScopeNode, FIXME: i was told only less than is needed. 
   //At compile time we'll find out if we need more
   bool operator<(const IdentRecord& rhs)const; 
+
+  // Doesn't do anything, but can be overridden
+  virtual bool hasConflictingParams(const IdentRecord*)const {return true;}
+
 protected:
 	string identName;					// The name of the identifier
 

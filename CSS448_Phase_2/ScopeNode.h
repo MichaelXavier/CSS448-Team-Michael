@@ -13,15 +13,13 @@ public:
   ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);
   ~ScopeNode(void);
   bool recordExists(const IdentRecord* other)const;
-  void insertRecord(IdentRecord* other);
+  bool insertRecord(IdentRecord* other);
   void insertScope(ScopeNode* new_scope);
   void printScope(void);
 
   ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
 
   int getDepth(void)const { return scopeDepth; }
-
-  IdentRecord* lookup(const string& name);
 private:
   int scopeDepth;
   //Base scope-creating IdentRecord which encompasses this scope

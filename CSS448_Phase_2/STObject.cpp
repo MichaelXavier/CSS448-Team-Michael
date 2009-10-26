@@ -2,8 +2,6 @@ STObject::STObject(void) {
   fillIdentTable();
   currentScopeNumber = 0;
   //TODO: initialize other stuff here
-  //FIXME: need to set up rootScope pointer, set that as both the rootScope and currentScope
-  //FIXME: then call scopeEntry?
 }
 
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?
@@ -13,13 +11,45 @@ bool insert(IdentRecord* new_rec, IdType type) {
   switch (type) {
     case function:
     case procedure:
-      scopeEntry(new_rec, type);
+		// FIXME: this may require something for handling the case
+		// the new_rec identifier is already used by another
+		// procedure, function, or program in a parent scope
+	  bool scopeCreated;
+      scopeCreated = scopeEntry(new_rec, type);
+	  if(scopeCreated == true)
+		  return true;
+	  else
+	  {
+		  // This handles when a parent scope procedure/function/program has
+		  // the same identifier
+		  cout << "Error: id already in ST: \"" << IdentRecord->getName() << "\"\n"; 
+		  return false;
+	  }
       break;
-    case program://not sure if nested programs are allowed
-        //throw exception
+    case program:
+	  // Can only insert a new program and create a scope at root level
+	  if(currentScopeNumber == 0)
+	  {
+		  scopeEntry(new_rec, type);
+	      return true;
+	  }
+	  // If not at root level, returns false (can't insert Program type) 
+	  else
+	  {
+		  cout << "Error: cannot nest Program types: \"" << IdentRecord->getName() << "\"\n";
+		  return false;
+	  }
       break;
     default:
-      currentScope->insertRecord(new_rec);
+	  bool recordInsert;
+      recordInsert = currentScope->insertRecord(new_rec);
+	  if(recordInsert == true)
+		  return true;
+	  else
+	  {
+		  cout << "Error: id already in ST: \"" << IdentRecord->getName() << "\"\n";
+		  return false;
+	  }
 	  break;
   }
 }
@@ -32,26 +62,21 @@ void STObject::printST(void)
 	rootScope->printScope();	
 	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
+	currentScopeNumber = 1;
 }
 
 
-void STObject::scopeEntry(IdentRecord* new_rec, IdType type)
+bool STObject::scopeEntry(IdentRecord* new_rec, IdType type)
 {
 	currentScopeNumber++;
 	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScopeNumber);
 	currentScope->insertScope(nested_scope);
 	current_scope = nested_scope;
+	return true; // FIXME: it would be necessary to return false if the 
+				 // identifier for the procedure is the same as a parent
+				 // scope procedure
 }
 
-IdentRecord* STObject::lookup(const string& name) {
-  if (currentScope != NULL) {
-    return currentScope->lookup(name);
-  } else if (rootScope !=NULL) {
-    return rootScope->lookup(name);
-  } else {
-    return NULL;
-  }
-}
 
 
 void STObject::fillIdentTable(void) {

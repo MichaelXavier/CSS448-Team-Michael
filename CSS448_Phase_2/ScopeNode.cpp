@@ -13,22 +13,27 @@ bool ScopeNode::recordExists(const IdentRecord* other)const {
   return records.count(other.getName()) == 1;
 }
 
-void ScopeNode::insertRecord(IdentRecord* other) {
+bool ScopeNode::insertRecord(IdentRecord* other) {
   if (other == NULL) {
-    return;
+    return false;
   }
   if (scopeRoot->hasConflictingParams(other)) {
     //conflicts with parameter name
     //TODO: throw or return false?
-    return;//remove after deciding above
+    return false;
   }
   if (recordExists(other)) {
     //conflicts with previously declared variable
     //TODO: throw or return false?
-    return;//remove after deciding above
+    return false;
   }
-  //check if key exists first
-  records.insert(other->getName(), other);
+  // Tries to insert record into record map.  If a duplicate exists,
+  // returns false, otherwise returns true
+  pair<map<string, IdentRecord*>::iterator, bool> ret;
+  ret = records.insert(other->getName(), other);
+  return ret.second; // ret.second is true if duplicate was found,
+					 // false otherwise
+
 }
 
 void ScopeNode::insertScope(ScopeNode* new_scope) {

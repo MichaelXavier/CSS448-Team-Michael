@@ -36,7 +36,7 @@ private:
   vector<IdentRecord*> identTable; // The standard identifier table (SIT)
 
   void fillIdentTable(void);	   // Function for filling the SIT
-  void scopeEntry(IdentRecord*, IdType); // Function for creating new scope
+  bool scopeEntry(IdentRecord*, IdType); // Function for creating new scope
   void scopeExit(void);	 // Exits current scope
 };
 #endif

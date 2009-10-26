@@ -1,12 +1,12 @@
-#include "Procedure.h"
+#include "Program.h"
 
-Procedure::Procedure(const string& name) : IdentRecord(name) {
+Program::Program(const string& name) : IdentRecord(name) {
 }
 
-Procedure::~Procedure(void) {
+Program::~Program(void) {
 }
 
-void Procedure::display(int depth)const {
+void Program::display(int depth)const {
   printIndent(depth);
 	cout << identName << endl;
 
@@ -17,7 +17,7 @@ void Procedure::display(int depth)const {
 	}
 }
 
-bool Procedure::hasConflictingParams(const IdentRecord* record)const
+bool Program::hasConflictingParams(const IdentRecord* record)const
 {
 	for(int i = 0; i < params.size(); i++)
 	{
@@ -29,5 +29,3 @@ bool Procedure::hasConflictingParams(const IdentRecord* record)const
 	}
 	return false; // otherwise returns false
 }
-
-
