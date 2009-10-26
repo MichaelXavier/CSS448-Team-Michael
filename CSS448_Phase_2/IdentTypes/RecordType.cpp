@@ -5,8 +5,8 @@ RecordType::RecordType(const string& name) : IdentRecord(name) {
 RecordType::~RecordType(void) {
 }
 
-void RecordType::display()
-{
+void RecordType::display(int depth)const {
+  printIndent(depth);
 	cout << identName;
 
 	// possibly print list of fields for this record

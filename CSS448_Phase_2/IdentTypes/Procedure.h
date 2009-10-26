@@ -13,7 +13,7 @@ public:
 	Procedure(const string& name);
 	~Procedure(void);
 
-	void display(void);
+	void display(int depth)const;
 	void insertParameter(IdentRecord*, IdType);
 	
   //calls strcmp on identrecord or operator==

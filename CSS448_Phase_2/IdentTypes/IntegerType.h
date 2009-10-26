@@ -6,6 +6,7 @@
 class IntegerType : public IdentRecord {
 	IntegerType(const string& name);
 	~IntegerType(void);
+	void display(int depth)const;
 public:
 
 private:

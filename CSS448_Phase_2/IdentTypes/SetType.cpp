@@ -8,14 +8,13 @@ SetType::SetType(const string& name) : IdentRecord(name) {
 SetType::~SetType(void) {
 }
 
-void SetType::display()
-{
+void SetType::display(int depth)const {
+  printIndent(depth);
 	cout << identName << " " << m_low << ".." << m_high;
 }
 
 
-void SetType::setRange(int low, int high)
-{
+void SetType::setRange(int low, int high) {
 	m_low = low;
 	m_high = high;
 }

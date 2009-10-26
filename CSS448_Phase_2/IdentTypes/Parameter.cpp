@@ -7,8 +7,8 @@ PointerType::PointerType(const string& name) : IdentRecord(name) {
 PointerType::~PointerType(void) {
 }
 
-void Parameter::display()
-{
+void Parameter::display(int depth)const {
+  printIndent(depth);
 	if(passByRef) {
 		cout << "var ";
   }

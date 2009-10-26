@@ -5,7 +5,8 @@ Variable::Variable(const string& name) : IdentRecord(name) {
 VariableType::~VariableType(void) {
 }
 
-void Variable::display() {
+void Variable::display(int depth)const {
+  printIndent(depth);
 	cout << identName << " " << typePtr->getName();
 }
 

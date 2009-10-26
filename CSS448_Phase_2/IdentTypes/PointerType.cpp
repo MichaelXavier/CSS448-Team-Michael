@@ -6,7 +6,9 @@ PointerType::PointerType(const string& name) : IdentRecord(name) {
 PointerType::~PointerType(void) {
 }
 
-void PointerType::display() {
+void PointerType::display(int depth)const {
+  printIndent(depth);
+  //FIXME
 	//cout << identName << " " << pointsToObj->getName();
 }
 

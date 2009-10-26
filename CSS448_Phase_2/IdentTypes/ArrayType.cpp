@@ -7,8 +7,8 @@ ArrayType::ArrayType(const string& name) : IdentRecord(name) {
 ArrayType::~ArrayType(void) {
 }
 
-void ArrayType::display()
-{
+void ArrayType::display(int depth) {
+  printIndent(depth);
 	cout << identName << " ";
 	for(int i = 0; i < dimensions; i++)
 	{

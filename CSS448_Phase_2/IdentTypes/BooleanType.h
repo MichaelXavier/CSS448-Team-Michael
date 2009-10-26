@@ -7,6 +7,8 @@ class BooleanType : public IdentRecord {
 public:
   BooleanType(const string& name);
 	~BooleanType(void);				// Destructor
+
+	void display(int depth)const;
 private:
 }
 #endif

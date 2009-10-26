@@ -6,3 +6,8 @@ FunctionType::FunctionType(const string& name) : IdentRecord(name) {
 
 FunctionType::~FunctionType(void) {
 }
+
+FunctionType::display(int depth)const {
+  printIndent(depth);
+  //TODO
+}

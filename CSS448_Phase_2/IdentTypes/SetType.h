@@ -8,7 +8,7 @@ public:
 	SetType(const string& name);
 	~SetType();
 
-	void display();
+	void display(int depth)const;
 	void setRange(int low, int high);	// Sets the range of the set
 
 private:

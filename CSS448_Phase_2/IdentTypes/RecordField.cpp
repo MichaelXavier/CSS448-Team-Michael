@@ -6,7 +6,7 @@ RecordField::~RecordField(void) {
 }
 
 
-void RecordField::display()
-{
+void RecordField::display(int depth) {
+  printIndent(depth);
 	cout << identName << " " << typePtr->getName();
 }

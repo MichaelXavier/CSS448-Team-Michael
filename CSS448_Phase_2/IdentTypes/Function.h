@@ -16,6 +16,8 @@ public:
   bool hasConflictingParams(const IdentRecord*)const;
 
   setReturnType(const IdentRecord*);
+
+	void display(int depth)const;
 private:
   IdentRecord* returnType;
   vector<Parameter*> parameters;//FIXME: this implementation not set in stone
