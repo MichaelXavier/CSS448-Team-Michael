@@ -2,6 +2,8 @@ STObject::STObject(void) {
   fillIdentTable();
   currentScopeNumber = 0;
   //TODO: initialize other stuff here
+  //FIXME: need to set up rootScope pointer, set that as both the rootScope and currentScope
+  //FIXME: then call scopeEntry?
 }
 
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?
@@ -41,6 +43,15 @@ void STObject::scopeEntry(IdentRecord* new_rec, IdType type)
 	current_scope = nested_scope;
 }
 
+IdentRecord* STObject::lookup(const string& name) {
+  if (currentScope != NULL) {
+    return currentScope->lookup(name);
+  } else if (rootScope !=NULL) {
+    return rootScope->lookup(name);
+  } else {
+    return NULL;
+  }
+}
 
 
 void STObject::fillIdentTable(void) {

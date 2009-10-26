@@ -27,6 +27,8 @@ public:
   bool insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
 
+  IdentRecord* lookup(const string& name);
+
 private:
   ScopeNode* rootScope;		// Pointer to root scope 
   ScopeNode* currentScope;	// Pointer to current scope node

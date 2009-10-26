@@ -20,6 +20,8 @@ public:
   ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
 
   int getDepth(void)const { return scopeDepth; }
+
+  IdentRecord* lookup(const string& name);
 private:
   int scopeDepth;
   //Base scope-creating IdentRecord which encompasses this scope
