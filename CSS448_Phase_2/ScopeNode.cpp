@@ -44,16 +44,16 @@ void ScopeNode::insertScope(ScopeNode* new_scope) {
 }
 
 
-void ScopeNode::printScope(void)
+void ScopeNode::printScope(ostream& sout)
 {
 	map<string, IdentRecord*>::iterator it;
 	for(it = records.begin(); it != records.end(); it++)
 	{
-		(*it).second.print(scopeDepth);
+		(*it).second.print(sout, scopeDepth);
 	}
 	
 	for(int i = 0; i < childScopes.size(); i++)
 	{
-		childScopes[i].printScope();
+		childScopes[i].printScope(sout);
 	}
 }

@@ -9,7 +9,7 @@ public:
 	Constant(const string& name);		// Constructor
 	~Constant(void);				// Destructor
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 
   //TODO: not sure if this is the proper interface for constFactor
   void setConstFactor(int value) { constFactor = value; }

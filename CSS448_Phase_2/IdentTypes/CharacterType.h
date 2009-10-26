@@ -8,7 +8,7 @@ public:
 	Character(const string& name);		// Constructor
 	~Character(void);				// Destructor
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 
 private:
 }

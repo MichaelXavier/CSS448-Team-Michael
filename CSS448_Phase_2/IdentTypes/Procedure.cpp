@@ -6,14 +6,14 @@ Procedure::Procedure(const string& name) : IdentRecord(name) {
 Procedure::~Procedure(void) {
 }
 
-void Procedure::display(int depth)const {
-  printIndent(depth);
-	cout << identName << endl;
+void Procedure::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
+	sout << identName << endl;
 
 	for(int i = 0; i < params.size(); i++)
 	{
 		params[i].print(depth+1);
-		cout << endl;
+		sout << endl;
 	}
 }
 

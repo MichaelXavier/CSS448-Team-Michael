@@ -8,9 +8,9 @@ SetType::SetType(const string& name) : IdentRecord(name) {
 SetType::~SetType(void) {
 }
 
-void SetType::display(int depth)const {
-  printIndent(depth);
-	cout << identName << " " << m_low << ".." << m_high;
+void SetType::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
+	sout << identName << " " << m_low << ".." << m_high;
 }
 
 

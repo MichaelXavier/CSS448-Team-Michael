@@ -7,7 +7,7 @@ class RealType : public IdentRecord {
 public:
 	RealType(const string& name);
   ~RealType(void);
-	void display(int depth)const;					 // Displays data
+	void display(ostream& sout, int depth)const;					 // Displays data
 
 private:
 }

@@ -6,14 +6,14 @@ Program::Program(const string& name) : IdentRecord(name) {
 Program::~Program(void) {
 }
 
-void Program::display(int depth)const {
-  printIndent(depth);
-	cout << identName << endl;
+void Program::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
+	sout << identName << endl;
 
 	for(int i = 0; i < params.size(); i++)
 	{
 		params[i].print(depth+1);
-		cout << endl;
+		sout << endl;
 	}
 }
 

@@ -8,7 +8,7 @@ public:
 	Variable(const string& name);
 	~Variable(void);
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 	void setTypePtr(IdentRecord* type);
 
 private:

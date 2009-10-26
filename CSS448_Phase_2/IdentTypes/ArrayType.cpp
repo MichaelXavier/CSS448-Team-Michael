@@ -7,17 +7,17 @@ ArrayType::ArrayType(const string& name) : IdentRecord(name) {
 ArrayType::~ArrayType(void) {
 }
 
-void ArrayType::display(int depth)const {
-  printIndent(depth);
-	cout << identName << " ";
+void ArrayType::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
+	sout << identName << " ";
 	for(int i = 0; i < dimensions; i++)
 	{
-		cout << ranges[i].low << ".." << ranges[i].high;
+		sout << ranges[i].low << ".." << ranges[i].high;
 		if(i != dimensions-1)
-			cout << ",";
+			sout << ",";
 	}
 
-	cout << " " << typePtr->getName();
+	sout << " " << typePtr->getName();
 }
 
 

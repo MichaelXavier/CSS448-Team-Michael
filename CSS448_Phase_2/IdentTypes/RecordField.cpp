@@ -6,7 +6,7 @@ RecordField::~RecordField(void) {
 }
 
 
-void RecordField::display(int depth) {
-  printIndent(depth);
-	cout << identName << " " << typePtr->getName();
+void RecordField::display(ostream& sout, int depth) {
+  printIndent(sout, depth);
+	sout << identName << " " << typePtr->getName();
 }

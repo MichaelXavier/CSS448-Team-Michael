@@ -15,7 +15,7 @@ public:
   bool recordExists(const IdentRecord* other)const;
   bool insertRecord(IdentRecord* other);
   void insertScope(ScopeNode* new_scope);
-  void printScope(void);
+  void printScope(ostream& sout);
 
   ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
 

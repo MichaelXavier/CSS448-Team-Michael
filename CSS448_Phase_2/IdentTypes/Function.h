@@ -17,7 +17,7 @@ public:
 
   setReturnType(const IdentRecord*);
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 private:
   IdentRecord* returnType;
   vector<Parameter*> parameters;//FIXME: this implementation not set in stone

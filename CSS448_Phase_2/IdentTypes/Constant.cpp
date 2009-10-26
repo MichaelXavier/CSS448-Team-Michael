@@ -7,7 +7,7 @@ ConstantType::~ConstantType(void) {
 }
 
 // Prints the identifier name and then the value stored in the constant
-void Constant::display(int depth)const {
-  printIndent(depth);
-	cout << identName << " " << constFactor;
+void Constant::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
+	sout << identName << " " << constFactor;
 }

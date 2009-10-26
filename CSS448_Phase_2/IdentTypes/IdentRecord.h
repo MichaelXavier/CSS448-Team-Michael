@@ -11,7 +11,7 @@ public:
 	~IdentRecord(void);				// Destructor
 
 	int strcmp(const IdentRecord& rhs)const;	// Compares the this and parameter's ident name
-	virtual void display(int depth)const = 0;			// Displays data held in record, pure virtual
+	virtual void display(ostream& out, int depth)const = 0;			// Displays data held in record, pure virtual
 	string getName(void) {return identName;} // Returns the identifier name
 
   //Needed by the map used in ScopeNode, FIXME: i was told only less than is needed. 
@@ -24,6 +24,6 @@ public:
 protected:
 	string identName;					// The name of the identifier
 
-  void printIndent(int depth)const;
+  void printIndent(ostream& sout, int depth)const;
 };
 #endif

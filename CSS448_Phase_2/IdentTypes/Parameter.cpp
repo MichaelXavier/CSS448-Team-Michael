@@ -7,11 +7,11 @@ PointerType::PointerType(const string& name) : IdentRecord(name) {
 PointerType::~PointerType(void) {
 }
 
-void Parameter::display(int depth)const {
-  printIndent(depth);
+void Parameter::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
 	if(passByRef) {
-		cout << "var ";
+		sout << "var ";
   }
 
-	cout << identName << " " << typePtr->getName(); 
+	sout << identName << " " << typePtr->getName(); 
 }

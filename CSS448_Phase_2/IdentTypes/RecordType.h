@@ -12,7 +12,7 @@ public:
 	RecordType(const string& name);
 	~RecordType();
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 	void insertField(IdentRecord*, IdType);
 
 private:

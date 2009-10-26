@@ -24,8 +24,8 @@ bool IdentRecord::operator<(const IdentRecord& rhs)const {
   return strcmp(rhs) == 1;
 }
 
-void IdentRecord::printIndent(int depth)const {
+void IdentRecord::printIndent(ostream& sout, int depth)const {
   for(int i = 0; i < depth; i++) {
-    cout << "   ";
+    sout << "   ";
   }
 }

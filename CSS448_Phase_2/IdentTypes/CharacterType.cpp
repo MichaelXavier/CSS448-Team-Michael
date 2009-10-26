@@ -6,7 +6,7 @@ CharacterType::CharacterType(const string& name) : IdentRecord(name) {
 CharacterType::~CharacterType(void) {
 }
 
-void CharacterType::display(int depth)const {
-  printIndent(depth);
+void CharacterType::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
   //TODO
 }

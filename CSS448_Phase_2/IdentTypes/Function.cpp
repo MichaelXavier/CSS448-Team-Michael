@@ -7,8 +7,8 @@ Function::Function(const string& name) : IdentRecord(name) {
 Function::~Function(void) {
 }
 
-Function::display(int depth)const {
-  printIndent(depth);
+Function::display(ostream& sout, int depth)const {
+  printIndent(sout, depth);
   //TODO
 }
 

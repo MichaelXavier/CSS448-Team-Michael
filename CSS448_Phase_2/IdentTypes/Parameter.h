@@ -8,7 +8,7 @@ public:
 	Parameter(const string& name);
 	~Parameter(void);
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 	void setTypePtr(IdentRecord* type) {typePtr = type;}
 	void setVar(bool var) {passByRef = var;}
 

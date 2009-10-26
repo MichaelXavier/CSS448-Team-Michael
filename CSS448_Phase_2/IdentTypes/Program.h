@@ -13,7 +13,7 @@ public:
 	Program(const string& name);
 	~Program(void);
 
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 	void insertParameter(IdentRecord*, IdType);
 	
   //calls strcmp on identrecord or operator==

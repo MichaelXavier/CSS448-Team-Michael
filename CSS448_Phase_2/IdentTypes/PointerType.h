@@ -10,7 +10,7 @@ public:
 	PointerType(const string& name);
 	~PointerType(void);
 	
-	void display(int depth)const;
+	void display(ostream& sout, int depth)const;
 	void setPointObj(IdentRecord* obj);
 
 private:

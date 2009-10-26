@@ -12,7 +12,7 @@ public:
 	ArrayType(const string& name);
 	~ArrayType(void);
 
-	void display(int depth)const; // Displays data
+	void display(ostream& sout, int depth)const; // Displays data
 	void addDimension(int, int); // Adds a dimension to the array
 	void setTypePtr(IdentRecord*);   // Sets the type pointer
 

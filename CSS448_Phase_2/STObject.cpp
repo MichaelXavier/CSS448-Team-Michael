@@ -59,7 +59,7 @@ void STObject::printST(void)
 {
 	ScopeNode* printScope;
 	printScope = rootScope;
-	rootScope->printScope();	
+	rootScope->printScope(cout);	
 	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
 	currentScopeNumber = 1;
