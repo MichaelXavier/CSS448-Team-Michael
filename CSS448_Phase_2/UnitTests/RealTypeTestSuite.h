@@ -7,6 +7,9 @@ using namespace std;
 class RealTypeTestSuite : public CxxTest::TestSuite 
 {
 public:
+  void testPlaceholder(void) {
+    TS_ASSERT(true);
+  }
 
 private:
 };

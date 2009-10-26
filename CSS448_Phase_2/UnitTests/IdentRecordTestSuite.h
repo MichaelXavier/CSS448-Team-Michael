@@ -7,6 +7,9 @@ using namespace std;
 class IdentRecordTestSuite : public CxxTest::TestSuite 
 {
 public:
+  void testPlaceholder(void) {
+    TS_ASSERT(true);
+  }
 
 private:
 };
