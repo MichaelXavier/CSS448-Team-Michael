@@ -77,6 +77,15 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type)
 				 // scope procedure
 }
 
+IdentRecord* STObject::lookup(const string& name) {
+  if (currentScope != NULL) {
+    return currentScope->lookup(name);
+  } else if (rootScope !=NULL) {
+    return rootScope->lookup(name);
+  } else {
+    return NULL;
+  }
+}
 
 
 void STObject::fillIdentTable(void) {
