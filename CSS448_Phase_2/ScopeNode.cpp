@@ -1,7 +1,7 @@
 ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent, int depth) {
   scopeRoot = root; 
   scopeDepth = depth; 
-  parent = parentScope;//Can be NULL
+  parent = parentScope;  //Can be NULL
 }
 
 ScopeNode::~ScopeNode(void) {
@@ -36,4 +36,19 @@ void ScopeNode::insertScope(ScopeNode* new_scope) {
   if (new_scope_root != NULL) {
     childScopes.push_back(new_scope);
   }
+}
+
+
+void ScopeNode::printScope(void)
+{
+	map<string, IdentRecord*>::iterator it;
+	for(it = records.begin(); it != records.end(); it++)
+	{
+		(*it).second.print(scopeDepth);
+	}
+	
+	for(int i = 0; i < childScopes.size(); i++)
+	{
+		childScopes[i].printScope();
+	}
 }

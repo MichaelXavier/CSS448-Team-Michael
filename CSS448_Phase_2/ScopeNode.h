@@ -15,12 +15,13 @@ public:
   bool recordExists(const IdentRecord* other)const;
   void insertRecord(IdentRecord* other);
   void insertScope(ScopeNode* new_scope);
+  void printScope(void);
 
   ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
 
   int getDepth(void)const { return scopeDepth; }
 private:
-  int scopeDepth = 0;
+  int scopeDepth;
   //Base scope-creating IdentRecord which encompasses this scope
   //Would presumably be either a function on procedure, can be NULL for a toplevel
   //scope

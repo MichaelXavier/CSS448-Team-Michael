@@ -1,5 +1,6 @@
 STObject::STObject(void) {
   fillIdentTable();
+  currentScopeNumber = 0;
   //TODO: initialize other stuff here
 }
 
@@ -10,20 +11,39 @@ bool insert(IdentRecord* new_rec, IdType type) {
   switch (type) {
     case function:
     case procedure:
-      //Create a new node, set the current node as the parent scope
-      ScopeNode* nested_scope = new ScopeNode(new_rec, currentScope);//FIXME:
-      currentScope->insertScope(nested_scope);
-      current_scope = nested_scope
+      scopeEntry(new_rec, type);
       break;
     case program://not sure if nested programs are allowed
         //throw exception
       break;
     default:
-      currentScope->insertRecord(new_rec)
+      currentScope->insertRecord(new_rec);
+	  break;
   }
 }
 
-STObject::fillIdentTable(void) {
+
+void STObject::printST(void)
+{
+	ScopeNode* printScope;
+	printScope = rootScope;
+	rootScope->printScope();	
+	currentScope = rootScope; // Sets the current scope 
+							  // as root scope after printing ST
+}
+
+
+void STObject::scopeEntry(IdentRecord* new_rec, IdType type)
+{
+	currentScopeNumber++;
+	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScopeNumber);
+	currentScope->insertScope(nested_scope);
+	current_scope = nested_scope;
+}
+
+
+
+void STObject::fillIdentTable(void) {
   //fill in the SIT with primitives
   identTable.push_back(new IntegerType());
   identTable.push_back(new RealType());
