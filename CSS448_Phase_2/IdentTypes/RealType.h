@@ -1,7 +1,7 @@
 #ifndef REALTYPE_H
 #define REALTYPE_H
 #include <iostream>
-#include "IdentRecord"
+#include "IdentRecord.h"
 
 class RealType : public IdentRecord {
 public:
@@ -10,5 +10,5 @@ public:
 	void display(ostream& sout, int depth)const;					 // Displays data
 
 private:
-}
+};
 #endif

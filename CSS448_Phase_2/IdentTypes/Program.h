@@ -2,9 +2,8 @@
 #define PROCEDURE_H
 #include <iostream>
 #include <vector>
-#include "../IdType.h"
-#include "IdentRecord.h"
-#include "Parameter.h"
+#include "IdentRecord"
+#include "Parameter"
 
 using namespace std;
 

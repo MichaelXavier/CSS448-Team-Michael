@@ -1,11 +1,12 @@
 //ProcedureTestSuite.h
 #include <cxxtest/TestSuite.h>
-#include <string>
+#include "IdentRecordTestHelper.h"
+#include "../IdentTypes/IdentRecord.h"
 #include "../IdentTypes/Procedure.h"
 
 using namespace std;
 
-class ProcedureTestSuite : public CxxTest::TestSuite 
+class ProcedureTestSuite : public CxxTest::TestSuite
 {
 public:
   void testInitialize(void) {
@@ -23,6 +24,15 @@ public:
     Procedure proc2(name2);
     TS_ASSERT_DIFFERS(proc1.strcmp(proc2), 0);
   }
+
+  void testCompareOutputs(void) {
+    string name("some_proc");
+    Procedure proc(name);
+    stringstream& expected();
+    expected << name << endl;
+    compareOutput(proc, expected.str(), 0);
+  }
 private:
+  COMPOUTPUTS
 };
 

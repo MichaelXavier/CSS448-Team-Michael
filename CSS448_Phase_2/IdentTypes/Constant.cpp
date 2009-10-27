@@ -1,9 +1,10 @@
 #include "Constant.h"
 
-ConstantType::ConstantType(const string& name) : IdentRecord(name) {
+Constant::Constant(const string& name) : IdentRecord(name) {
+  constFactor = 0;//FIXME: not sure if this is what we want to do
 }
 
-ConstantType::~ConstantType(void) {
+Constant::~Constant(void) {
 }
 
 // Prints the identifier name and then the value stored in the constant

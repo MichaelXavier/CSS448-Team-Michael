@@ -2,24 +2,25 @@
 #define FUNCTION_H
 #include <iostream>
 #include <vector>
-#include "IdentRecord"
 #include "../IdType.h"
+#include "IdentRecord.h"
+#include "Parameter.h"
 
 class Function : public IdentRecord {
 public:
 	Function(const string& name);		// Constructor
 	~Function(void);				// Destructor
 
-	void insertParameter(IdentRecord*, IdType);
+	bool insertParameter(Parameter*, IdType, bool);
 
   //calls strcmp on identrecord or operator==
-  bool hasConflictingParams(const IdentRecord*)const;
+  bool hasConflictingParams(const Parameter*)const;
 
-  setReturnType(const IdentRecord*);
+  void setReturnType(IdentRecord* ret) { returnType = ret; }
 
 	void display(ostream& sout, int depth)const;
 private:
   IdentRecord* returnType;
   vector<Parameter*> parameters;//FIXME: this implementation not set in stone
-}
+};
 #endif

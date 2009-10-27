@@ -7,21 +7,36 @@ Function::Function(const string& name) : IdentRecord(name) {
 Function::~Function(void) {
 }
 
-Function::display(ostream& sout, int depth)const {
+void Function::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
-  //TODO
+  sout << identName << " ";
+  //FIXME: what if return type is not set?
+  if (returnType != NULL) {
+    sout << returnType->getName();
+  }
+  sout << endl;
+  for (int i = 0; i < parameters.size(); i++) {
+    parameters[i]->display(sout, depth+1);//indent parameters one more place
+  }
 }
 
+bool Function::insertParameter(Parameter* parameter, IdType type, bool byref) {
+  if (hasConflictingParams(parameter)) {
+    return false;
+  }
+  parameter->setVar(byref);
+  parameters.push_back(parameter);
+  return true;
+}
 
-bool Function::hasConflictingParams(const IdentRecord* record)const
-{
-	for(int i = 0; i < params.size(); i++)
-	{
-		// Returns true if equal
-		if(record->strcmp(params[i] == 0)
-		{
-			return true;
-		}
-	}
+bool Function::hasConflictingParams(const Parameter* parameter)const {
+  if (parameter != NULL) {
+    for(int i = 0; i < parameters.size(); i++) {
+      // Returns true if equal
+      if(parameter->strcmp(*parameters[i]) == 0) {
+        return true;
+      }
+    }
+  }
 	return false; // otherwise returns false
 }

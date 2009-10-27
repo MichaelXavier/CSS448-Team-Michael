@@ -10,20 +10,16 @@ void Procedure::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
 	sout << identName << endl;
 
-	for(int i = 0; i < params.size(); i++)
-	{
-		params[i].print(depth+1);
+	for(int i = 0; i < params.size(); i++) {
+		params[i]->display(sout, depth+1);
 		sout << endl;
 	}
 }
 
-bool Procedure::hasConflictingParams(const IdentRecord* record)const
-{
-	for(int i = 0; i < params.size(); i++)
-	{
+bool Procedure::hasConflictingParams(const IdentRecord* record)const {
+	for(int i = 0; i < params.size(); i++) {
 		// Returns true if equal
-		if(record->strcmp(params[i] == 0)
-		{
+		if(*record == params[i]) {
 			return true;
 		}
 	}

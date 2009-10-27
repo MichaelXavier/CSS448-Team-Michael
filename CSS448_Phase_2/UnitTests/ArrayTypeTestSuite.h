@@ -1,7 +1,11 @@
 //ArrayTypeTestSuite.h
 #include <cxxtest/TestSuite.h>
+#include <iostream>
+#include "../IdentTypes/IntegerType.h"
 #include "../IdentTypes/ArrayType.h"
+#include "IdentRecordTestHelper.h"
 
+//FIXME: fails at the linker saying it can't figure out the integertype constructor
 using namespace std;
 
 class ArrayTypeTestSuite : public CxxTest::TestSuite 
@@ -22,6 +26,18 @@ public:
     ArrayType arr2(name2);
     TS_ASSERT_DIFFERS(arr1.strcmp(arr2), 0);
   }
+
+  void testDisplayIntArr(void) {
+    string name("some_arr");
+    ArrayType arr(name);
+    IntegerType* typePtr = new IntegerType("some_int");
+    arr.setTypePtr(static_cast<IdentRecord*>(typePtr));
+    /*string expected = "some_arr  some_int";
+    compareOutput(arr, expected);
+    delete typePtr;*/
+  }
+
 private:
+  COMPOUTPUT
 };
 
