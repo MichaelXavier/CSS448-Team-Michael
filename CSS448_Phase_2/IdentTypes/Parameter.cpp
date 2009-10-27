@@ -1,10 +1,10 @@
 #include "Parameter.h"
 
-PointerType::PointerType(const string& name) : IdentRecord(name) {
+Parameter::Parameter(const string& name) : IdentRecord(name) {
 	passByRef = false;
 }
 
-PointerType::~PointerType(void) {
+Parameter::~Parameter(void) {
 }
 
 void Parameter::display(ostream& sout, int depth)const {

@@ -2,7 +2,7 @@
 #define RECORDTYPE_H
 #include <iostream>
 #include "IdentRecord.h"
-#include "STObject.h"
+#include "../STObject.h"
 
 using namespace std;
 

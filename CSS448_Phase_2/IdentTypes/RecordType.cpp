@@ -1,4 +1,5 @@
 #include "RecordType.h"
+
 RecordType::RecordType(const string& name) : IdentRecord(name) {
 }
 
@@ -7,9 +8,13 @@ RecordType::~RecordType(void) {
 
 void RecordType::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
-	cout << identName;
+	sout << identName << endl;
 
-	// possibly print list of fields for this record
+	for(unsigned int i = 0; i < members.size(); i++)
+	{
+		members[i]->display(sout, depth+1);
+		sout << endl;
+	}
 }
 
 void RecordType::insertField(IdentRecord*, IdType) {

@@ -20,12 +20,12 @@ int IdentRecord::strcmp(const IdentRecord& rhs)const {
 		return 1;
 }
 
-bool IdentRecord::operator<(const IdentRecord* rhs)const {
-  return strcmp(*rhs) == 1;
+bool IdentRecord::operator<(const IdentRecord& rhs)const {
+  return strcmp(rhs) == 1;
 }
 
-bool IdentRecord::operator==(const IdentRecord* rhs)const {
-  return strcmp(*rhs) == 0;
+bool IdentRecord::operator==(const IdentRecord& rhs)const {
+  return strcmp(rhs) == 0;
 }
 
 void IdentRecord::printIndent(ostream& sout, int depth)const {

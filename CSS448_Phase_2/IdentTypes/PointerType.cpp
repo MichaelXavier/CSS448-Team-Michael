@@ -8,11 +8,10 @@ PointerType::~PointerType(void) {
 
 void PointerType::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
-  //FIXME
-	//sout << identName << " " << pointsToObj->getName();
+  sout << identName << " ^ " << typePtr->getName();
 }
 
-void Variable::setPointObj(IdentRecord* obj) {
+void PointerType::setPointObj(IdentRecord* obj) {
   if (obj != NULL) {
     //FIXME: throw exception?
     return;

@@ -8,8 +8,5 @@ public:
 	IntegerType(const string& name);
 	~IntegerType(void);
 	void display(ostream& sout, int depth)const;
-
-private:
-  IdentRecord* typePtr;
 };
 #endif

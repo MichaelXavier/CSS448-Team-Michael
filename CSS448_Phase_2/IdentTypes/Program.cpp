@@ -10,19 +10,19 @@ void Program::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
 	sout << identName << endl;
 
-	for(int i = 0; i < params.size(); i++)
+	for(unsigned int i = 0; i < params.size(); i++)
 	{
-		params[i].print(depth+1);
+		params[i]->display(sout, depth+1);
 		sout << endl;
 	}
 }
 
 bool Program::hasConflictingParams(const IdentRecord* record)const
 {
-	for(int i = 0; i < params.size(); i++)
+	for(unsigned int i = 0; i < params.size(); i++)
 	{
 		// Returns true if equal
-		if(record->strcmp(params[i] == 0)
+		if(record->strcmp(*params[i]) == 0)
 		{
 			return true;
 		}

@@ -2,7 +2,7 @@
 Variable::Variable(const string& name) : IdentRecord(name) {
 }
 
-VariableType::~VariableType(void) {
+Variable::~Variable(void) {
 }
 
 void Variable::display(ostream& sout, int depth)const {
