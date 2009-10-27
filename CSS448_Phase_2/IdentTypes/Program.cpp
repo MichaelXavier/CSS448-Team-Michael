@@ -29,3 +29,12 @@ bool Program::hasConflictingParams(const IdentRecord* record)const
 	}
 	return false; // otherwise returns false
 }
+
+void Program::insertParameter(IdentRecord* param)
+{
+	if(param != NULL)
+	{
+		Parameter* ptr = static_cast<Parameter*>(param);
+		params.push_back(ptr);
+	}
+}

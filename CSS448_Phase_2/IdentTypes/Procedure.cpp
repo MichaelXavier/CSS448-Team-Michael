@@ -30,4 +30,12 @@ bool Procedure::hasConflictingParams(const IdentRecord* record)const
 	return false; // otherwise returns false
 }
 
+void Procedure::insertParameter(IdentRecord* param)
+{
+	if(param != NULL)
+	{
+		Parameter* ptr = static_cast<Parameter*>(param);
+		params.push_back(ptr);
+	}
+}
 

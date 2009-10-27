@@ -14,7 +14,7 @@ public:
 	~Program(void);
 
 	void display(ostream& sout, int depth)const;
-	void insertParameter(IdentRecord*, IdType);
+	void insertParameter(IdentRecord*);
 	
   //calls strcmp on identrecord or operator==
   bool hasConflictingParams(const IdentRecord*)const;
