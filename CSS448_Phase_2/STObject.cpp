@@ -1,6 +1,13 @@
-STObject::STObject(void) {
+STObject::STObject(Program* root) {
+  if (root == NULL) {
+    throw "Cannot instantiate an STObject with a null Program root."
+  }
   fillIdentTable();
   currentScopeNumber = 0;
+  //Create a root scope with no parent
+	rootScope = new ScopeNode(root, NULL, currentScopeNumber);
+  //Root is now the current scope
+  currentScope = rootScope;
   //TODO: initialize other stuff here
 }
 
@@ -69,7 +76,8 @@ void STObject::printST(void)
 bool STObject::scopeEntry(IdentRecord* new_rec, IdType type)
 {
 	currentScopeNumber++;
-	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScopeNumber);
+  //insert a new scope, set its parent as the current scope
+	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScope, currentScopeNumber);
 	currentScope->insertScope(nested_scope);
 	current_scope = nested_scope;
 	return true; // FIXME: it would be necessary to return false if the 

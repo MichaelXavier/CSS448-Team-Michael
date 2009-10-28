@@ -2,29 +2,31 @@
 #define STOBJECT_H
 #include <iostream>
 #include <vector>
-#include "../IdType"
-#include "ScopeNode"
-#include "IdentTypes/IdentRecord"
-#include "IdentTypes/ArrayType"
-#include "IdentTypes/BooleanType"
-#include "IdentTypes/CharacterType"
-#include "IdentTypes/Constant"
-#include "IdentTypes/Function"
-#include "IdentTypes/IdentRecord"
-#include "IdentTypes/IntegerType"
-#include "IdentTypes/Parameter"
-#include "IdentTypes/PointerType"
-#include "IdentTypes/Procedure"
-#include "IdentTypes/RealType"
-#include "IdentTypes/RecordField"
-#include "IdentTypes/RecordType"
-#include "IdentTypes/SetType"
-#include "IdentTypes/Variable"
+#include "../IdType.h"
+#include "ScopeNode.h"
+#include "IdentTypes/IdentRecord.h"
+#include "IdentTypes/ArrayType.h"
+#include "IdentTypes/BooleanType.h"
+#include "IdentTypes/CharacterType.h"
+#include "IdentTypes/Constant.h"
+#include "IdentTypes/Function.h"
+#include "IdentTypes/IdentRecord.h"
+#include "IdentTypes/IntegerType.h"
+#include "IdentTypes/Parameter.h"
+#include "IdentTypes/PointerType.h"
+#include "IdentTypes/Procedure.h"
+#include "IdentTypes/Program.h"
+#include "IdentTypes/RealType.h"
+#include "IdentTypes/RecordField.h"
+#include "IdentTypes/RecordType.h"
+#include "IdentTypes/SetType.h"
+#include "IdentTypes/Variable.h"
 
 class STObject {
 
 public:
-  STObject(void);
+  //Constructor requires a program pointer to act as the root scope
+  STObject(Program* root);
   bool insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
 
