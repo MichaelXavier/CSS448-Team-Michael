@@ -10,14 +10,14 @@ using namespace std;
 
 class ScopeNode {
 public:
-  ScopeNode(IdentRecord* root, ScopeNode* parent = NULL, int depth = 0);
+  ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);
   ~ScopeNode(void);
-  bool recordExists(const IdentRecord* other)const;
+  bool recordExists(IdentRecord* other)const;
   bool insertRecord(IdentRecord* other);
   void insertScope(ScopeNode* new_scope);
   void printScope(ostream& sout);
 
-  ScopeNode* getParent(void) { return parent; };//called on scope exit by th ST
+  ScopeNode* getParent(void) { return parentScope; };//called on scope exit by th ST
 
   int getDepth(void)const { return scopeDepth; }
 
@@ -32,4 +32,5 @@ private:
   ScopeNode* parentScope;
   vector<ScopeNode*> childScopes;
   map<string, IdentRecord*> records;
-}
+};
+#endif

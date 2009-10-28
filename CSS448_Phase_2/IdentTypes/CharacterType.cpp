@@ -1,4 +1,4 @@
-#include "Character.h"
+#include "CharacterType.h"
 
 CharacterType::CharacterType(const string& name) : IdentRecord(name) {
 }

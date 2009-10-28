@@ -1,7 +1,7 @@
 #ifndef BOOLEANTYPE_H
 #define BOOLEANTYPE_H
 #include <iostream>
-#include "IdentRecord"
+#include "IdentRecord.h"
 
 class BooleanType : public IdentRecord {
 public:
@@ -10,5 +10,5 @@ public:
 
 	void display(ostream& sout, int depth)const;
 private:
-}
+};
 #endif

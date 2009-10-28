@@ -17,6 +17,25 @@ void RecordType::display(ostream& sout, int depth)const {
 	}
 }
 
-void RecordType::insertField(IdentRecord*, IdType) {
-  //TODO: check fields list and make sure none of hte names conflict with the getName() of the field we are inserting
+
+bool RecordType::insertField(RecordField* field) {
+  if (hasConflictingParams(field)) {
+    return false;
+  }
+  members.push_back(field);
+  return true;
+}
+
+
+bool hasConflictingFields(const IdentRecord* field) const
+{
+	for(unsigned int i = 0; i < params.size(); i++)
+	{
+		// Returns true if equal
+		if(field->strcmp(*members[i]) == 0)
+		{
+			return true;
+		}
+	}
+	return false; // otherwise returns false
 }

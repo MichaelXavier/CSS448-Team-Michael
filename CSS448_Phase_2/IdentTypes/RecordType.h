@@ -13,7 +13,9 @@ public:
 	~RecordType();
 
 	void display(ostream& sout, int depth)const;
-	void insertField(IdentRecord*, IdType);
+	bool insertField(RecordField* field);
+
+	bool hasConflictingFields(const IdentRecord* field) const;
 
 private:
   vector<RecordField*> members;

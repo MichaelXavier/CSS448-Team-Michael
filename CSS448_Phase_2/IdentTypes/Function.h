@@ -11,7 +11,7 @@ public:
 	Function(const string& name);		// Constructor
 	~Function(void);				// Destructor
 
-	bool insertParameter(Parameter*, IdType, bool);
+	bool insertParameter(Parameter*);
 
   //calls strcmp on identrecord or operator==
   bool hasConflictingParams(const Parameter*)const;

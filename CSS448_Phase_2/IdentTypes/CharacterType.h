@@ -1,15 +1,13 @@
 #ifndef CHARACTERTYPE_H
 #define CHARACTERTYPE_H
 #include <iostream>
-#include "IdentRecord"
+#include "IdentRecord.h"
 
 class CharacterType : public IdentRecord {
 public:
-	Character(const string& name);		// Constructor
-	~Character(void);				// Destructor
+	CharacterType(const string& name);		// Constructor
+	~CharacterType(void);				// Destructor
 
 	void display(ostream& sout, int depth)const;
-
-private:
-}
+};
 #endif

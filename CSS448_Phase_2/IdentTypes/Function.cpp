@@ -15,23 +15,22 @@ void Function::display(ostream& sout, int depth)const {
     sout << returnType->getName();
   }
   sout << endl;
-  for (int i = 0; i < parameters.size(); i++) {
+  for (unsigned int i = 0; i < parameters.size(); i++) {
     parameters[i]->display(sout, depth+1);//indent parameters one more place
   }
 }
 
-bool Function::insertParameter(Parameter* parameter, IdType type, bool byref) {
+bool Function::insertParameter(Parameter* parameter) {
   if (hasConflictingParams(parameter)) {
     return false;
   }
-  parameter->setVar(byref);
   parameters.push_back(parameter);
   return true;
 }
 
 bool Function::hasConflictingParams(const Parameter* parameter)const {
   if (parameter != NULL) {
-    for(int i = 0; i < parameters.size(); i++) {
+    for(unsigned int i = 0; i < parameters.size(); i++) {
       // Returns true if equal
       if(parameter->strcmp(*parameters[i]) == 0) {
         return true;
