@@ -10,7 +10,7 @@ using namespace std;
 
 class ScopeNode {
 public:
-  ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);
+  ScopeNode(IdentRecord* root, ScopeNode* parent = NULL, int depth = 0);
   ~ScopeNode(void);
   bool recordExists(const IdentRecord* other)const;
   bool insertRecord(IdentRecord* other);

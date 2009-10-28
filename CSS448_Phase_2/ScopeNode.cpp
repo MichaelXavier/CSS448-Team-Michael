@@ -9,8 +9,17 @@ ScopeNode::~ScopeNode(void) {
 }
 
 bool ScopeNode::recordExists(const IdentRecord* other)const {
-  //TODO: null check
-  return records.count(other.getName()) == 1;
+  if (other == NULL) {
+    return false;
+  }
+  //Check the current scope first
+  if (records.count(other.getName()) == 1) {
+    return true;
+  } else if (parentScope == NULL) {
+    return false;
+  } else {
+    return parentScope->recordExists(other);
+  }
 }
 
 bool ScopeNode::insertRecord(IdentRecord* other) {
@@ -19,12 +28,10 @@ bool ScopeNode::insertRecord(IdentRecord* other) {
   }
   if (scopeRoot->hasConflictingParams(other)) {
     //conflicts with parameter name
-    //TODO: throw or return false?
     return false;
   }
   if (recordExists(other)) {
     //conflicts with previously declared variable
-    //TODO: throw or return false?
     return false;
   }
   // Tries to insert record into record map.  If a duplicate exists,
