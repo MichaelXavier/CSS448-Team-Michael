@@ -1,3 +1,5 @@
+#include "STObject.h"
+
 STObject::STObject(Program* root) {
   if (root == NULL) {
     throw "Cannot instantiate an STObject with a null Program root."

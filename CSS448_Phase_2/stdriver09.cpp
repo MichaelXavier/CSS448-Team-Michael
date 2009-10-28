@@ -1,4 +1,5 @@
 #include <iostream>
+#include "IdType.h"
 #include "STObject.h"
 
 #include "IdentTypes/IdentRecord.h"
@@ -61,10 +62,10 @@ int main() {
                                              
    tempConst = new Constant("grades");             //       grades = 5; 
    something = st.insert(tempConst, constant);     
-   tempConst->SetConstValue(5);
+   tempConst->setConstFactor(5);
    tempConst = new Constant("size");
    something = st.insert(tempConst, constant);        
-   tempConst->SetConstValue(5);
+   tempConst->setConstFactor(5);
 
 
 												// type 

@@ -27,9 +27,8 @@ bool RecordType::insertField(RecordField* field) {
 }
 
 
-bool hasConflictingFields(const IdentRecord* field) const
-{
-	for(unsigned int i = 0; i < params.size(); i++)
+bool RecordType::hasConflictingFields(const IdentRecord* field)const {
+	for(unsigned int i = 0; i < members.size(); i++)
 	{
 		// Returns true if equal
 		if(field->strcmp(*members[i]) == 0)

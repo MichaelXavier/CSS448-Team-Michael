@@ -1,8 +1,9 @@
 #ifndef RECORDTYPE_H
 #define RECORDTYPE_H
 #include <iostream>
+#include <vector>
 #include "IdentRecord.h"
-#include "../STObject.h"
+#include "RecordField.h"
 
 using namespace std;
 

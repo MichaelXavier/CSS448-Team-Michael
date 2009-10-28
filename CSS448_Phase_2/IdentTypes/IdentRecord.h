@@ -12,7 +12,7 @@ public:
 
 	int strcmp(const IdentRecord& rhs)const;	// Compares the this and parameter's ident name
 	virtual void display(ostream& out, int depth)const = 0;			// Displays data held in record, pure virtual
-	string getName(void) {return identName;} // Returns the identifier name
+	string getName(void)const {return identName;} // Returns the identifier name
 
   //Needed by the map used in ScopeNode, FIXME: i was told only less than is needed. 
   //At compile time we'll find out if we need more
