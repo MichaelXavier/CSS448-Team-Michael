@@ -10,8 +10,11 @@ ScopeNode::~ScopeNode(void) {
   delete scopeRoot;//FIXME: unless we need it elsewhere?
 }
 
-bool ScopeNode::recordExists(IdentRecord* other)const {
+bool ScopeNode::recordExists(const IdentRecord* other)const {
   //TODO: null check
+  if (other == NULL) {
+    return false;
+  }
   return records.count(other->getName()) == 1;
 }
 

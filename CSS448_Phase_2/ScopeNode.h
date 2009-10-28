@@ -12,7 +12,7 @@ class ScopeNode {
 public:
   ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);
   ~ScopeNode(void);
-  bool recordExists(IdentRecord* other)const;
+  bool recordExists(const IdentRecord* other)const;
   bool insertRecord(IdentRecord* other);
   void insertScope(ScopeNode* new_scope);
   void printScope(ostream& sout);
