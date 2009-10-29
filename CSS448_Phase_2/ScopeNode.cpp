@@ -11,7 +11,6 @@ ScopeNode::~ScopeNode(void) {
 }
 
 bool ScopeNode::recordExists(const IdentRecord* other)const {
-  //TODO: null check
   if (other == NULL) {
     return false;
   }
@@ -43,14 +42,12 @@ bool ScopeNode::insertRecord(IdentRecord* other) {
 }
 
 void ScopeNode::insertScope(ScopeNode* new_scope) {
-  //TODO: push_back on childScopes if its not null
   if (new_scope != NULL) {
     childScopes.push_back(new_scope);
   }
 }
 
-void ScopeNode::printScope(ostream& sout)
-{
+void ScopeNode::printScope(ostream& sout) {
 	map<string, IdentRecord*>::iterator it;
 	for(it = records.begin(); it != records.end(); it++)
 	{
@@ -61,4 +58,19 @@ void ScopeNode::printScope(ostream& sout)
 	{
 		childScopes[i]->printScope(sout);
 	}
+}
+
+IdentRecord* ScopeNode::lookup(const string& name) {
+  map<string, IdentRecord*>::iterator result = records.find(name);
+  //Not found in current scope, check parent
+  if (result == records.end()) {
+    if (parentScope != NULL) {
+      return parentScope->lookup(name);
+    } else {
+      return NULL;
+    }
+  } else {
+    //Found it, return the value
+    return (*result).second;
+  }
 }

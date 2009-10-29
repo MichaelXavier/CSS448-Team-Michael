@@ -41,7 +41,7 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
         return true;
       } else {
         // If not at root level, returns false (can't insert Program type) 
-        cout << "Error: cannot nest Program types: \"" << IdentRecord->getName() << "\"\n";
+        cout << "Error: cannot nest Program types: \"" << new_rec->getName() << "\"\n";
         return false;
       }
       break;
@@ -51,7 +51,7 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
       if(recordInsert == true) {
         return true;
       } else {
-        cout << "Error: id already in ST: \"" << IdentRecord->getName() << "\"\n";
+        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n";
         return false;
       }
       break;
@@ -81,19 +81,22 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
 }
 
 IdentRecord* STObject::lookup(const string& name) {
+  IdentRecord* retval = NULL;
   //Try currentScope which will go up to the root scope
-  if (currentScope != NULL && currentScope->lookup(name)) {
-    return true;
-  } else {
-    //Try the SIT
-    for(std::vector<IdentRecord*>::iterator it = v.begin(); it != v.end(); ++it) {
-      if ((*it)->getName() == name) {
-        return *it;
-      }
+  if (currentScope != NULL) {
+    retval = currentScope->lookup(name);
+    if (retval != NULL) {
+      return retval;
     }
-    //Didn't find it
-    return NULL;
   }
+  //Try the SIT
+  for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
+    if ((*it)->getName() == name) {
+      return *it;
+    }
+  }
+  //Didn't find it
+  return NULL;
 }
 
 void STObject::fillIdentTable(void) {

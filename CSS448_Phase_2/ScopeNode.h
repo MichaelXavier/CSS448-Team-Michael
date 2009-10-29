@@ -17,11 +17,11 @@ public:
   void insertScope(ScopeNode* new_scope);
   void printScope(ostream& sout);
 
+  IdentRecord* lookup(const string& name);
+
   ScopeNode* getParent(void) { return parentScope; };//called on scope exit by th ST
 
   int getDepth(void)const { return scopeDepth; }
-
-  IdentRecord* lookup(const string& name);
 private:
   int scopeDepth;
   //Base scope-creating IdentRecord which encompasses this scope
