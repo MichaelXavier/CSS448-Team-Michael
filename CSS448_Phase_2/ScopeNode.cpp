@@ -73,7 +73,6 @@ IdentRecord* ScopeNode::lookup(const string& name) {
       return parentScope->lookup(name);
     }
   } else {
-    cout << "!!DEBUG: found " << name << endl;//FIXME debug
     //Found it, return the value
     return result->second;
   }

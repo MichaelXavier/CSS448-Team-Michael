@@ -13,7 +13,10 @@ void RecordType::display(ostream& sout, int depth)const {
 	for(unsigned int i = 0; i < members.size(); i++)
 	{
 		members[i]->display(sout, depth+1);
-		sout << endl;
+    //Do not do a trailing newline
+		if (i < members.size() - 1) {
+      sout << endl;
+    }
 	}
 }
 
