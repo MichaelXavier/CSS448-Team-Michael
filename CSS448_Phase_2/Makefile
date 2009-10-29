@@ -5,9 +5,6 @@ CXXLIB_PATH = ~/src/cxxtest
 a.out: IdentTypes/*.cpp ScopeNode.cpp STObject.cpp stdriver09.cpp
 	${CC} ${CFLAGS} -o $@ $^
 
-junktest.out: IdentTypes/IdentRecord.cpp IdentTypes/Constant.cpp IdentTypes/Program.cpp ScopeNode.cpp STObject.cpp junkmain.cpp
-	${CC} ${CFLAGS} -o $@ $^
-
 clean:
 	rm -f *runner.cpp
 	rm -f *runner

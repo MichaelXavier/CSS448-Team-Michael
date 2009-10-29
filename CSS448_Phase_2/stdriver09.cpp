@@ -35,7 +35,8 @@ using namespace std;
 // Adjust as needed for your implementation.
 
 int main() {
-   STObject st;  
+	Program* newProg = new Program("Abc");
+   STObject st(newProg);  
 
    Constant* tempConst;
    ArrayType* tempArray;
@@ -96,7 +97,7 @@ int main() {
    something = tempRecord->insertField(tempField); 
                                              // produce error: "id" exists
    tempField = new RecordField("next");            //      next: cellPtr;
-   something = tempRecord->insertField(tempField, recordfield);    
+   something = tempRecord->insertField(tempField);    
    typePtr = st.lookup("cellPtr");
    tempField->setTypePtr(typePtr);
                                              //   end;
@@ -133,7 +134,7 @@ int main() {
    something = st.insert(tempProcedure, procedure);    
    tempParam = new Parameter("list");
    tempParam->setVar(true);
-   tempPtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellPtr");
    tempParam->setTypePtr(typePtr);
    something = tempProcedure->insertParameter(tempParam); 
    tempParam = new Parameter("thea");
@@ -184,11 +185,11 @@ int main() {
    typePtr = st.lookup("integer");
    tempVariable->setTypePtr(typePtr);
    something = st.insert(tempVariable, variable);    
-   ptr = new Variable("z");                  //      z: integer;
+   tempVariable = new Variable("z");                  //      z: integer;
    typePtr = st.lookup("integer");
    tempVariable->setTypePtr(typePtr);
    something = st.insert(tempVariable, variable);    
-   ptr = new Variable("y");                  //      y: integer;
+   tempVariable = new Variable("y");                  //      y: integer;
    something = st.insert(tempVariable, variable);    
                                              // produce error: "y" exists
 
@@ -260,7 +261,7 @@ int main() {
    tempParam->setVar(false);
    typePtr = st.lookup("cellPtr");
    tempParam->setTypePtr(typePtr);
-   something = procptr->insertParameter(tempParam); 
+   something = tempFunction->insertParameter(tempParam); 
    typePtr = st.lookup("integer");
    tempFunction->setReturnType(typePtr);
 
@@ -275,7 +276,6 @@ int main() {
    typePtr = st.lookup("real");
    tempArray->setTypePtr(typePtr);
    tempVariable->setTypePtr(tempArray); // ?
-
 
    st.printST();
    // scopeExit of func2d              // end of func2d
