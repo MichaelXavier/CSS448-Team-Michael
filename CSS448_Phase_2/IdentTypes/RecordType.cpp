@@ -17,7 +17,6 @@ void RecordType::display(ostream& sout, int depth)const {
 	}
 }
 
-
 bool RecordType::insertField(RecordField* field) {
   if (hasConflictingParams(field)) {
     return false;
@@ -25,7 +24,6 @@ bool RecordType::insertField(RecordField* field) {
   members.push_back(field);
   return true;
 }
-
 
 bool RecordType::hasConflictingFields(const IdentRecord* field)const {
 	for(unsigned int i = 0; i < members.size(); i++)
