@@ -2,7 +2,7 @@
 
 STObject::STObject(Program* root) {
   if (root == NULL) {
-    throw "Cannot instantiate an STObject with a null Program root."
+    throw "Cannot instantiate an STObject with a null Program root.";
   }
   fillIdentTable();
   currentScopeNumber = 0;
@@ -16,7 +16,7 @@ STObject::STObject(Program* root) {
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?
 //it is setting the current scope to the new nested scope. perhaps we don't
 //need scopeEntry or if we do, it will take 
-bool insert(IdentRecord* new_rec, IdType type) {
+bool STObject::insert(IdentRecord* new_rec, IdType type) {
   switch (type) {
     case function:
     case procedure:
@@ -30,7 +30,7 @@ bool insert(IdentRecord* new_rec, IdType type) {
       } else {
         // This handles when a parent scope procedure/function/program has
         // the same identifier
-        cout << "Error: id already in ST: \"" << IdentRecord->getName() << "\"\n"; 
+        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n"; 
         return false;
       }
       break;
@@ -74,7 +74,7 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
   //insert a new scope, set its parent as the current scope
 	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScope, currentScopeNumber);
 	currentScope->insertScope(nested_scope);
-	current_scope = nested_scope;
+	currentScope = nested_scope;
 	return true; // FIXME: it would be necessary to return false if the 
 				 // identifier for the procedure is the same as a parent
 				 // scope procedure
@@ -83,7 +83,7 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
 IdentRecord* STObject::lookup(const string& name) {
   //Try currentScope which will go up to the root scope
   if (currentScope != NULL && currentScope->lookup(name)) {
-    return true
+    return true;
   } else {
     //Try the SIT
     for(std::vector<IdentRecord*>::iterator it = v.begin(); it != v.end(); ++it) {
