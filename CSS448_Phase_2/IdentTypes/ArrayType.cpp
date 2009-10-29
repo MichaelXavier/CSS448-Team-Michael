@@ -20,7 +20,7 @@ void ArrayType::display(ostream& sout, int depth)const {
 	{
 		sout << ranges[i].low << ".." << ranges[i].high;
 		if(i != dimensions-1)
-			sout << ",";
+			sout << ", ";
 	}
 
 	sout << " " << typePtr->getName();

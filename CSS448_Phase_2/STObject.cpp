@@ -90,6 +90,7 @@ IdentRecord* STObject::lookup(const string& name) {
       return retval;
     }
   }
+
   //Try the SIT
   for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
     if ((*it)->getName() == name) {
@@ -102,10 +103,10 @@ IdentRecord* STObject::lookup(const string& name) {
 
 void STObject::fillIdentTable(void) {
   //fill in the SIT with primitives
-  identTable.push_back(new IntegerType("Integer"));
-  identTable.push_back(new RealType("Real"));
-  identTable.push_back(new CharacterType("Char"));
-  identTable.push_back(new BooleanType("Boolean"));
+  identTable.push_back(new IntegerType("integer"));
+  identTable.push_back(new RealType("real"));
+  identTable.push_back(new CharacterType("char"));
+  identTable.push_back(new BooleanType("boolean"));
   identTable.push_back(new Constant("True"));
   identTable.push_back(new Constant("False"));
   identTable.push_back(new Procedure("WriteLn"));

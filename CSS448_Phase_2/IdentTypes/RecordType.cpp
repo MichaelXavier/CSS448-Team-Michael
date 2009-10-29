@@ -19,6 +19,7 @@ void RecordType::display(ostream& sout, int depth)const {
 
 bool RecordType::insertField(RecordField* field) {
   if (hasConflictingParams(field)) {
+    cout << "conflicting param " << field->getName() << endl;//FIXME: debug
     return false;
   }
   members.push_back(field);
@@ -29,7 +30,7 @@ bool RecordType::hasConflictingFields(const IdentRecord* field)const {
 	for(unsigned int i = 0; i < members.size(); i++)
 	{
 		// Returns true if equal
-		if(field->strcmp(*members[i]) == 0)
+		if(field->strcmp(*(members[i])) == 0)
 		{
 			return true;
 		}
