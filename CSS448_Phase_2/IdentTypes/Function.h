@@ -14,7 +14,7 @@ public:
 	bool insertParameter(Parameter*);
 
   //calls strcmp on identrecord or operator==
-  bool hasConflictingParams(const Parameter*)const;
+  bool hasConflictingParams(const IdentRecord*)const;
 
   void setReturnType(IdentRecord* ret) { returnType = ret; }
 

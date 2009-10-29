@@ -17,7 +17,7 @@ public:
 	bool insertParameter(Parameter*);
 	
   //calls strcmp on identrecord or operator==
-  bool hasConflictingParams(const IdentRecord*)const;
+  bool hasConflictingParams(const IdentRecord* parameter)const;
 
 private:
 	// possibly a list of parameters

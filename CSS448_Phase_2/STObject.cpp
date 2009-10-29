@@ -63,6 +63,7 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
 void STObject::printST(void) {
   //Print starting from the root
   rootScope->printScope(cout);
+  //TODO: free scope memory
   //Start back up at the root scope
 	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
@@ -91,12 +92,21 @@ IdentRecord* STObject::lookup(const string& name) {
     }
   }
 
+  //FIXME: shouldn't have to do this, for debugging purposes, going to explicitly check the root
+  if (rootScope != NULL) {
+    retval = rootScope->lookup(name);
+    if (retval != NULL) {
+      return retval;
+    }
+  }
+
   //Try the SIT
   for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
     if ((*it)->getName() == name) {
       return *it;
     }
   }
+  cout << "DEBUG: Coudln't find type with name " << name << endl;//fixme: DEBUG
   //Didn't find it
   return NULL;
 }

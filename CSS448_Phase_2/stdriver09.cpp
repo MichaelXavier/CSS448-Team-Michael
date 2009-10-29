@@ -79,7 +79,7 @@ int main() {
    tempArray->setTypePtr(typePtr);
 
 
-   tempPointer = new PointerType("cellptr");  //   cellPtr = ^cell;
+   tempPointer = new PointerType("cellPtr");  //   cellPtr = ^cell;
    something = st.insert(tempPointer, pointertype);            
    tempRecord = new RecordType("cell");          //   cell = record 
    something = st.insert(tempRecord, recordtype);

@@ -17,12 +17,12 @@ void Procedure::display(ostream& sout, int depth)const {
 	}
 }
 
-bool Procedure::hasConflictingParams(const IdentRecord* record)const
+bool Procedure::hasConflictingParams(const IdentRecord* parameter)const
 {
 	for(unsigned int i = 0; i < parameters.size(); i++)
 	{
 		// Returns true if equal
-		if(record->strcmp(*parameters[i]) == 0)
+		if(parameter->strcmp(*parameters[i]) == 0)
 		{
 			return true;
 		}

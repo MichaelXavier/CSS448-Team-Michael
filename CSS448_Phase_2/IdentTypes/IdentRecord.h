@@ -20,7 +20,7 @@ public:
   bool operator<(const IdentRecord& rhs)const; 
 
   // Doesn't do anything, but can be overridden
-  virtual bool hasConflictingParams(const IdentRecord*)const {return true;}
+  virtual bool hasConflictingParams(const IdentRecord*)const { cout << "WARNING: IdentRecord's hasConflictingParams called for name" << identName << endl; return true;}//FIXME: debug
 
 protected:
 	string identName;					// The name of the identifier

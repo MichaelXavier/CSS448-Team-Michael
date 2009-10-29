@@ -28,7 +28,7 @@ bool Function::insertParameter(Parameter* parameter) {
   return true;
 }
 
-bool Function::hasConflictingParams(const Parameter* parameter)const {
+bool Function::hasConflictingParams(const IdentRecord* parameter)const {
   if (parameter != NULL) {
     for(unsigned int i = 0; i < parameters.size(); i++) {
       // Returns true if equal

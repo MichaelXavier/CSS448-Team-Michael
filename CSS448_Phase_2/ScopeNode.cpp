@@ -3,7 +3,7 @@
 ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent, int depth) {
   scopeRoot = root; 
   scopeDepth = depth; 
-  parent = parentScope;  //Can be NULL
+  parentScope = parent;  //Can be NULL
 }
 
 ScopeNode::~ScopeNode(void) {
