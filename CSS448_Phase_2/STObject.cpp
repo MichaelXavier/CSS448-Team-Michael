@@ -1,6 +1,7 @@
 #include "STObject.h"
 
 STObject::STObject(Program* root) {
+  rootScope = NULL;//FIXME: see if valgrind stops complaining
   if (root == NULL) {
     throw "Cannot instantiate an STObject with a null Program root.";
   }

@@ -52,6 +52,7 @@ void ScopeNode::printScope(ostream& sout) {
 	for(it = records.begin(); it != records.end(); it++)
 	{
 		(*it).second->display(sout, scopeDepth);
+    sout << endl; //Newline at the end of each record.
 	}
 	
 	for(unsigned int i = 0; i < childScopes.size(); i++)
@@ -64,10 +65,10 @@ IdentRecord* ScopeNode::lookup(const string& name) {
   map<string, IdentRecord*>::iterator result = records.find(name);
   //Not found in current scope, check parent
   if (result == records.end()) {
-    if (parentScope != NULL) {
-      return parentScope->lookup(name);
-    } else {
+    if (parentScope == NULL) {
       return NULL;
+    } else {
+      return parentScope->lookup(name);
     }
   } else {
     //Found it, return the value

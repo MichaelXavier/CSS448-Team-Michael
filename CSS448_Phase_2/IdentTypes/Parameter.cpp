@@ -8,6 +8,12 @@ Parameter::~Parameter(void) {
 }
 
 void Parameter::display(ostream& sout, int depth)const {
+  if (typePtr == NULL) {
+    //FIXME: just going to print the error and bail at this point
+    sout << "Error: typePtr of " << identName << " not set" << endl;
+    return;
+  }
+
   printIndent(sout, depth);
 	if(passByRef) {
 		sout << "var ";

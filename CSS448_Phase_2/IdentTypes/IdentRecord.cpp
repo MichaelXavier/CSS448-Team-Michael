@@ -12,9 +12,9 @@ IdentRecord::~IdentRecord(void) {
 // Returns -1 if this identname > rhs identname, 0 if this identname == rhs identname,
 // and 1 if this identname < rhs identname
 int IdentRecord::strcmp(const IdentRecord& rhs)const {
-	if(this->identName > rhs.identName)
+	if(identName > rhs.identName)
 		return -1;
-	else if(this->identName == rhs.identName)
+	else if(identName == rhs.identName)
 		return 0;
 	else
 		return 1;
