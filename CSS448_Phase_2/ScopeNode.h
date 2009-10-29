@@ -1,5 +1,5 @@
-#ifndef STOBJECT_H
-#define STOBJECT_H
+#ifndef SCOPENODE_H
+#define SCOPENODE_H
 #include <iostream>
 #include <map>
 #include <vector>

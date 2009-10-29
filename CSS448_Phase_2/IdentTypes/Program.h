@@ -1,5 +1,5 @@
-#ifndef PROCEDURE_H
-#define PROCEDURE_H
+#ifndef PROGRAM_H
+#define PROGRAM_H
 #include <iostream>
 #include <vector>
 #include "../IdType.h"

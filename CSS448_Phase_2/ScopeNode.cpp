@@ -49,7 +49,6 @@ void ScopeNode::insertScope(ScopeNode* new_scope) {
   }
 }
 
-
 void ScopeNode::printScope(ostream& sout)
 {
 	map<string, IdentRecord*>::iterator it;

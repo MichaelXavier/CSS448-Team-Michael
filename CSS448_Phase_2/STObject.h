@@ -2,6 +2,8 @@
 #define STOBJECT_H
 #include <iostream>
 #include <vector>
+#include "IdType.h"
+#include "ScopeNode.h"
 #include "IdentTypes/IdentRecord.h"
 #include "IdentTypes/ArrayType.h"
 #include "IdentTypes/BooleanType.h"
@@ -19,8 +21,6 @@
 #include "IdentTypes/RecordType.h"
 #include "IdentTypes/SetType.h"
 #include "IdentTypes/Variable.h"
-#include "IdType.h"
-#include "ScopeNode.h"
 
 using namespace std;
 
