@@ -30,7 +30,7 @@ void ArrayType::display(ostream& sout, int depth)const {
 void ArrayType::addDimension(int low, int high)
 {
 	dimensions++;
-	ranges.reserve(dimensions);
+	ranges.push_back(Range());
 	ranges[dimensions-1].low = low;
 	ranges[dimensions-1].high = high;
 }

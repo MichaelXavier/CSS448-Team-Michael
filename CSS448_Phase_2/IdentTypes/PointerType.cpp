@@ -17,8 +17,9 @@ void PointerType::display(ostream& sout, int depth)const {
 }
 
 void PointerType::setPointObj(IdentRecord* obj) {
-  if (obj != NULL) {
-    //FIXME: throw exception?
+  if (obj == NULL) {
+    //FIXME: we can put a print error instead if we need to
+    throw "Error: cannot set the pointer target of a PointerType to NULL";
     return;
   } else {
     typePtr = obj;

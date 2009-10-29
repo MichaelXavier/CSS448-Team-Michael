@@ -48,10 +48,12 @@ void ScopeNode::insertScope(ScopeNode* new_scope) {
 }
 
 void ScopeNode::printScope(ostream& sout) {
+	scopeRoot->display(sout, scopeDepth);
+
 	map<string, IdentRecord*>::iterator it;
 	for(it = records.begin(); it != records.end(); it++)
 	{
-		(*it).second->display(sout, scopeDepth);
+		(*it).second->display(sout, scopeDepth+1);
     sout << endl; //Newline at the end of each record.
 	}
 	

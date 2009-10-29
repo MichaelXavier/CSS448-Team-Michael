@@ -35,7 +35,7 @@ using namespace std;
 // Adjust as needed for your implementation.
 
 int main() {
-	Program* newProg = new Program("Abc");
+	Program* newProg = new Program("example");
    STObject st(newProg);  
 
    Constant* tempConst;
@@ -58,8 +58,8 @@ int main() {
 
    // something could be bool or ptr
    // assume first insert is the program, possible scopeEntry
-   tempProcedure = new Procedure("example");           // program example(...);
-   something = st.insert(tempProcedure, procedure);    
+  // tempProcedure = new Procedure("example");           // program example(...);
+  // something = st.insert(tempProcedure, procedure);    
                                              
    tempConst = new Constant("grades");             //       grades = 5; 
    something = st.insert(tempConst, constant);     
@@ -79,7 +79,7 @@ int main() {
    tempArray->setTypePtr(typePtr);
 
 
-   tempPointer = new PointerType("cellPtr");  //   cellPtr = ^cell;
+   tempPointer = new PointerType("cellptr");  //   cellPtr = ^cell;
    something = st.insert(tempPointer, pointertype);            
    tempRecord = new RecordType("cell");          //   cell = record 
    something = st.insert(tempRecord, recordtype);
@@ -98,7 +98,7 @@ int main() {
                                              // produce error: "id" exists
    tempField = new RecordField("next");            //      next: cellPtr;
    something = tempRecord->insertField(tempField);    
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempField->setTypePtr(typePtr);
                                              //   end;
 
@@ -110,11 +110,11 @@ int main() {
                                              // var  
    tempVariable = new Variable("list");               //      list: cellPtr;
    something = st.insert(tempVariable, variable);   
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempVariable->setTypePtr(typePtr);
    tempVariable = new Variable("newrec");             //      newrec: cellPtr;
    something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempVariable->setTypePtr(typePtr);
    tempVariable = new Variable("count");              //      count: int3D;
    something = st.insert(tempVariable, variable);    
@@ -134,7 +134,7 @@ int main() {
    something = st.insert(tempProcedure, procedure);    
    tempParam = new Parameter("list");
    tempParam->setVar(true);
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempParam->setTypePtr(typePtr);
    something = tempProcedure->insertParameter(tempParam); 
    tempParam = new Parameter("thea");
@@ -144,7 +144,7 @@ int main() {
    something = tempProcedure->insertParameter(tempParam); 
    tempParam = new Parameter("rec");
    tempParam->setVar(false);
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempParam->setTypePtr(typePtr);
    something = tempProcedure->insertParameter(tempParam); 
 
@@ -259,7 +259,7 @@ int main() {
                                               //      newrec: cellPtr): integer;
    tempParam = new Parameter("newrec");
    tempParam->setVar(false);
-   typePtr = st.lookup("cellPtr");
+   typePtr = st.lookup("cellptr");
    tempParam->setTypePtr(typePtr);
    something = tempFunction->insertParameter(tempParam); 
    typePtr = st.lookup("integer");

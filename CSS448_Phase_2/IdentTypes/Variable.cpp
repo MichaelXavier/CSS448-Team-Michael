@@ -16,8 +16,9 @@ void Variable::display(ostream& sout, int depth)const {
 }
 
 void Variable::setTypePtr(IdentRecord* type) {
-  if (type != NULL) {
-    //FIXME: throw exception?
+  if (type == NULL) {
+    //FIXME: we can put a print error instead if we need to
+    throw "Error: cannot set the pointer target of a PointerType to NULL";
     return;
   } else {
     typePtr = type;

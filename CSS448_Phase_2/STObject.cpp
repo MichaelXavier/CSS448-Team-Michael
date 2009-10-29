@@ -67,7 +67,7 @@ void STObject::printST(void) {
   //Start back up at the root scope
 	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
-	currentScopeNumber = 1;
+	currentScopeNumber = 0;
 }
 
 
