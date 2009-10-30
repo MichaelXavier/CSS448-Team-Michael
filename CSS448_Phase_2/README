@@ -26,6 +26,13 @@ Our main is meant to simulate the parser or whatever component will be using the
 
 ----------------
 
+1.1 General ST Implementation Info
+
+*The ST is structured in the following way. The ST consists of ScopeNodes and the SIT. The ST points to a root scope. The root scope is a Program object. Whenever a Procedure or Function is added to the ST, a new ScopeNode is created. When a ScopeNode is created,it is added to a list of child ScopeNodes of the current ScopeNodeand then the current ScopeNode is set to the new ScopeNode.
+*Each ScopeNode consists of a pointer to the Program, Procedure, or Function which is the root, a map of other IdentRecord* added to thescope, a list of child scopes, and a pointer to the parent scope. 
+
+----------------
+
 2. Compiling
 A makefile has been included with our project to build this file. You can run 'make' or 'make a.out' to build our project. If for some reason make is not available or it doesdn't work on the system, the following line will work:
 
