@@ -7,6 +7,8 @@ Program::~Program(void) {
 }
 
 void Program::display(ostream& sout, int depth)const {
+  //leading newline like in the sample output
+  sout << endl;
   printIndent(sout, depth);
 	sout << identName << endl;
 

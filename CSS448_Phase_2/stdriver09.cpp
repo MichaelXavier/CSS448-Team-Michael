@@ -66,7 +66,7 @@ int main() {
    tempConst->setConstFactor(5);
    tempConst = new Constant("size");
    something = st.insert(tempConst, constant);        
-   tempConst->setConstFactor(5);
+   tempConst->setConstFactor(4);
 
 
 												// type 
@@ -251,6 +251,8 @@ int main() {
    tempVariable = new Variable("x2c");                 //      x2c: integer;
    something = st.insert(tempVariable, variable);    
                                               // produce error: "x2c" exists
+   //free memory since x2c wasn't inserted
+   delete tempVariable;
 
    // scopeEntry 
    // could use new Function if desired
@@ -271,7 +273,7 @@ int main() {
                                               //      a: array [5..10] of real;
    tempVariable = new Variable("a");               
    something = st.insert(tempVariable, variable);    
-   tempArray = new ArrayType("NONAME"); 
+   tempArray = new ArrayType(""); 
    tempArray->addDimension(5, 10);
    typePtr = st.lookup("real");
    tempArray->setTypePtr(typePtr);
@@ -285,7 +287,6 @@ int main() {
    // scopeExit of proc2               // end of proc2
    // scopeExit of example             // end of example
 
- 
    return 0;
 }
 

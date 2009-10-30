@@ -30,9 +30,9 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
       // FIXME: this may require something for handling the case
       // the new_rec identifier is already used by another
       // procedure, function, or program in a parent scope
-      bool scopeCreated;
-        scopeCreated = scopeEntry(new_rec, type);
-      if (scopeCreated == true) {
+      //bool scopeCreated;
+        //scopeCreated = scopeEntry(new_rec, type);
+      if (scopeEntry(new_rec, type)) {
         return true;
       } else {
         // This handles when a parent scope procedure/function/program has
