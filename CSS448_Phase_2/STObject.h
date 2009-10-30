@@ -29,6 +29,9 @@ class STObject {
 public:
   //Constructor requires a program pointer to act as the root scope
   STObject(Program* root);
+  //Destructor
+  ~STObject(void);
+
   bool insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
 

@@ -8,6 +8,16 @@ ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent, int depth) {
 
 ScopeNode::~ScopeNode(void) {
   delete scopeRoot;//FIXME: unless we need it elsewhere?
+  //Free memory of IdentRecords in this scope
+	map<string, IdentRecord*>::iterator it;
+	for(it = records.begin(); it != records.end(); it++)
+	{
+		delete (*it).second;
+	}
+  //Recursively delete children
+  for (unsigned int i = 0; i < childScopes.size(); i++) {
+    delete childScopes[i];
+  }
 }
 
 bool ScopeNode::recordExists(const IdentRecord* other)const {

@@ -14,6 +14,12 @@ STObject::STObject(Program* root) {
   //TODO: initialize other stuff here
 }
 
+STObject::~STObject(void) {
+  if (rootScope != NULL) {
+    delete rootScope;//Deletion will cascade recursively into the children
+  }
+}
+
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?
 //it is setting the current scope to the new nested scope. perhaps we don't
 //need scopeEntry or if we do, it will take 
