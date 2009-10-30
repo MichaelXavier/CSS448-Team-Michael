@@ -1,0 +1,37 @@
+//--------------------------------------------
+//CSS448 Fall 09, Phase 2: README
+//Additional notes/instructions/conditions for 
+//building and using the ST
+//
+//Mikhail Elbert and Michael Xavier
+//--------------------------------------------
+
+
+----------------
+1. Project Assumptions
+Our main is meant to simulate the parser or whatever component will be using the ST. We make the following assumptions in our code:
+
+  *Our SIT is filled with 4 types: integer, real, char and boolean. These primative names are *lower case* and must be looked up in the ST as lower case.
+  *Our ST inserts constants True and False into the SIT but this is not used in our main. These are also case sensitive.
+  *Our ST inserts procedures WriteLn, Write, ReadLn and Read into the SIT but this is not used in our main. These are also case sensitive.
+  *Any driver using the ST is to expect a boolean return value from STObject::insert. If it is true, the memory allocated for the IdentRecord being inserted will be deleted by the *STObject destructor*.
+  *If STObject::insert returns false, the main is responsible for deallocating.
+  *"Anonymous" types that are not part of the SIT but are still declared inside of a "var" block are to be deallocated at the end of main. An example of this would be a line like: "a: array [5..10] of real;" The main is responsible for creating the ArrayType instance and setting the typePtr of the Variable instance to that but the actual anonymous ArrayType *does not get inserted into the ST*. Therefor it must be deleted at the end of main as ours does.
+  *An STObject class must be constructed with a Program* that acts as the root scope of the program. 
+  *Most errors like conflicting names, parameters, etc produce plain text errors to be printed to cout. The only exception are fatal errors such as null pointers being passed into functions like the STObject constructor. We do this to prevent a segfault in the application.
+  *Exceptions are caught on our main, printed and then main exits with status 1.
+  *Scope is not opened explicitly in main but is created based on the type of object inserted. A Procedure or a Function will open a scope.
+  *Scope is closed by calling printST(). This brings the ST back to the root "Program" scope.
+  *Nested Programs are not allowed.
+
+----------------
+
+2. Compiling
+A makefile has been included with our project to build this file. You can run 'make' or 'make a.out' to build our project. If for some reason make is not available or it doesdn't work on the system, the following line will work:
+
+g++ -o a.out IdentTypes/ArrayType.cpp IdentTypes/BooleanType.cpp IdentTypes/CharacterType.cpp IdentTypes/Constant.cpp IdentTypes/Function.cpp IdentTypes/IdentRecord.cpp IdentTypes/IntegerType.cpp IdentTypes/Parameter.cpp IdentTypes/PointerType.cpp IdentTypes/Procedure.cpp IdentTypes/Program.cpp IdentTypes/RealType.cpp IdentTypes/RecordField.cpp IdentTypes/RecordType.cpp IdentTypes/SetType.cpp IdentTypes/Variable.cpp ScopeNode.cpp STObject.cpp stdriver09.cpp
+
+2.1 Compilation Assumptions
+Our project is entirely standard C++ except we had to use #pragma once on our IdType.h file. Upon further research, we found that this is not technically standard C++ but every compiler including g++ seems to compile with it. We had to use this to circumvent some define guard problems we were having.
+
+----------------

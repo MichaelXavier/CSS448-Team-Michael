@@ -1,9 +1,12 @@
 CC = g++
-CFLAGS = -g
-CXXLIB_PATH = ~/src/cxxtest
+DEBUGFLAGS = -g
+#CXXLIB_PATH = ~/src/cxxtest
 
 a.out: IdentTypes/*.cpp ScopeNode.cpp STObject.cpp stdriver09.cpp
-	${CC} ${CFLAGS} -o $@ $^
+	${CC} -o $@ $^
+
+debug_a.out: IdentTypes/*.cpp ScopeNode.cpp STObject.cpp stdriver09.cpp
+	${CC} ${DEBUGFLAGS} -o $@ $^
 
 clean:
 	rm -f *runner.cpp
@@ -12,17 +15,14 @@ clean:
 	rm -f a.out
 	rm -f junktest.out
 
-%_runner.cpp: UnitTests/%TestSuite.h UnitTests/IdentRecordTestHelper.h 
-	cxxtestgen.py --error-printer -o $@ $<
-
-#FIXME: might want to remove the identrecord? will deal with this tomorrow
-%_test: IdentTypes/IdentRecord.cpp IdentTypes/%.cpp %_runner.cpp
-	${CC} ${CFLAGS} -o $@ $^ -I ${CXXLIB_PATH}
-
-run_%_test: %_test
-	./$<
-
-test_all:
-	find UnitTests -type f | grep "TestSuite\.h$$" | xargs -I {} basename {} | sed -e 's/TestSuite\.h$$//' | xargs -I {} make {}_test
-	
-#TODO: figure out how to instead glue the make commands together with && so one test stops the whole process
+#%_runner.cpp: UnitTests/%TestSuite.h UnitTests/IdentRecordTestHelper.h 
+#	cxxtestgen.py --error-printer -o $@ $<
+#
+#%_test: IdentTypes/IdentRecord.cpp IdentTypes/%.cpp %_runner.cpp
+#	${CC} ${CFLAGS} -o $@ $^ -I ${CXXLIB_PATH}
+#
+#run_%_test: %_test
+#	./$<
+#
+#test_all:
+#	find UnitTests -type f | grep "TestSuite\.h$$" | xargs -I {} basename {} | sed -e 's/TestSuite\.h$$//' | xargs -I {} make {}_test

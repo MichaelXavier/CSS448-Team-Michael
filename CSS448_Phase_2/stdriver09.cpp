@@ -5,6 +5,7 @@
 //
 //This driver simulates the Parser and other subsequent phases feeding
 //token information to the symbol table.
+//--------------------------------------------
 #include <iostream>
 #include "IdType.h"
 #include "STObject.h"
@@ -42,261 +43,265 @@ using namespace std;
 // Adjust as needed for your implementation.
 
 int main() {
-   Program* newProg = new Program("example");
-   STObject st(newProg);   // ST is created, Program inserted into ST
+  try {
+    Program* newProg = new Program("example");
+    STObject st(newProg);   // ST is created, Program inserted into ST
 
-   // This is a list of all the pointer types for objects that will
-   // be inserted into the ST
-   Constant* tempConst;
-   ArrayType* tempArray;
-   Parameter* tempParam;
-   PointerType* tempPointer;
-   RecordField* tempField;
-   RecordType* tempRecord;
-   SetType* tempSet;
-   Variable* tempVariable;
-   Procedure* tempProcedure;
-   Function* tempFunction;
+    // This is a list of all the pointer types for objects that will
+    // be inserted into the ST
+    Constant* tempConst;
+    ArrayType* tempArray;
+    Parameter* tempParam;
+    PointerType* tempPointer;
+    RecordField* tempField;
+    RecordType* tempRecord;
+    SetType* tempSet;
+    Variable* tempVariable;
+    Procedure* tempProcedure;
+    Function* tempFunction;
 
-   // This is for setting the typePtr of various objects
-   IdentRecord* typePtr;
+    // This is for setting the typePtr of various objects
+    IdentRecord* typePtr;
 
-   // Bool that says if IdentRecord was inserted into ST
-   bool something;
+    // Bool that says if IdentRecord was inserted into ST
+    bool something;
 
-   tempConst = new Constant("grades");             //       grades = 5; 
-   something = st.insert(tempConst, constant);     
-   tempConst->setConstFactor(5);					//      size = 4;
-   tempConst = new Constant("size");
-   something = st.insert(tempConst, constant);        
-   tempConst->setConstFactor(4);
-
-
-												   // type 
-   tempArray = new ArrayType("int3d");             //   int3D = array [1..5,2..3,0..2]
-   something = st.insert(tempArray, arraytype);    //           of integer;
-   tempArray->addDimension(1, 5);
-   tempArray->addDimension(2, 3);
-   tempArray->addDimension(0, 2);
-   typePtr = st.lookup("integer");
-   tempArray->setTypePtr(typePtr);
+    tempConst = new Constant("grades");             //       grades = 5; 
+    something = st.insert(tempConst, constant);     
+    tempConst->setConstFactor(5);					//      size = 4;
+    tempConst = new Constant("size");
+    something = st.insert(tempConst, constant);        
+    tempConst->setConstFactor(4);
 
 
-   tempPointer = new PointerType("cellptr", "cell");  //   cellPtr = ^cell;
-   something = st.insert(tempPointer, pointertype);            
-   tempRecord = new RecordType("cell");               //   cell = record 
-   something = st.insert(tempRecord, recordtype);
-   // Sets cellPtr to point to cell type
-   tempPointer->setPointObj(tempRecord);	
-   tempField = new RecordField("id");                 //      id: integer;
-   something = tempRecord->insertField(tempField);      
-   typePtr = st.lookup("integer");
-   tempField->setTypePtr(typePtr);
-   tempField = new RecordField("info");              //      info: int3D;
-   something = tempRecord->insertField(tempField);  
-   typePtr = st.lookup("int3d");
-   tempField->setTypePtr(typePtr);
-   tempField = new RecordField("id");                //      id: real;
-   something = tempRecord->insertField(tempField); 
-   delete tempField;//wont be inserted, so delete
-   tempField = new RecordField("next");            //      next: cellPtr;
-   something = tempRecord->insertField(tempField);    
-   typePtr = st.lookup("cellptr");
-   tempField->setTypePtr(typePtr);
-                                             //   end;
+                            // type 
+    tempArray = new ArrayType("int3d");             //   int3D = array [1..5,2..3,0..2]
+    something = st.insert(tempArray, arraytype);    //           of integer;
+    tempArray->addDimension(1, 5);
+    tempArray->addDimension(2, 3);
+    tempArray->addDimension(0, 2);
+    typePtr = st.lookup("integer");
+    tempArray->setTypePtr(typePtr);
 
-   // note that we will assume that sets are limited to 256 ordinal items
-   tempSet = new SetType("digit");               //   Digit = set of 0..9;
-   something = st.insert(tempSet, settype);    
-   tempSet->setRange(0,9);
 
-                                             // var  
-   tempVariable = new Variable("list");               //      list: cellPtr;
-   something = st.insert(tempVariable, variable);   
-   typePtr = st.lookup("cellptr");
-   tempVariable->setTypePtr(typePtr);
-   tempVariable = new Variable("newrec");             //      newrec: cellPtr;
-   something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("cellptr");
-   tempVariable->setTypePtr(typePtr);
-   tempVariable = new Variable("count");              //      count: int3D;
-   something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("int3d");
-   tempVariable->setTypePtr(typePtr);
-   tempVariable = new Variable("classnum");           //      classNum: integer;
-   something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
+    tempPointer = new PointerType("cellptr", "cell");  //   cellPtr = ^cell;
+    something = st.insert(tempPointer, pointertype);            
+    tempRecord = new RecordType("cell");               //   cell = record 
+    something = st.insert(tempRecord, recordtype);
+    // Sets cellPtr to point to cell type
+    tempPointer->setPointObj(tempRecord);	
+    tempField = new RecordField("id");                 //      id: integer;
+    something = tempRecord->insertField(tempField);      
+    typePtr = st.lookup("integer");
+    tempField->setTypePtr(typePtr);
+    tempField = new RecordField("info");              //      info: int3D;
+    something = tempRecord->insertField(tempField);  
+    typePtr = st.lookup("int3d");
+    tempField->setTypePtr(typePtr);
+    tempField = new RecordField("id");                //      id: real;
+    something = tempRecord->insertField(tempField); 
+    delete tempField;//wont be inserted, so delete
+    tempField = new RecordField("next");            //      next: cellPtr;
+    something = tempRecord->insertField(tempField);    
+    typePtr = st.lookup("cellptr");
+    tempField->setTypePtr(typePtr);
+                                              //   end;
 
-   // scopeEntry
-   // use bool tag for parameters that are "var", pass by reference
-   // no "var" means pass by value
-   tempProcedure = new Procedure("proc1");      // procedure proc1(var list: cellPtr;
+    // note that we will assume that sets are limited to 256 ordinal items
+    tempSet = new SetType("digit");               //   Digit = set of 0..9;
+    something = st.insert(tempSet, settype);    
+    tempSet->setRange(0,9);
+
+                                              // var  
+    tempVariable = new Variable("list");               //      list: cellPtr;
+    something = st.insert(tempVariable, variable);   
+    typePtr = st.lookup("cellptr");
+    tempVariable->setTypePtr(typePtr);
+    tempVariable = new Variable("newrec");             //      newrec: cellPtr;
+    something = st.insert(tempVariable, variable);    
+    typePtr = st.lookup("cellptr");
+    tempVariable->setTypePtr(typePtr);
+    tempVariable = new Variable("count");              //      count: int3D;
+    something = st.insert(tempVariable, variable);    
+    typePtr = st.lookup("int3d");
+    tempVariable->setTypePtr(typePtr);
+    tempVariable = new Variable("classnum");           //      classNum: integer;
+    something = st.insert(tempVariable, variable);    
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+
+    // scopeEntry
+    // use bool tag for parameters that are "var", pass by reference
+    // no "var" means pass by value
+    tempProcedure = new Procedure("proc1");      // procedure proc1(var list: cellPtr;
                                           //                 var theA: int3D;
                                           //                      rec: cellPtr);
-   something = st.insert(tempProcedure, procedure);    
-   tempParam = new Parameter("list");
-   tempParam->setVar(true);
-   typePtr = st.lookup("cellptr");
-   tempParam->setTypePtr(typePtr);
-   something = tempProcedure->insertParameter(tempParam); 
-   tempParam = new Parameter("thea");
-   tempParam->setVar(true);
-   typePtr = st.lookup("int3d");
-   tempParam->setTypePtr(typePtr);
-   something = tempProcedure->insertParameter(tempParam); 
-   tempParam = new Parameter("rec");
-   tempParam->setVar(false);
-   typePtr = st.lookup("cellptr");
-   tempParam->setTypePtr(typePtr);
-   something = tempProcedure->insertParameter(tempParam); 
+    something = st.insert(tempProcedure, procedure);    
+    tempParam = new Parameter("list");
+    tempParam->setVar(true);
+    typePtr = st.lookup("cellptr");
+    tempParam->setTypePtr(typePtr);
+    something = tempProcedure->insertParameter(tempParam); 
+    tempParam = new Parameter("thea");
+    tempParam->setVar(true);
+    typePtr = st.lookup("int3d");
+    tempParam->setTypePtr(typePtr);
+    something = tempProcedure->insertParameter(tempParam); 
+    tempParam = new Parameter("rec");
+    tempParam->setVar(false);
+    typePtr = st.lookup("cellptr");
+    tempParam->setTypePtr(typePtr);
+    something = tempProcedure->insertParameter(tempParam); 
 
-                                                       // var  
-   tempVariable = new Variable("count");              //      count: integer;
-   something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   tempVariable = new Variable("x1");                 //      x1: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                  //      y: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   if (!something) {
-     delete tempVariable;
-   }
+                                                        // var  
+    tempVariable = new Variable("count");              //      count: integer;
+    something = st.insert(tempVariable, variable);    
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    tempVariable = new Variable("x1");                 //      x1: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                  //      y: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    if (!something) {
+      delete tempVariable;
+    }
 
-   st.printST();
-   // scopeExit of proc1                     // end of proc1
-   
+    st.printST();
+    // scopeExit of proc1                     // end of proc1
 
-   // scopeEntry
-   tempProcedure = new Procedure("proc2");         // procedure proc2(...);
-   something = st.insert(tempProcedure, procedure);    
-                                             // var  
-   tempVariable = new Variable("count");              //      count: int3D;
-   typePtr = st.lookup("int3d");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("x2");                 //      x2: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                  //      y: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("z");                  //      z: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                  //      y: integer;
-   something = st.insert(tempVariable, variable);    
-   //so we can delete y
-   delete tempVariable;
-                                             // produce error: "y" exists
 
-   // scopeEntry
-   tempProcedure = new Procedure("proc2a");         //    procedure proc2a(...);
-   something = st.insert(tempProcedure, procedure);    
+    // scopeEntry
+    tempProcedure = new Procedure("proc2");         // procedure proc2(...);
+    something = st.insert(tempProcedure, procedure);    
+                                              // var  
+    tempVariable = new Variable("count");              //      count: int3D;
+    typePtr = st.lookup("int3d");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("x2");                 //      x2: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                  //      y: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("z");                  //      z: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                  //      y: integer;
+    something = st.insert(tempVariable, variable);    
+    //so we can delete y
+    delete tempVariable;
+                                              // produce error: "y" exists
+
+    // scopeEntry
+    tempProcedure = new Procedure("proc2a");         //    procedure proc2a(...);
+    something = st.insert(tempProcedure, procedure);    
                                               //    var  
-   tempVariable = new Variable("count");               //      count: int3D;
-   something = st.insert(tempVariable, variable);    
-   typePtr = st.lookup("int3d");
-   tempVariable->setTypePtr(typePtr);
-   tempVariable = new Variable("x2a");                 //      x2a: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                   //      y: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("z");                   //      z: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("count");               //      count: int3D;
+    something = st.insert(tempVariable, variable);    
+    typePtr = st.lookup("int3d");
+    tempVariable->setTypePtr(typePtr);
+    tempVariable = new Variable("x2a");                 //      x2a: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                   //      y: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("z");                   //      z: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
 
-   
-   // scopeEntry
-   tempProcedure = new Procedure("proc2b");         //    procedure proc2b(...);
-   something = st.insert(tempProcedure, procedure);    
+
+    // scopeEntry
+    tempProcedure = new Procedure("proc2b");         //    procedure proc2b(...);
+    something = st.insert(tempProcedure, procedure);    
                                               //    var  
-   tempVariable = new Variable("x2b");                 //      x2b: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                   //      y: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("x2b");                 //      x2b: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                   //      y: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
 
-   // scopeEntry
-   tempProcedure = new Procedure("proc2c");         //    procedure proc2c(...);
-   something = st.insert(tempProcedure, procedure);    
+    // scopeEntry
+    tempProcedure = new Procedure("proc2c");         //    procedure proc2c(...);
+    something = st.insert(tempProcedure, procedure);    
                                               //    const
-   tempConst = new Constant("someconst");           //        someConst = 10; 
-   something = st.insert(tempConst, constant);     
-   tempConst->setConstFactor(10);
-   tempConst = new Constant("theconst");            //        theConst = 20;
-   tempConst->setConstFactor(20);
-   something = st.insert(tempConst, constant);        
+    tempConst = new Constant("someconst");           //        someConst = 10; 
+    something = st.insert(tempConst, constant);     
+    tempConst->setConstFactor(10);
+    tempConst = new Constant("theconst");            //        theConst = 20;
+    tempConst->setConstFactor(20);
+    something = st.insert(tempConst, constant);        
 
                                               //    var  
-   tempVariable = new Variable("x2c");                 //      x2c: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("y");                   //      y: integer;
-   typePtr = st.lookup("integer");
-   tempVariable->setTypePtr(typePtr);
-   something = st.insert(tempVariable, variable);    
-   tempVariable = new Variable("x2c");                 //      x2c: integer;
-   something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("x2c");                 //      x2c: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("y");                   //      y: integer;
+    typePtr = st.lookup("integer");
+    tempVariable->setTypePtr(typePtr);
+    something = st.insert(tempVariable, variable);    
+    tempVariable = new Variable("x2c");                 //      x2c: integer;
+    something = st.insert(tempVariable, variable);    
                                               // produce error: "x2c" exists
-   //free memory since x2c wasn't inserted
-   delete tempVariable;
+    //free memory since x2c wasn't inserted
+    delete tempVariable;
 
-   // scopeEntry 
-   // could use new Function if desired
-   tempFunction = new Function("func2d");         //    function func2d(  
-   something = st.insert(tempFunction, function);    
+    // scopeEntry 
+    // could use new Function if desired
+    tempFunction = new Function("func2d");         //    function func2d(  
+    something = st.insert(tempFunction, function);    
                                               //      newrec: cellPtr): integer;
-   tempParam = new Parameter("newrec");
-   tempParam->setVar(false);
-   typePtr = st.lookup("cellptr");
-   tempParam->setTypePtr(typePtr);
-   something = tempFunction->insertParameter(tempParam); 
-   typePtr = st.lookup("integer");
-   tempFunction->setReturnType(typePtr);
+    tempParam = new Parameter("newrec");
+    tempParam->setVar(false);
+    typePtr = st.lookup("cellptr");
+    tempParam->setTypePtr(typePtr);
+    something = tempFunction->insertParameter(tempParam); 
+    typePtr = st.lookup("integer");
+    tempFunction->setReturnType(typePtr);
 
 
-   // Not sure if this is correct:
+    // Not sure if this is correct:
                                               //    var  
                                               //      a: array [5..10] of real;
-   tempVariable = new Variable("a");               
-   something = st.insert(tempVariable, variable);    
-   tempArray = new ArrayType(""); 
-   tempArray->addDimension(5, 10);
-   typePtr = st.lookup("real");
-   tempArray->setTypePtr(typePtr);
-   tempVariable->setTypePtr(tempArray); 
+    tempVariable = new Variable("a");               
+    something = st.insert(tempVariable, variable);    
+    tempArray = new ArrayType(""); 
+    tempArray->addDimension(5, 10);
+    typePtr = st.lookup("real");
+    tempArray->setTypePtr(typePtr);
+    tempVariable->setTypePtr(tempArray); 
 
 
-   st.printST();
+    st.printST();
 
-   //Never gets inserted, so delete
-   delete tempArray;
-   // scopeExit of func2d              // end of func2d
-   // scopeExit of proc2c              // end of proc2c
-   // scopeExit of proc2b              // end of proc2b
-   // scopeExit of proc2a              // end of proc2a
-   // scopeExit of proc2               // end of proc2
-   // scopeExit of example             // end of example
-
-   return 0;
+    //Never gets inserted, so delete
+    delete tempArray;
+    // scopeExit of func2d              // end of func2d
+    // scopeExit of proc2c              // end of proc2c
+    // scopeExit of proc2b              // end of proc2b
+    // scopeExit of proc2a              // end of proc2a
+    // scopeExit of proc2               // end of proc2
+    // scopeExit of example             // end of example
+  } catch(char * str) {
+    cout << "Fatal: " << str << endl; 
+    return 1;
+  }
+  return 0;
 }
 
 
