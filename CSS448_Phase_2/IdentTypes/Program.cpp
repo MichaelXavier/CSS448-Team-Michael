@@ -4,6 +4,10 @@ Program::Program(const string& name) : IdentRecord(name) {
 }
 
 Program::~Program(void) {
+  //Delete parameters
+  for (unsigned int i = 0; i < parameters.size(); i++) {
+    delete parameters[i];
+  }
 }
 
 void Program::display(ostream& sout, int depth)const {

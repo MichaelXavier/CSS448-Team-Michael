@@ -95,6 +95,7 @@ int main() {
    tempField->setTypePtr(typePtr);
    tempField = new RecordField("id");              //      id: real;
    something = tempRecord->insertField(tempField); 
+   delete tempField;//wont be inserted, so delete
                                              // produce error: "id" exists
    tempField = new RecordField("next");            //      next: cellPtr;
    something = tempRecord->insertField(tempField);    
@@ -162,6 +163,9 @@ int main() {
    typePtr = st.lookup("integer");
    tempVariable->setTypePtr(typePtr);
    something = st.insert(tempVariable, variable);    
+   if (!something) {
+     delete tempVariable;
+   }
  //  look up "integer" in st; if not there, get it from sit, in typeptr
 
    st.printST();
@@ -191,6 +195,8 @@ int main() {
    something = st.insert(tempVariable, variable);    
    tempVariable = new Variable("y");                  //      y: integer;
    something = st.insert(tempVariable, variable);    
+   //so we can delete y
+   delete tempVariable;
                                              // produce error: "y" exists
 
    // scopeEntry
@@ -279,7 +285,11 @@ int main() {
    tempArray->setTypePtr(typePtr);
    tempVariable->setTypePtr(tempArray); // ?
 
+
    st.printST();
+
+   //Never gets inserted, fair game to delete
+   delete tempArray;
    // scopeExit of func2d              // end of func2d
    // scopeExit of proc2c              // end of proc2c
    // scopeExit of proc2b              // end of proc2b

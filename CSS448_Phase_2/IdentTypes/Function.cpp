@@ -5,6 +5,10 @@ Function::Function(const string& name) : IdentRecord(name) {
 }
 
 Function::~Function(void) {
+  //Delete parameters
+  for (unsigned int i = 0; i < parameters.size(); i++) {
+    delete parameters[i];
+  }
 }
 
 void Function::display(ostream& sout, int depth)const {

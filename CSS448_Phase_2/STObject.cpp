@@ -18,6 +18,10 @@ STObject::~STObject(void) {
   if (rootScope != NULL) {
     delete rootScope;//Deletion will cascade recursively into the children
   }
+  //Clear the SIT
+  for (unsigned int i = 0; i < identTable.size(); i++) {
+    delete identTable[i];
+  }
 }
 
 //FIXME: this is perhaps taking over the responsibility of scopeEntry?

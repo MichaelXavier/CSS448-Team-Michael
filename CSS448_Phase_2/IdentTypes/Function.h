@@ -21,6 +21,6 @@ public:
 	void display(ostream& sout, int depth)const;
 private:
   IdentRecord* returnType;
-  vector<Parameter*> parameters;//FIXME: this implementation not set in stone
+  vector<Parameter*> parameters;
 };
 #endif

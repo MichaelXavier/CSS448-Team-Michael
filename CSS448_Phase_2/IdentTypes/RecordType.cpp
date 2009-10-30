@@ -4,6 +4,10 @@ RecordType::RecordType(const string& name) : IdentRecord(name) {
 }
 
 RecordType::~RecordType(void) {
+  //Delete members
+  for (unsigned int i = 0; i < members.size(); i++) {
+    delete members[i];
+  }
 }
 
 void RecordType::display(ostream& sout, int depth)const {

@@ -7,7 +7,7 @@ ScopeNode::ScopeNode(IdentRecord* root, ScopeNode* parent, int depth) {
 }
 
 ScopeNode::~ScopeNode(void) {
-  delete scopeRoot;//FIXME: unless we need it elsewhere?
+  delete scopeRoot;
   //Free memory of IdentRecords in this scope
 	map<string, IdentRecord*>::iterator it;
 	for(it = records.begin(); it != records.end(); it++)

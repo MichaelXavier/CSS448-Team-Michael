@@ -4,6 +4,10 @@ Procedure::Procedure(const string& name) : IdentRecord(name) {
 }
 
 Procedure::~Procedure(void) {
+  //Delete parameters
+  for (unsigned int i = 0; i < parameters.size(); i++) {
+    delete parameters[i];
+  }
 }
 
 void Procedure::display(ostream& sout, int depth)const {
