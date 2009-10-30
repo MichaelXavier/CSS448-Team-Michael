@@ -12,7 +12,15 @@ void Variable::display(ostream& sout, int depth)const {
     return;
   }
   printIndent(sout, depth);
-	sout << identName << " " << typePtr->getName();
+  //if its an anonymous array type which has no name, call display on it, otherwise
+  //display the type identname
+  //also skip the indent so it all prints inline
+  if (typePtr->getName().size() == 0) {
+    sout << identName;
+    typePtr->display(sout, 0);
+  } else {
+    sout << identName << " " << typePtr->getName();
+  }
 }
 
 void Variable::setTypePtr(IdentRecord* type) {

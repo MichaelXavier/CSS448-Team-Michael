@@ -22,7 +22,8 @@ void RecordType::display(ostream& sout, int depth)const {
 
 bool RecordType::insertField(RecordField* field) {
   if (hasConflictingFields(field)) {
-    //cout << "conflicting param " << field->getName() << endl;//FIXME: debug
+    //Print an error and exit
+    cout << "Field already exists: " << field->getName() << endl;
     return false;
   }
   members.push_back(field);

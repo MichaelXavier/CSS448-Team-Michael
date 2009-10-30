@@ -15,7 +15,10 @@ void ArrayType::display(ostream& sout, int depth)const {
   }
 
   printIndent(sout, depth);
-	sout << identName << " ";
+
+  //Don't print if its an anonymous array type
+  sout << identName << " ";
+
 	for(int i = 0; i < dimensions; i++)
 	{
 		sout << ranges[i].low << ".." << ranges[i].high;

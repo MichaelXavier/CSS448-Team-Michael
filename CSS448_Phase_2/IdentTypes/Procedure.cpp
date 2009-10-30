@@ -33,6 +33,8 @@ bool Procedure::hasConflictingParams(const IdentRecord* parameter)const
 
 bool Procedure::insertParameter(Parameter* parameter) {
   if (hasConflictingParams(parameter)) {
+    //Print an error and exit
+    cout << "Parameter already exists: " << parameter->getName() << endl;
     return false;
   }
   parameters.push_back(parameter);
