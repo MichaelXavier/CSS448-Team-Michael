@@ -1,22 +1,28 @@
 #include "ArrayType.h"
 
+
+// Constructor
 ArrayType::ArrayType(const string& name) : IdentRecord(name) {
 	dimensions = 0;
 }
 
+
+// Destructor
 ArrayType::~ArrayType(void) {
 }
 
+
+// display
+// Prints data
 void ArrayType::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
-    //FIXME: just going to print the error and bail at this point
+	// typePtr must be set in order to display data
     sout << "Error: typePtr of " << identName << " not set";
     return;
   }
 
   printIndent(sout, depth);
 
-  //Don't print if its an anonymous array type
   sout << identName << " ";
 
 	for(int i = 0; i < dimensions; i++)
@@ -30,6 +36,8 @@ void ArrayType::display(ostream& sout, int depth)const {
 }
 
 
+// addDimension
+// Adds a dimension with low and high ranges
 void ArrayType::addDimension(int low, int high)
 {
 	dimensions++;
@@ -39,6 +47,8 @@ void ArrayType::addDimension(int low, int high)
 }
 
 
+
+// setTypePtr
 void ArrayType::setTypePtr(IdentRecord* type)
 {
 	typePtr = type;

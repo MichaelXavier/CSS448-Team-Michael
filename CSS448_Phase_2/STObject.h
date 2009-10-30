@@ -1,3 +1,6 @@
+// STObject.h
+// The symbol table.  Contains scope nodes and a standard identifier table.
+
 #ifndef STOBJECT_H
 #define STOBJECT_H
 #include <iostream>
@@ -27,15 +30,14 @@ using namespace std;
 class STObject {
 
 public:
-  //Constructor requires a program pointer to act as the root scope
   STObject(Program* root);
-  //Destructor
   ~STObject(void);
 
   bool insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
 
-  IdentRecord* lookup(const string& name);
+  // Loops up a name in the ST or SIT and returns a pointer to the IdentRecord
+  IdentRecord* lookup(const string& name);  
 
 private:
   ScopeNode* rootScope;		// Pointer to root scope 

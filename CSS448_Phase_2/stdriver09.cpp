@@ -1,3 +1,10 @@
+//--------------------------------------------
+//CSS448 Fall 09, Phase 2: Symbol Table
+//Symbol table main() driver
+//Mikhail Elbert and Michael Xavier
+//
+//This driver simulates the Parser and other subsequent phases feeding
+//token information to the symbol table.
 #include <iostream>
 #include "IdType.h"
 #include "STObject.h"
@@ -35,9 +42,11 @@ using namespace std;
 // Adjust as needed for your implementation.
 
 int main() {
-	Program* newProg = new Program("example");
-   STObject st(newProg);  
+   Program* newProg = new Program("example");
+   STObject st(newProg);   // ST is created, Program inserted into ST
 
+   // This is a list of all the pointer types for objects that will
+   // be inserted into the ST
    Constant* tempConst;
    ArrayType* tempArray;
    Parameter* tempParam;
@@ -49,27 +58,21 @@ int main() {
    Procedure* tempProcedure;
    Function* tempFunction;
 
+   // This is for setting the typePtr of various objects
    IdentRecord* typePtr;
 
+   // Bool that says if IdentRecord was inserted into ST
    bool something;
 
-   // create a table holding standard identifiers (sit): 
-   //      integer, real, boolean, char
-
-   // something could be bool or ptr
-   // assume first insert is the program, possible scopeEntry
-  // tempProcedure = new Procedure("example");           // program example(...);
-  // something = st.insert(tempProcedure, procedure);    
-                                             
    tempConst = new Constant("grades");             //       grades = 5; 
    something = st.insert(tempConst, constant);     
-   tempConst->setConstFactor(5);
+   tempConst->setConstFactor(5);					//      size = 4;
    tempConst = new Constant("size");
    something = st.insert(tempConst, constant);        
    tempConst->setConstFactor(4);
 
 
-												// type 
+												   // type 
    tempArray = new ArrayType("int3d");             //   int3D = array [1..5,2..3,0..2]
    something = st.insert(tempArray, arraytype);    //           of integer;
    tempArray->addDimension(1, 5);
@@ -81,22 +84,21 @@ int main() {
 
    tempPointer = new PointerType("cellptr", "cell");  //   cellPtr = ^cell;
    something = st.insert(tempPointer, pointertype);            
-   tempRecord = new RecordType("cell");          //   cell = record 
+   tempRecord = new RecordType("cell");               //   cell = record 
    something = st.insert(tempRecord, recordtype);
    // Sets cellPtr to point to cell type
    tempPointer->setPointObj(tempRecord);	
-   tempField = new RecordField("id");              //      id: integer;
+   tempField = new RecordField("id");                 //      id: integer;
    something = tempRecord->insertField(tempField);      
    typePtr = st.lookup("integer");
    tempField->setTypePtr(typePtr);
-   tempField = new RecordField("info");            //      info: int3D;
+   tempField = new RecordField("info");              //      info: int3D;
    something = tempRecord->insertField(tempField);  
    typePtr = st.lookup("int3d");
    tempField->setTypePtr(typePtr);
-   tempField = new RecordField("id");              //      id: real;
+   tempField = new RecordField("id");                //      id: real;
    something = tempRecord->insertField(tempField); 
    delete tempField;//wont be inserted, so delete
-                                             // produce error: "id" exists
    tempField = new RecordField("next");            //      next: cellPtr;
    something = tempRecord->insertField(tempField);    
    typePtr = st.lookup("cellptr");
@@ -149,10 +151,9 @@ int main() {
    tempParam->setTypePtr(typePtr);
    something = tempProcedure->insertParameter(tempParam); 
 
-                                             // var  
+                                                       // var  
    tempVariable = new Variable("count");              //      count: integer;
    something = st.insert(tempVariable, variable);    
-   // don't forget to search for locals in the param list, repeat names not allowed
    typePtr = st.lookup("integer");
    tempVariable->setTypePtr(typePtr);
    tempVariable = new Variable("x1");                 //      x1: integer;
@@ -166,12 +167,10 @@ int main() {
    if (!something) {
      delete tempVariable;
    }
- //  look up "integer" in st; if not there, get it from sit, in typeptr
 
    st.printST();
    // scopeExit of proc1                     // end of proc1
    
-
 
    // scopeEntry
    tempProcedure = new Procedure("proc2");         // procedure proc2(...);
@@ -283,12 +282,12 @@ int main() {
    tempArray->addDimension(5, 10);
    typePtr = st.lookup("real");
    tempArray->setTypePtr(typePtr);
-   tempVariable->setTypePtr(tempArray); // ?
+   tempVariable->setTypePtr(tempArray); 
 
 
    st.printST();
 
-   //Never gets inserted, fair game to delete
+   //Never gets inserted, so delete
    delete tempArray;
    // scopeExit of func2d              // end of func2d
    // scopeExit of proc2c              // end of proc2c

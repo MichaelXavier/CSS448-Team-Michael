@@ -1,15 +1,21 @@
 #include "PointerType.h"
 
+
+// Constructor
 PointerType::PointerType(const string& name, const string& declared) : IdentRecord(name) {
   declared_type = declared;
 }
 
+// Destructor
 PointerType::~PointerType(void) {
 }
 
+
+// display
+// Prints data
 void PointerType::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
-    //FIXME: just going to print the error and bail at this point
+    // typePtr must be set in order to print data
     sout << "Error: typePtr of " << identName << " not set";
     return;
   }
@@ -17,9 +23,11 @@ void PointerType::display(ostream& sout, int depth)const {
   sout << identName << " ^ " << typePtr->getName();
 }
 
+
+// setPointObj
+// Sets typePtr and checks if obj's identifier matches declared_type
 void PointerType::setPointObj(IdentRecord* obj) {
   if (obj == NULL) {
-    //FIXME: we can put a print error instead if we need to
     cout << "Error: cannot set the pointer target of a PointerType to NULL" << endl;
     return;
   } else if (obj->getName() != declared_type) {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "IdentRecord.h"
 
+// Standard type: Character
 class CharacterType : public IdentRecord {
 public:
 	CharacterType(const string& name);		// Constructor

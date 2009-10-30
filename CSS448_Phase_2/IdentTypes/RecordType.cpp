@@ -1,8 +1,12 @@
 #include "RecordType.h"
 
+
+// Constructor
 RecordType::RecordType(const string& name) : IdentRecord(name) {
 }
 
+
+// Destructor
 RecordType::~RecordType(void) {
   //Delete members
   for (unsigned int i = 0; i < members.size(); i++) {
@@ -10,10 +14,13 @@ RecordType::~RecordType(void) {
   }
 }
 
+// display
+// Prints data
 void RecordType::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
-	sout << identName << endl;
+	sout << identName << endl;  // Prints record name
 
+	// Prints record fields
 	for(unsigned int i = 0; i < members.size(); i++)
 	{
 		members[i]->display(sout, depth+1);
@@ -24,6 +31,8 @@ void RecordType::display(ostream& sout, int depth)const {
 	}
 }
 
+// insertField
+// Adds a field to list of fields stored in this record
 bool RecordType::insertField(RecordField* field) {
   if (hasConflictingFields(field)) {
     //Print an error and exit
@@ -34,12 +43,11 @@ bool RecordType::insertField(RecordField* field) {
   return true;
 }
 
+
+// hasConflictingFields
+// Checks if identifier name of inserted field is the same as any
+// of the identifier names of fields already stored in this record.
 bool RecordType::hasConflictingFields(const IdentRecord* field)const {
-  //FIXME: debug
-  /*cout << "begin field name dump: " << endl;
-	for(unsigned int i = 0; i < members.size(); i++)
-    cout << members[i]->getName() << endl;
-  cout << "end field name dump: " << endl;*/
 	for(unsigned int i = 0; i < members.size(); i++)
 	{
 		// Returns true if equal

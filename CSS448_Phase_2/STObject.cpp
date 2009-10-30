@@ -1,19 +1,26 @@
 #include "STObject.h"
 
+
+// Constructor
+// Note: it is necessary to have a Program object to set as the root scope
+// when instantiating an STObject.  This also creates the standard identifier
+// table.
 STObject::STObject(Program* root) {
-  rootScope = NULL;//FIXME: see if valgrind stops complaining
+  rootScope = NULL;
   if (root == NULL) {
     throw "Cannot instantiate an STObject with a null Program root.";
   }
-  fillIdentTable();
+  fillIdentTable();  // Creates standard identifier table
   currentScopeNumber = 0;
   //Create a root scope with no parent
 	rootScope = new ScopeNode(root, NULL, currentScopeNumber);
   //Root is now the current scope
   currentScope = rootScope;
-  //TODO: initialize other stuff here
 }
 
+
+// Destructor
+// Recursively deletes all ScopeNodes and SIT
 STObject::~STObject(void) {
   if (rootScope != NULL) {
     delete rootScope;//Deletion will cascade recursively into the children
@@ -24,18 +31,12 @@ STObject::~STObject(void) {
   }
 }
 
-//FIXME: this is perhaps taking over the responsibility of scopeEntry?
-//it is setting the current scope to the new nested scope. perhaps we don't
-//need scopeEntry or if we do, it will take 
+// insert
+// This inserts an IdentRecord into the ST.  
 bool STObject::insert(IdentRecord* new_rec, IdType type) {
   switch (type) {
     case function:
     case procedure:
-      // FIXME: this may require something for handling the case
-      // the new_rec identifier is already used by another
-      // procedure, function, or program in a parent scope
-      //bool scopeCreated;
-        //scopeCreated = scopeEntry(new_rec, type);
       if (scopeEntry(new_rec, type)) {
         return true;
       } else {
@@ -46,17 +47,14 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
       }
       break;
     case program:
-	  // Can only insert a new program and create a scope at root level
-      if(currentScopeNumber == 0) {
-        scopeEntry(new_rec, type);
-        return true;
-      } else {
-        // If not at root level, returns false (can't insert Program type) 
+		// A program can't be inserted since this was already done when
+		// the ST was created
         cout << "Error: cannot nest Program types: \"" << new_rec->getName() << "\"\n";
         return false;
-      }
       break;
     default:
+	  // All other IdentRecord types are inserted into the current scope's
+	  // records, if the identifier name doesn't already exist
       bool recordInsert;
       recordInsert = currentScope->insertRecord(new_rec);
       if(recordInsert == true) {
@@ -70,28 +68,42 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
 }
 
 
+// printST
+// Prints the symbol table by printing each ScopeNode (this
+// is done recursively from ScopeNode::printScope).
+// Afterwards, sets the current scope to the root scope.
+// Note: ScopeNodes are not deleted after printST
 void STObject::printST(void) {
   //Print starting from the root
   rootScope->printScope(cout);
-  //TODO: free scope memory
   //Start back up at the root scope
 	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
 	currentScopeNumber = 0;
+
+	cout << endl;
 }
 
 
+// scopeEntry
+// Creates a new scope, adds it to the current scope's list of child scopes,
+// and sets the current scope to the new scope.
 bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
 	currentScopeNumber++;
+
   //insert a new scope, set its parent as the current scope
 	ScopeNode* nested_scope = new ScopeNode(new_rec, currentScope, currentScopeNumber);
 	currentScope->insertScope(nested_scope);
 	currentScope = nested_scope;
-	return true; // FIXME: it would be necessary to return false if the 
-				 // identifier for the procedure is the same as a parent
-				 // scope procedure
+	return true;
 }
 
+
+
+// lookup
+// Checks the current scope and all parent scopes for the identifier name.
+// Also, checks the SIT.  Afterwards, returns a pointer to the IdentRecord.
+// If not found, prints an error message and returns NULL.
 IdentRecord* STObject::lookup(const string& name) {
   IdentRecord* retval = NULL;
   //Try currentScope which will go up to the root scope
@@ -102,7 +114,7 @@ IdentRecord* STObject::lookup(const string& name) {
     }
   }
 
-  //FIXME: shouldn't have to do this, for debugging purposes, going to explicitly check the root
+  //  Checks the root (note: for debugging purposes)
   if (rootScope != NULL) {
     retval = rootScope->lookup(name);
     if (retval != NULL) {
@@ -110,17 +122,21 @@ IdentRecord* STObject::lookup(const string& name) {
     }
   }
 
-  //Try the SIT
+  // Checks the symbol table for the identifier name
   for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
     if ((*it)->getName() == name) {
       return *it;
     }
   }
-  cout << "DEBUG: Coudln't find type with name " << name << endl;//fixme: DEBUG
+
+  cout << "Couldn't find type with name " << name << endl;
   //Didn't find it
   return NULL;
 }
 
+
+// fillIdentTable
+// Fills the SIT
 void STObject::fillIdentTable(void) {
   //fill in the SIT with primitives
   identTable.push_back(new IntegerType("integer"));

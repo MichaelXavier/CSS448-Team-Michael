@@ -1,13 +1,17 @@
 #include "RecordField.h"
+
+// Constructor
 RecordField::RecordField(const string& name) : IdentRecord(name) {
 }
 
+// Destructor
 RecordField::~RecordField(void) {
 }
 
+// display
+// Prints data
 void RecordField::display(ostream& sout, int depth) const {
   if (typePtr == NULL) {
-    //FIXME: just going to print the error and bail at this point
     sout << "Error: typePtr of " << identName << " not set";
     return;
   }

@@ -3,6 +3,8 @@
 #include <iostream>
 #include "IdentRecord.h"
 
+
+// Standard type: Integer
 class IntegerType : public IdentRecord {
 public:
 	IntegerType(const string& name);

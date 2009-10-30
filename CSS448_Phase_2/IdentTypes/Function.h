@@ -11,7 +11,7 @@ public:
 	Function(const string& name);		// Constructor
 	~Function(void);				// Destructor
 
-	bool insertParameter(Parameter*);
+	bool insertParameter(Parameter*);	// Adds a parameter to list of params
 
   //calls strcmp on identrecord or operator==
   bool hasConflictingParams(const IdentRecord*)const;
@@ -20,7 +20,7 @@ public:
 
 	void display(ostream& sout, int depth)const;
 private:
-  IdentRecord* returnType;
-  vector<Parameter*> parameters;
+  IdentRecord* returnType;			// Return type
+  vector<Parameter*> parameters;	// List of params
 };
 #endif

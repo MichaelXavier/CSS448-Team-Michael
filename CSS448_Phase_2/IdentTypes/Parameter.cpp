@@ -1,20 +1,25 @@
 #include "Parameter.h"
 
+
+// Constructor
 Parameter::Parameter(const string& name) : IdentRecord(name) {
 	passByRef = false;
 }
 
+// Destructor
 Parameter::~Parameter(void) {
 }
 
+// display
+// Prints data
 void Parameter::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
-    //FIXME: just going to print the error and bail at this point
+	  // Can only print if typePtr is set
     sout << "Error: typePtr of " << identName << " not set" << endl;
     return;
   }
 
-  printIndent(sout, depth);
+  printIndent(sout, depth); 
 	if(passByRef) {
 		sout << "var ";
   }

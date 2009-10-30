@@ -4,20 +4,20 @@
 #include "IdentRecord.h"
 
 
-// Note: not sure if this class is correct
 class PointerType : public IdentRecord {
 public:
 	PointerType(const string& name, const string& declared);
 	~PointerType(void);
 	
 	void display(ostream& sout, int depth)const;
-	void setPointObj(IdentRecord* obj);
+	void setPointObj(IdentRecord* obj);	// Sets typePtr and checks if
+									  // obj's identifier matches declared_type
 
 private:
-  //Because pointers can be declared before their types are, it would seem that we need to also store the declared type for
-  //The pointer so that it can be checked against the type of the object to which it points
-	IdentRecord* typePtr;
+	IdentRecord* typePtr; // The data type of this object
 
-  string declared_type;
+    string declared_type;	// This is used to make sure that typePtr
+							// matches the initial parameter in the
+							// constructor.
 };
 #endif

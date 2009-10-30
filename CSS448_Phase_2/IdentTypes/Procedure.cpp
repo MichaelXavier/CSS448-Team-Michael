@@ -1,8 +1,12 @@
 #include "Procedure.h"
 
+
+// Constructor
 Procedure::Procedure(const string& name) : IdentRecord(name) {
 }
 
+
+// Destructor
 Procedure::~Procedure(void) {
   //Delete parameters
   for (unsigned int i = 0; i < parameters.size(); i++) {
@@ -10,6 +14,9 @@ Procedure::~Procedure(void) {
   }
 }
 
+
+// display
+// Prints data
 void Procedure::display(ostream& sout, int depth)const {
   //leading newline like in the sample output
   sout << endl;
@@ -17,6 +24,7 @@ void Procedure::display(ostream& sout, int depth)const {
   printIndent(sout, depth);
 	sout << identName << endl;
 
+	// Prints list of parameters
 	for(unsigned int i = 0; i < parameters.size(); i++)
 	{
 		parameters[i]->display(sout, depth+1);
@@ -24,6 +32,10 @@ void Procedure::display(ostream& sout, int depth)const {
 	}
 }
 
+
+// hasConflictingParams
+// Checks to see if parameter's identifier name is the same as
+// any of the identifier names of parameters stored in this Procedure
 bool Procedure::hasConflictingParams(const IdentRecord* parameter)const
 {
 	for(unsigned int i = 0; i < parameters.size(); i++)
@@ -38,6 +50,9 @@ bool Procedure::hasConflictingParams(const IdentRecord* parameter)const
 }
 
 
+// insertParameter
+// Adds a parameter to the Procedure's parameter list, as long as
+// no conflicting parameter identifier names exist.
 bool Procedure::insertParameter(Parameter* parameter) {
   if (hasConflictingParams(parameter)) {
     //Print an error and exit

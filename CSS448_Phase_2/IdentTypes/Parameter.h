@@ -13,7 +13,8 @@ public:
 	void setVar(bool var) {passByRef = var;}
 
 private:
-	IdentRecord* typePtr;
-	bool passByRef;	// var = 0 means pass by value, var = 1 means pass by reference
+	IdentRecord* typePtr; // The data type of this parameter
+	bool passByRef;	// var = 0 means pass by value, 
+					// var = 1 means pass by reference
 };
 #endif

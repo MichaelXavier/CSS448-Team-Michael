@@ -13,14 +13,14 @@ public:
 	Procedure(const string& name);
 	~Procedure(void);
 
-	void display(ostream& sout, int depth)const;
-	bool insertParameter(Parameter*);
+	void display(ostream& sout, int depth)const; // Prints data
+	bool insertParameter(Parameter*);  // Adds a parameter to list of params
 	
-  //calls strcmp on identrecord or operator==
+  // Checks to see if parameter's identifier name is the same as
+  // any of the identifier names of parameters stored in this Procedure
   bool hasConflictingParams(const IdentRecord* parameter)const;
 
 private:
-	// possibly a list of parameters
-  vector<Parameter*> parameters;
+  vector<Parameter*> parameters;  // List of procedure parameters
 };
 #endif

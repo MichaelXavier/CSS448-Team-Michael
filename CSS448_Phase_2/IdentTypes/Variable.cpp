@@ -1,13 +1,19 @@
 #include "Variable.h"
+
+// Constructor
 Variable::Variable(const string& name) : IdentRecord(name) {
 }
 
+
+// Destructor
 Variable::~Variable(void) {
 }
 
+
+// display
+// Prints data
 void Variable::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
-    //FIXME: just going to print the error and bail at this point
     sout << "Error: typePtr of " << identName << " not set";
     return;
   }
@@ -23,9 +29,10 @@ void Variable::display(ostream& sout, int depth)const {
   }
 }
 
+
+// setTypePtr
 void Variable::setTypePtr(IdentRecord* type) {
   if (type == NULL) {
-    //FIXME: we can put a print error instead if we need to
     throw "Error: cannot set the pointer target of a PointerType to NULL";
     return;
   } else {

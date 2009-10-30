@@ -14,11 +14,13 @@ public:
 	~RecordType();
 
 	void display(ostream& sout, int depth)const;
-	bool insertField(RecordField* field);
+	bool insertField(RecordField* field);	// Add a field to record's list
+											// of fields
 
+	// Checks for conflicting fields
 	bool hasConflictingFields(const IdentRecord* field) const;
 
 private:
-  vector<RecordField*> members;
+  vector<RecordField*> members;  // List of RecordFields stored in this record
 };
 #endif

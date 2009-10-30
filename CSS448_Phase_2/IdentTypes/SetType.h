@@ -12,7 +12,7 @@ public:
 	void setRange(int low, int high);	// Sets the range of the set
 
 private:
-	int m_low;
-	int m_high;
+	int m_low;	// Low of set range
+	int m_high; // High of set range
 };
 #endif

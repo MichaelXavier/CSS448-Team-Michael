@@ -3,6 +3,7 @@
 #include <iostream>
 #include "IdentRecord.h"
 
+// Standard type: Real
 class RealType : public IdentRecord {
 public:
 	RealType(const string& name);

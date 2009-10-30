@@ -10,7 +10,7 @@ public:
 	RecordField(const string& name);
 	~RecordField();
 
-	void display(ostream& sout, int depth)const;					 // Displays data
+	void display(ostream& sout, int depth)const;
 	void setTypePtr(IdentRecord* ptr) {typePtr = ptr;}
 
 private:
