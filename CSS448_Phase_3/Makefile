@@ -1,26 +1,31 @@
-CC = g++
-OBJ = main.o lex.o y.tab.o actions.o     # all object files, the  .o  files
-H = lex.h lexextern.h
-ACT = actions.h actextern.h        
+OBJ = y.tab.o main.o lex.o         # all object files, the .o  files
+                                   # change lex.o to lex.yy.o if (f)lex used
+H = y.tab.h tokenconsts.h
 
-lex.out: $(OBJ) $H $(ACT)         # lex.out depends on everything
-	$(CC) $(OBJ) -o lex.out
+# The $ is a macro reference.  The following ident is replaced with the
+# specified list.  Parens must be used if the ident is longer than one char.
 
-main.o:	$H main.cpp                 # main.o depends on the .h's of H and main.c
-	$(CC) -g -c main.cpp
+a.out: $(OBJ) $H                   # a.out depends on everything
+	g++ $(OBJ) -o a.out
 
-actions.o: $(ACT) actions.cpp       # actions.o depends on .h's of ACT
-	$(CC) -c actions.cpp          #                      and actions.c
+main.o: main.cpp                   # main.o depends on main.cpp
+	g++ -c  main.cpp
 
-lex.o: $H lex.c                   # lex.o depends on lex.h, lexextern.h, lex.c
-	$(CC) -c lex.c
+lex.o: lex.yy.c
+	flex -i lex.l
+	g++ -c lex.yy.c -o lex.o
 
-y.tab.o: y.tab.c                  # y.tab.o depends on y.tab.c
-	$(CC) -c y.tab.c
+lex.yy.c: $H lex.l                 # lex.yy.c depend on the lex file, lex.l
+	lex -i --header-file=lex.h lex.l                      # include only if you used (f)lex
 
-y.tab.c: yacc.y                   # y.tab.c depends on yacc.y
-	yacc -v $<
+lex.yy.o: lex.yy.c                 # lex.yy.o depend on lex.yy.c
+	g++ -c lex.yy.c                # include this if you used (f)lex
 
-clean:
-	rm -f *.cpp *.c *.o *.out
+y.tab.o: lex.yy.o y.tab.c                   # y.tab.o depends on y.tab.c
+	g++ -c y.tab.c
 
+y.tab.c: y                         # y.tab.c depends on the yacc file, y   
+	yacc -d -v y                   # -d separates out defines into .h file
+
+clean: 
+	rm -f *.o a.out *.c y.output y.tab.h lex.h
