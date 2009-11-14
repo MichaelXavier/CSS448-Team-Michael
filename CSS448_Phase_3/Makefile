@@ -15,7 +15,7 @@ lex.o: lex.yy.c
 	flex -i lex.l
 	g++ -c lex.yy.c -o lex.o
 
-lex.yy.c: $H lex.l                 # lex.yy.c depend on the lex file, lex.l
+lex.yy.c: y.tab.c $H lex.l                 # lex.yy.c depend on the lex file, lex.l
 	lex -i --header-file=lex.h lex.l                      # include only if you used (f)lex
 
 lex.yy.o: lex.yy.c                 # lex.yy.o depend on lex.yy.c
