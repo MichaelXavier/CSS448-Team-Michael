@@ -6,6 +6,15 @@
 using namespace std; 
 
 extern void yyerror(const char *s);
+/*extern "C"
+{
+        int yyparse(void);
+        int yylex(void);  
+        int yywrap()
+        {
+                return 1;
+        }
+}*/
 
 %}
 
@@ -27,7 +36,7 @@ extern void yyerror(const char *s);
 
 CompilationUnit    :  ProgramModule        
                    ;
-ProgramModule      :  yprogram yident ProgramParameters ysemicolon Block ydot
+ProgramModule      :  yprogram {printf("after yprogram\n");} yident ProgramParameters ysemicolon Block ydot
                    ;
 ProgramParameters  :  yleftparen  IdentList  yrightparen
                    ;
