@@ -2,11 +2,9 @@
 
 /* declarations section */
 #include <iostream>
-//#include "tokenconsts.h"
 using namespace std; 
 
 extern void yyerror(const char *s);
-extern int yylex();
 
 %}
 
@@ -57,8 +55,8 @@ TypeDefBlock       :  /*** empty ***/
 TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  
                    ;
-VariableDeclBlock  :  /*** empty ***/
-                   |  yvar VariableDeclList
+VariableDeclBlock  : /*** empty ***/
+				   | yvar VariableDeclList
                    ;
 VariableDeclList   :  VariableDecl ysemicolon
                    |  VariableDeclList VariableDecl ysemicolon /*ADDED: recursive case*/
@@ -265,4 +263,5 @@ void yyerror(const char *s) {
    cout << s << endl;
 }
 
+extern int yylex();
 
