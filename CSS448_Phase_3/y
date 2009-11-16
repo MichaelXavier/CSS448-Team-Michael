@@ -2,19 +2,11 @@
 
 /* declarations section */
 #include <iostream>
-#include "lex.h"
+//#include "tokenconsts.h"
 using namespace std; 
 
 extern void yyerror(const char *s);
-/*extern "C"
-{
-        int yyparse(void);
-        int yylex(void);  
-        int yywrap()
-        {
-                return 1;
-        }
-}*/
+extern int yylex();
 
 %}
 
@@ -36,7 +28,7 @@ extern void yyerror(const char *s);
 
 CompilationUnit    :  ProgramModule        
                    ;
-ProgramModule      :  yprogram {printf("after yprogram\n");} yident ProgramParameters ysemicolon Block ydot
+ProgramModule      :  yprogram yident ProgramParameters ysemicolon Block ydot
                    ;
 ProgramParameters  :  yleftparen  IdentList  yrightparen
                    ;
@@ -65,7 +57,8 @@ TypeDefBlock       :  /*** empty ***/
 TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  
                    ;
-VariableDeclBlock  :  yvar VariableDeclList
+VariableDeclBlock  :  /*** empty ***/
+                   |  yvar VariableDeclList
                    ;
 VariableDeclList   :  VariableDecl ysemicolon
                    |  VariableDeclList VariableDecl ysemicolon /*ADDED: recursive case*/
@@ -272,5 +265,4 @@ void yyerror(const char *s) {
    cout << s << endl;
 }
 
-extern int yylex();
 
