@@ -1,7 +1,8 @@
 %{
   #include <iostream>
   #include <string>
-  #include "tokenconsts.h"
+  //#include "tokenconsts.h"
+  #include "y.tab.h"
   using namespace std;
   string s;
 %}

@@ -17,7 +17,7 @@ type
   cell = record
      id: integer;
      info: integerArray; 
-     next: cellPtr;
+     next: cellPtr
   end;
 
 var
@@ -91,7 +91,7 @@ begin
     read(newrec^.id);
     for i := 1 to grades do 
        read(newrec^.info[i]);
-    newrec^.info[avgPosition]:= average(newrec);
+(*    newrec^.info[avgPosition]:= average(newrec);  *)
 end;
 
 (* ************************************************************************* *)
