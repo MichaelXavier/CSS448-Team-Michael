@@ -1,6 +1,6 @@
 CC = g++
-OBJ = y.tab.o main.o lex.yy.o
-H = y.tab.h tokenconsts.h
+OBJ = y.tab.o main.o lex.yy.o actions.o
+H = y.tab.h tokenconsts.h actions.h
 
 # The $ is a macro reference.  The following ident is replaced with the
 # specified list.  Parens must be used if the ident is longer than one char.
@@ -10,6 +10,9 @@ a.out: $(OBJ) $H
 
 main.o: main.cpp ScopeNode.cpp STObject.cpp
 	$(CC) -c $^
+
+actions.o: actions.cpp $(ACT)
+	$(CC) -c $< -o $@
 
 lex.yy.c: lex.l y.tab.c $H
 	flex -i $<

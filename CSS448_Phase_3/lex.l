@@ -15,6 +15,7 @@
   void handleComment(void);
   void handleBraces(void);
   void addError(const char*, const char*);
+  void printErrors(void);
 %}
 
 OPS   [ \t\n\r\(\)\[\]\+\-\/=\*;\.\,\:]
@@ -84,7 +85,7 @@ while                { return ywhile; }
 Write                { return ywrite; }
 WriteLn              { return ywriteln; }
 
-[A-Za-z]+[A-Za-z0-9]*              { s = yytext;return yident; }
+[A-Za-z]+[A-Za-z0-9]*              { yylval.str = yytext; return yident; }
 [0-9]+\.[0-9]+\e[+-]?[0-9]+        { s = yytext;return ynumber; }
 [0-9]+\.[0-9]+\e[+-]?[0-9]+/{OPS}  { s = yytext;return ynumber; }
 [0-9]+\.[0-9]+                     { s = yytext;return ynumber; }
@@ -145,7 +146,16 @@ void addError(const char* text, const char* data) {
   }
 }
 
+void printErrors(void) {
+  if (has_errors) {
+    for (int i = 0; i < error_count; i++) {
+      cout << errors[i] << endl;
+    }
+  }
+}
+
 int yywrap() {
+  //printErrors();//FIXME: figure out how to indicate an error and not continue to yacc
   return 1;
 }
 
