@@ -1,125 +1,149 @@
 %{
   #include <iostream>
   #include <string>
-  //#include "tokenconsts.h"
+  #include <sstream>
   #include "y.tab.h"
   using namespace std;
   string s;
+  
+  //FIXME: don't know what we're supposed to do with these errors
+  const int MAX_ERRS = 256;
+  string errors[MAX_ERRS];
+  bool has_errors;
+  int error_count = 0;
+
+  void handleComment(void);
+  void handleBraces(void);
+  void addError(const char*, const char*);
 %}
 
 OPS   [ \t\n\r\(\)\[\]\+\-\/=\*;\.\,\:]
 NOTOPS   [^ \t\n\r\(\)\[\]\+\-\/=\*;\.\,\:]
      
 %%
-"(*"          { 
-                //dump the comment to output
-                cout << "/*";
-                char ch;
-                for (;;)
-                {
-                  while ((ch = yyinput()) != '*' && ch != EOF) {
-                    cout << ch;
-                  }
-                  if (ch == '*')
-                  {
-                    char temp = yyinput();
-                    if (temp == ')') {
-                      break;
-                    } else {
-                      unput(temp);
-                      cout << ch;
-                    }
-                  } else if (ch == EOF) {
-                    break;
-                  }
-                }
-                //print the C-style close comment
-                cout << "*/\n";
-              }
-"{"          { 
-                //dump the comment to output
-                cout << "/*";
-                char ch;
-                for (;;)
-                {
-                  if((ch = yyinput()) != '}' && ch != EOF) {
-                    cout << ch;
-                  }
-                }
-                //print the C-style close comment
-                cout << "*/\n";
-              }
-and                  { s = ""; return yand; }
-array                { s = ""; return yarray; }
-:=                   { s = ""; return yassign; }
-begin                { s = ""; return ybegin; }
-\^                   { s = ""; return ycaret; }
-case                 { s = ""; return ycase; }
-:                    { s = ""; return ycolon; }
-,                    { s = ""; return ycomma; }
-const                { s = ""; return yconst; }
-dispose              { s = ""; return ydispose; }
-div                  { s = ""; return ydiv; }
-\/                   { s = ""; return ydivide; }
-do                   { s = ""; return ydo; }
-\.                   { s = ""; return ydot; }
-\.\.                 { s = ""; return ydotdot; }
-downto               { s = ""; return ydownto; }
-else                 { s = ""; return yelse; }
-end                  { s = ""; return yend; }
-=                    { s = ""; return yequal; }
-false                { s = ""; return yfalse; }
-for                  { s = ""; return yfor; }
-function             { s = ""; return yfunction; }
->                    { s = ""; return ygreater; }
->=                   { s = ""; return ygreaterequal; }
-if                   { s = ""; return yif; }
-in                   { s = ""; return yin; }
-"["                  { s = ""; return yleftbracket; }
-"("                  { s = ""; return yleftparen; }
-\<                   { s = ""; return yless; }
-\<=                  { s = ""; return ylessequal; }
--                    { s = ""; return yminus; }
-mod                  { s = ""; return ymod; }
-\*                   { s = ""; return ymultiply; }
-new                  { s = ""; return ynew; }
-nil                  { s = ""; return ynil; }
-not                  { s = ""; return ynot; }
-\<>                  { s = ""; return ynotequal; }
-of                   { s = ""; return yof; }
-or                   { s = ""; return yor; }
-"+"                  { s = ""; return yplus; }
-procedure            { s = ""; return yprocedure; }
-program              { s = ""; return yprogram; }
-Read                 { s = ""; return yread; }
-ReadLn               { s = ""; return yreadln; }
-record               { s = ""; return yrecord; }
-repeat               { s = ""; return yrepeat; }
-"]"                  { s = ""; return yrightbracket; }
-")"                  { s = ""; return yrightparen; }
-;                    { s = ""; return ysemicolon; }
-set                  { s = ""; return yset; }
+"(*"                 { handleComment(); }
+"{"                  { handleBraces(); }
+and                  { return yand; }
+array                { return yarray; }
+:=                   { return yassign; }
+begin                { return ybegin; }
+\^                   { return ycaret; }
+case                 { return ycase; }
+:                    { return ycolon; }
+,                    { return ycomma; }
+const                { return yconst; }
+dispose              { return ydispose; }
+div                  { return ydiv; }
+\/                   { return ydivide; }
+do                   { return ydo; }
+\.                   { return ydot; }
+\.\.                 { return ydotdot; }
+downto               { return ydownto; }
+else                 { return yelse; }
+end                  { return yend; }
+=                    { return yequal; }
+false                { return yfalse; }
+for                  { return yfor; }
+function             { return yfunction; }
+>                    { return ygreater; }
+>=                   { return ygreaterequal; }
+if                   { return yif; }
+in                   { return yin; }
+"["                  { return yleftbracket; }
+"("                  { return yleftparen; }
+\<                   { return yless; }
+\<=                  { return ylessequal; }
+-                    { return yminus; }
+mod                  { return ymod; }
+\*                   { return ymultiply; }
+new                  { return ynew; }
+nil                  { return ynil; }
+not                  { return ynot; }
+\<>                  { return ynotequal; }
+of                   { return yof; }
+or                   { return yor; }
+"+"                  { return yplus; }
+procedure            { return yprocedure; }
+program              { return yprogram; }
+Read                 { return yread; }
+ReadLn               { return yreadln; }
+record               { return yrecord; }
+repeat               { return yrepeat; }
+"]"                  { return yrightbracket; }
+")"                  { return yrightparen; }
+;                    { return ysemicolon; }
+set                  { return yset; }
 '[^']*'|\"[^\"]*\"   { s = yytext;return ystring; } 
-then                 { s = ""; return ythen; }
-to                   { s = ""; return yto; }
-true                 { s = ""; return ytrue; }
-type                 { s = ""; return ytype; }
-until                { s = ""; return yuntil; }
-var                  { s = ""; return yvar; }
-while                { s = ""; return ywhile; }
-Write                { s = ""; return ywrite; }
-WriteLn              { s = ""; return ywriteln; }
+then                 { return ythen; }
+to                   { return yto; }
+true                 { return ytrue; }
+type                 { return ytype; }
+until                { return yuntil; }
+var                  { return yvar; }
+while                { return ywhile; }
+Write                { return ywrite; }
+WriteLn              { return ywriteln; }
 
 [A-Za-z]+[A-Za-z0-9]*              { s = yytext;return yident; }
 [0-9]+\.[0-9]+\e[+-]?[0-9]+        { s = yytext;return ynumber; }
 [0-9]+\.[0-9]+\e[+-]?[0-9]+/{OPS}  { s = yytext;return ynumber; }
 [0-9]+\.[0-9]+                     { s = yytext;return ynumber; }
 [0-9]+                             { s = yytext;return ynumber; }
-[0-9]+{NOTOPS}+                    { s = yytext;return yunknown; }
-[^ \t\n\r]                         { s = yytext; return yunknown; }
+[0-9]+{NOTOPS}+                    { s = yytext; addError("Unknown string found:", yytext);return yunknown; }
+[^ \t\n\r]                         { s = yytext; addError("Unknown string found:", yytext);return yunknown; }
 
 [ \t\n\r]
 %%
+
+void handleComment(void) {
+  //dump the comment to output
+  cout << "/*";
+  char ch;
+  for (;;)
+  {
+    while ((ch = yyinput()) != '*' && ch != EOF) {
+      cout << ch;
+    }
+    if (ch == '*')
+    {
+      char temp = yyinput();
+      if (temp == ')') {
+        break;
+      } else {
+        unput(temp);
+        cout << ch;
+      }
+    } else if (ch == EOF) {
+      break;
+    }
+  }
+  //print the C-style close comment
+  cout << "*/\n";
+}
+void handleBraces(void) {
+  //dump the comment to output
+  cout << "/*";
+  char ch;
+  for (;;)
+  {
+    if((ch = yyinput()) != '}' && ch != EOF) {
+      cout << ch;
+    }
+  }
+  //print the C-style close comment
+  cout << "*/\n";
+}
+
+void addError(const char* text, const char* data) {
+  if (error_count < MAX_ERRS - 1) {
+    ostringstream out;
+    out << text << ": " << data;
+    errors[++error_count] = out.str();
+    has_errors = true;
+  } else {
+    cout << "ERROR: Error list empty." << endl;
+  }
+}
 
 int yywrap() {
   return 1;

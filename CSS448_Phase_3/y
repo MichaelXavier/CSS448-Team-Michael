@@ -7,6 +7,10 @@ using namespace std;
 extern void yyerror(const char *s);
 extern int yylex();
 
+extern string* errors;
+extern bool has_errors;
+extern int error_count;
+
 %}
 
 /* definition section */
@@ -25,7 +29,7 @@ extern int yylex();
 
 /**************************  Pascal program **********************************/
 
-CompilationUnit    :  ProgramModule        
+CompilationUnit    :  ProgramModule 
                    ;
 ProgramModule      :  yprogram yident ProgramParameters ysemicolon Block ydot
                    ;
