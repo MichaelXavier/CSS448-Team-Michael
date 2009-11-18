@@ -12,16 +12,16 @@ main.o: main.cpp ScopeNode.cpp STObject.cpp
 	$(CC) -c $^
 
 lex.yy.c: lex.l y.tab.c $H
-	flex -i $< #rule1
+	flex -i $<
 
 lex.yy.o: lex.yy.c
-	$(CC) -c $< -o $@ #rule2
+	$(CC) -c $< -o $@
 
 y.tab.o: y.tab.c lex.yy.o 
-	$(CC) -c $< -o $@ #rule3
+	$(CC) -c $< -o $@
 
 y.tab.c: y
-	yacc -d -v $< #rule4
+	yacc -d -v $<
 
 clean: 
 	rm -f *.o a.out *.c y.output y.tab.h
