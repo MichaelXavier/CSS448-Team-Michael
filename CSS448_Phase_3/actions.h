@@ -22,5 +22,8 @@
 
 using namespace std;
 
-void startProgram(const char*);
+extern string s;
+extern STObject* symTable;
+
+void startProgram(const string&);
 void endProgram(void);

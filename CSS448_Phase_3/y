@@ -16,6 +16,8 @@ extern int error_count;
 
 STObject* symTable;
 
+extern string s;
+
 %}
 
 /* definition section */
@@ -23,19 +25,17 @@ STObject* symTable;
 %start  CompilationUnit
 %token  yand yarray yassign ybegin ycaret ycase ycolon ycomma yconst ydispose 
         ydiv ydivide ydo  ydot ydotdot ydownto yelse yend yequal yfalse
-        yfor yfunction ygreater ygreaterequal yif yin yleftbracket
+        yfor yfunction ygreater ygreaterequal yident yif yin yleftbracket
         yleftparen yless ylessequal yminus ymod ymultiply ynew ynil ynot 
         ynotequal ynumber yof  yor yplus yprocedure yprogram yread yreadln  
         yrecord yrepeat yrightbracket yrightparen  ysemicolon yset ystring
         ythen  yto ytrue ytype  yuntil  yvar ywhile ywrite ywriteln yunknown
 
-%token  <str> yident
-
-%union 
+/*%union 
 {
         int number;
         char* str;
-}
+}*/
 
 %%
 /* rules section */
@@ -45,7 +45,7 @@ STObject* symTable;
 CompilationUnit    :  ProgramModule 
                    ;
 ProgramModule      :  yprogram yident 
-                      {startProgram($2);} 
+                      {startProgram(s);} 
                       ProgramParameters ysemicolon Block ydot
                    ;
 ProgramParameters  :  yleftparen  IdentList  yrightparen

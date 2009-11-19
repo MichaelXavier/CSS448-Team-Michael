@@ -1,11 +1,11 @@
 #include "actions.h"
 
-void startProgram(const char* wat) {
+void startProgram(const string& name) {
   Program* newProg = new Program(name);
-  symTable = new STObject(newProg);   // ST is created, Program inserted into ST
+  symTable = new STObject(newProg);   // ST is created, Program inserted into ST*/
 }
 
 void endProgram(void) {
-  //symTable.printST();//FIXME: create a method that closes the ST without printing
-  //delete symTable;
+  symTable->printST();//FIXME: create a method that closes the ST without printing
+  delete symTable;
 }

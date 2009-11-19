@@ -74,7 +74,7 @@ repeat               { return yrepeat; }
 ")"                  { return yrightparen; }
 ;                    { return ysemicolon; }
 set                  { return yset; }
-'[^']*'|\"[^\"]*\"   { s = yytext;return ystring; } 
+'[^']*'|\"[^\"]*\"   { s = yytext; return ystring; } 
 then                 { return ythen; }
 to                   { return yto; }
 true                 { return ytrue; }
@@ -85,11 +85,11 @@ while                { return ywhile; }
 Write                { return ywrite; }
 WriteLn              { return ywriteln; }
 
-[A-Za-z]+[A-Za-z0-9]*              { yylval.str = yytext; return yident; }
-[0-9]+\.[0-9]+\e[+-]?[0-9]+        { s = yytext;return ynumber; }
-[0-9]+\.[0-9]+\e[+-]?[0-9]+/{OPS}  { s = yytext;return ynumber; }
-[0-9]+\.[0-9]+                     { s = yytext;return ynumber; }
-[0-9]+                             { s = yytext;return ynumber; }
+[A-Za-z]+[A-Za-z0-9]*              { s = yytext; return yident; }
+[0-9]+\.[0-9]+\e[+-]?[0-9]+        { s = yytext; return ynumber; }
+[0-9]+\.[0-9]+\e[+-]?[0-9]+/{OPS}  { s = yytext; return ynumber; }
+[0-9]+\.[0-9]+                     { s = yytext; return ynumber; }
+[0-9]+                             { s = yytext; return ynumber; }
 [0-9]+{NOTOPS}+                    { s = yytext; addError("Unknown string found:", yytext);return yunknown; }
 [^ \t\n\r]                         { s = yytext; addError("Unknown string found:", yytext);return yunknown; }
 
