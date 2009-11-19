@@ -7,7 +7,7 @@ H 			= y.tab.h tokenconsts.h
 # The $ is a macro reference.  The following ident is replaced with the
 # specified list.  Parens must be used if the ident is longer than one char.
 
-a.out: $(OBJ) $(SUBDIRS) $H $(ACT)
+a.out: $(SUBDIRS) $(OBJ) $H $(ACT)
 	$(CC) $(OBJ) -o $@
 
 main.o: main.cpp 
@@ -19,7 +19,7 @@ stobject.o: STObject.cpp
 scopenode.o: ScopeNode.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
-IdentTypes:
+IdentTypes: force_look
 	cd $@; $(MAKE) 
 
 actions.o: actions.cpp $(ACT)
@@ -40,3 +40,8 @@ y.tab.c: y
 clean: 
 	rm -f *.o a.out *.c y.output y.tab.h
 	-for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean ); done
+
+force_look:
+	true
+
+.PHONY: IdentTypes/*.o

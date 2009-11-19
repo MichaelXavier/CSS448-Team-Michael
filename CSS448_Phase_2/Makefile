@@ -14,15 +14,3 @@ clean:
 	rm -f *_test
 	rm -f a.out
 	rm -f junktest.out
-
-#%_runner.cpp: UnitTests/%TestSuite.h UnitTests/IdentRecordTestHelper.h 
-#	cxxtestgen.py --error-printer -o $@ $<
-#
-#%_test: IdentTypes/IdentRecord.cpp IdentTypes/%.cpp %_runner.cpp
-#	${CC} ${CFLAGS} -o $@ $^ -I ${CXXLIB_PATH}
-#
-#run_%_test: %_test
-#	./$<
-#
-#test_all:
-#	find UnitTests -type f | grep "TestSuite\.h$$" | xargs -I {} basename {} | sed -e 's/TestSuite\.h$$//' | xargs -I {} make {}_test

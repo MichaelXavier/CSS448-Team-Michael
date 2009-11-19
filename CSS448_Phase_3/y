@@ -42,7 +42,7 @@ extern string s;
 
 /**************************  Pascal program **********************************/
 
-CompilationUnit    :  ProgramModule 
+CompilationUnit    :  ProgramModule {endProgram();}
                    ;
 ProgramModule      :  yprogram yident 
                       {startProgram(s);} 
