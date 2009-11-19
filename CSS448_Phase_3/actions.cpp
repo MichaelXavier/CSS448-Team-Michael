@@ -2,8 +2,7 @@
 
 void startProgram(const string& name) {
   Program* newProg = new Program(name);
-  symTable = new STObject(newProg);   // ST is created, Program inserted into ST*/
-  cout << "Built a program" << endl;//DEBUG
+  symTable = new STObject(newProg);
 }
 
 void endProgram(void) {
