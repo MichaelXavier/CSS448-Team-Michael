@@ -20,6 +20,17 @@
 #include "IdentTypes/SetType.h"
 #include "IdentTypes/Variable.h"
 
+#include "ParsingHelpers/arrayHelper.h"
+#include "ParsingHelpers/constDecHelper.h"
+#include "ParsingHelpers/functionHelper.h"
+#include "ParsingHelpers/pointerHelper.h"
+#include "ParsingHelpers/procedureHelper.h"
+#include "ParsingHelpers/programHelper.h"
+#include "ParsingHelpers/recordHelper.h"
+#include "ParsingHelpers/setHelper.h"
+#include "ParsingHelpers/typeDefHelper.h"
+#include "ParsingHelpers/varDecHelper.h"
+
 using namespace std;
 
 extern string s;

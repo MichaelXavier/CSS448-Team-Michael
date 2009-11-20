@@ -1,6 +1,6 @@
 include Makefile.inc
 OBJ 		= main.o lex.yy.o actions.o y.tab.o IdentTypes/*.o scopenode.o stobject.o 
-SUBDIRS = IdentTypes
+SUBDIRS = IdentTypes ParsingHelpers
 ACT 		= actions.h
 H 			= y.tab.h tokenconsts.h
 
@@ -20,6 +20,9 @@ scopenode.o: ScopeNode.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 IdentTypes: force_look
+	cd $@; $(MAKE) 
+
+ParsingHelpers: force_look
 	cd $@; $(MAKE) 
 
 actions.o: actions.cpp $(ACT)
