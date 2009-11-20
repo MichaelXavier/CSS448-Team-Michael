@@ -20,6 +20,7 @@ private:
 
   string typeName;
   bool clean;
+  virtual bool validate(void);
 
 };
 

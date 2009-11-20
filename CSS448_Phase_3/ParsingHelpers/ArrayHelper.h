@@ -4,24 +4,33 @@
 #include <queue>
 #include <string>
 #include "TypeHelper.h"
+#include "IdType.h"
 #include "../IdentRecords/ArrayType.h"
 
 using namespace std;
 
 class ArrayHelper : public TypeHelper {
 public:
+  ArrayHelper(const string& type_name);
+  ~ArrayHelper();
 
   struct Range {
-    int lower;
-    int upper;
+    int low;
+    int high;
   }
 
-  bool addRange(int lower; int upper);
+  bool addDimension(int low; int high);
+
+	bool setTypePtr(IdentRecord* type);
 
   bool sendToSt(STObject* st);
 
 private:
   queue<Range*> ranges;
+
+  bool validate(void);
+
+  IdentRecord* typePtr;
 };
 
 #endif
