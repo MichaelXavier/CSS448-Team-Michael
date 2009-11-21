@@ -21,6 +21,7 @@ string name;
 
 //helpers
 ArrayHelper* array_helper;
+ProgramHelper* program_helper;
 
 extern string s;
 
@@ -44,14 +45,19 @@ extern string s;
 
 CompilationUnit    :  ProgramModule {endProgram();}
                    ;
-ProgramModule      :  yprogram yident 
-                      {startProgram(s);} 
-                      ProgramParameters ysemicolon Block ydot
+ProgramModule      :  yprogram 
+                      yident 
+                      {program_helper = new ProgramHelper(s)} 
+                      ProgramParameters ysemicolon 
+                      {startProgram(program_helper->GetProgramObj());}
+                      Block ydot
                    ;
 ProgramParameters  :  yleftparen  IdentList  yrightparen
                    ;
 IdentList          :  yident 
+                      {program_helper->AddParameterName(s);}
                    |  IdentList ycomma yident
+                      {program_helper->AddParameterName(s);}
                    ;
 
 /**************************  Declarations section ***************************/

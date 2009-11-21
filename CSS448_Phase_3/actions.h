@@ -36,5 +36,5 @@ using namespace std;
 extern string s;
 extern STObject* symTable;
 
-void startProgram(const string&);
+void startProgram(Program* newProg);
 void endProgram(void);

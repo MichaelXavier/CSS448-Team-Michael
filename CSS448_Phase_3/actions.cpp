@@ -1,11 +1,14 @@
 #include "actions.h"
 
-void startProgram(const string& name) {
-  Program* newProg = new Program(name);
-  symTable = new STObject(newProg);
+void startProgram(Program* newProg) {
+  try {
+    symTable = new STObject(newProg);
+  } catch(char * err) {
+    cout << "Error while setting up program: " << err << endl;
+  }
 }
 
 void endProgram(void) {
-  symTable->printST();//FIXME: create a method that closes the ST without printing
+  symTable->printST();//FIXME: re we supposed to print?
   delete symTable;
 }
