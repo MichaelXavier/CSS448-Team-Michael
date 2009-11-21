@@ -5,7 +5,7 @@ ProgramHelper::ProgramHelper(const string& name)
 	programName = name;
 }
 
-ProgramHelper::~ProgramHelper()
+ProgramHelper::~ProgramHelper(void)
 {
 }
 
