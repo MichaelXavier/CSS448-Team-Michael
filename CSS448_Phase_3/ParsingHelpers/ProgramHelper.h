@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
 #include "IdType.h"
 #include "../IdentRecords/Program.h"
@@ -14,6 +15,8 @@ public:
 	~ProgramHelper(void);
 
 	bool AddParameterName(const string&);
+  //Pop a queue, on failure, clear the stack
+	bool AddParameterNames(Queue<string&>&);
 	Program* GetProgramObj(void);
 
 private:

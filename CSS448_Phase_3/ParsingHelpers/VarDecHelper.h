@@ -16,6 +16,8 @@ public:
 	~VarDecHelper(void);
 	
 	bool AddVar(const string&);
+  //Pop a queue, on failure, clear the stack
+	bool AddVars(Queue<string&>&);
 	bool SetMemberType(const string&);
 	bool sendToST(STObject* st);
 

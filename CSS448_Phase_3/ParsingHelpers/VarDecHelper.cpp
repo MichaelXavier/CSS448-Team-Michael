@@ -15,6 +15,20 @@ bool VarDecHelper::AddVar(string& str)
 	varNames.push_back(str);
 }
 
+bool VarDecHelper::AddParameterNames(Queue<string&>& idents) {
+  while (!idents.empty()) {
+    if (!AddVar(idents.front())) {
+      //clear the stack and bail
+      while (!idents.empty()) {
+        idents.pop();
+      }
+      return false;
+    }
+    idents.pop();
+  }
+  return true;
+}
+
 
 bool VarDecHelper::SetMemberType(const string& name)
 {

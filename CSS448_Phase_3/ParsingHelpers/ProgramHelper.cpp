@@ -24,6 +24,20 @@ bool ProgramHelper::AddParameterName(const string& name)
   return true;
 }
 
+bool ProgramHelper::AddParameterNames(Queue<string&>& idents) {
+  while (!idents.empty()) {
+    if (!AddParameterName(idents.front())) {
+      //clear the stack and bail
+      while (!idents.empty()) {
+        idents.pop();
+      }
+      return false;
+    }
+    idents.pop();
+  }
+  return true;
+}
+
 Program* ProgramHelper::GetProgramObj()
 {
 	Program* program = new Program(programName);
