@@ -16,6 +16,12 @@ extern int error_count;
 
 STObject* symTable;
 
+//variable stuff
+string name;
+
+//helpers
+ArrayHelper* array_helper;
+
 extern string s;
 
 %}
@@ -77,7 +83,9 @@ VariableDeclList   :  VariableDecl ysemicolon
                    ;  
 ConstantDef        :  yident  yequal  ConstExpression
                    ;
-TypeDef            :  yident  yequal  Type
+TypeDef            :  yident 
+                      {name = s;}  
+                      yequal  Type
                    ;
 VariableDecl       :  IdentList  ycolon  Type
                    ;

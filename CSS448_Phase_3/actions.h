@@ -20,16 +20,16 @@
 #include "IdentTypes/SetType.h"
 #include "IdentTypes/Variable.h"
 
-#include "ParsingHelpers/arrayHelper.h"
-#include "ParsingHelpers/constDecHelper.h"
-#include "ParsingHelpers/functionHelper.h"
-#include "ParsingHelpers/pointerHelper.h"
-#include "ParsingHelpers/procedureHelper.h"
-#include "ParsingHelpers/programHelper.h"
-#include "ParsingHelpers/recordHelper.h"
-#include "ParsingHelpers/setHelper.h"
-#include "ParsingHelpers/typeDefHelper.h"
-#include "ParsingHelpers/varDecHelper.h"
+#include "ParsingHelpers/ArrayHelper.h"
+#include "ParsingHelpers/ConstDecHelper.h"
+#include "ParsingHelpers/FunctionHelper.h"
+#include "ParsingHelpers/PointerHelper.h"
+#include "ParsingHelpers/ProcedureHelper.h"
+#include "ParsingHelpers/ProgramHelper.h"
+#include "ParsingHelpers/RecordHelper.h"
+#include "ParsingHelpers/SetHelper.h"
+#include "ParsingHelpers/TypeDefHelper.h"
+#include "ParsingHelpers/VarDecHelper.h"
 
 using namespace std;
 
