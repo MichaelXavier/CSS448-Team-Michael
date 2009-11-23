@@ -10,9 +10,9 @@ VarDecHelper::~VarDecHelper(void)
 	typePtr = NULL;
 }
 	
-bool VarDecHelper::AddVar(string& str)
+bool VarDecHelper::AddVar(string& name)
 {
-	varNames.push_back(str);
+	varNames.push_back(name);
 }
 
 bool VarDecHelper::AddParameterNames(Queue<string&>& idents) {

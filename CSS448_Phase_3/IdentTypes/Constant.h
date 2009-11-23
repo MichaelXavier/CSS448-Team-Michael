@@ -11,10 +11,21 @@ public:
 
 	void display(ostream& sout, int depth)const;
 
-  void setConstFactor(int value) { constFactor = value; }
+  void setConstFactor(int value) { constFactor.i = value; type = "i"; }
+  void setConstFactor(const string& value) { constFactor.s = value; type = "s"; }
+  void setConstFactor(bool value) { constFactor.b = value; type = "b"; }
+  void setConstFactor(IdentRecord* value) { constFactor.ir = value; type = "ir"; }
 
 private:
-	int constFactor; // The integer value of the const 
-					 // NOTE: may need to be a union
+  //Switched to using a union
+  union typedConst {
+    int i;
+    string s;
+    bool b;
+    //FIXME: unsure about this
+    IdentRecord* ir;
+  } constFactor;
+  
+  string type;
 };
 #endif

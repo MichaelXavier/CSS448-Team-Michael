@@ -17,13 +17,15 @@ extern int error_count;
 
 STObject* symTable;
 
-//variable stuff
+//variable/const stuff
 string name;
+Constant* const_temp;
 
 //helpers
 ArrayHelper* array_helper;
 ProgramHelper* program_helper;
 VarDecHelper* var_dec_helper;
+ConstDecHelper* const_dec_helper;
 Queue<string&> ident_queue;
 
 extern string s;
@@ -94,7 +96,9 @@ VariableDeclBlock  :  /*** empty ***/
 VariableDeclList   :  VariableDecl ysemicolon
                    |  VariableDeclList VariableDecl ysemicolon /*ADDED: recursive case*/
                    ;  
-ConstantDef        :  yident  yequal  ConstExpression
+ConstantDef        :  yident 
+                      {const_temp = new Constant(s);}
+                      yequal  ConstExpression /*FIXME: may not cover empty consts*/
                    ;
 TypeDef            :  yident  yequal  Type
                    ;
@@ -109,13 +113,19 @@ VariableDecl       :  {var_dec_helper = new VarDecHelper();}
 
 ConstExpression    :  UnaryOperator  ConstFactor
                    |  ConstFactor
-                   |  ystring
+                   |  ystring 
+                      {const_temp->setConstFactor(s);}
                    ;
 ConstFactor        :  yident
+                      {/*FIXME: lookup*/} /*FIXME: unimplemented*/
                    |  ynumber
+                      {const_temp->setConstFactor(strToInt(s));} /*FIXME: unimplemented*/
                    |  ytrue
+                      {const_temp->setConstFactor(true);}
                    |  yfalse
+                      {const_temp->setConstFactor(false);}
                    |  ynil
+                      {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
                    ;
 Type               :  yident
                    |  ArrayType

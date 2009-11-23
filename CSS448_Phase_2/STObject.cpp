@@ -145,6 +145,7 @@ void STObject::fillIdentTable(void) {
   identTable.push_back(new BooleanType("boolean"));
   identTable.push_back(new Constant("True"));
   identTable.push_back(new Constant("False"));
+  identTable.push_back(new Constant("Nil"));
   identTable.push_back(new Procedure("WriteLn"));
   identTable.push_back(new Procedure("Write"));
   identTable.push_back(new Procedure("ReadLn"));
