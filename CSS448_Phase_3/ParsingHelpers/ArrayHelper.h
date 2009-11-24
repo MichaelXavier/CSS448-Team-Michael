@@ -14,6 +14,7 @@ public:
   ~ArrayHelper();
 
   bool addDimension(int low; int high);
+  bool addDimension(const string& low; const string& high);
 
 	bool setTypePtr(IdentRecord* type);
 

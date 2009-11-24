@@ -28,6 +28,18 @@ bool ArrayHelper::addDimension(int low; int high) {
   }
 }
 
+bool addDimension(const string& low; const string& high) {
+  if (low.length() > 1 || low.length() <= 0) {
+    cout << "Error: invalid size for range lower bound " << low << " given for array " << typeName << endl;
+    return false;
+  }
+  if (high.length() > 1 || high.length() <= 0) {
+    cout << "Error: invalid size for range high bound " << high << " given for array " << typeName << endl;
+    return false;
+  }
+  return addDimension(low[0], high[0]);
+}
+
 bool ArrayHelper::setTypePtr(IdentRecord* type) {
   if (typePtr != NULL) {
     clean = false;
