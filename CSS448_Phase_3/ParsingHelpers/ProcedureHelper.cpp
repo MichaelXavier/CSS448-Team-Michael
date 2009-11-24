@@ -11,12 +11,32 @@ ProcedureHelper::~ProcedureHelper(void) {
   }
 }
 
-bool ProcedureHelper::AddParameters(Queue<Parameter*> param_queue) {
-  //TODO
+bool ProcedureHelper::AddParameters(Queue<Parameter*> params) {
+  while (!params.empty()) {
+    Parameter* param = params.front();
+    if (!AddParameter(param)) {
+      delete param;
+      //clear the stack and bail
+      while (!params.empty()) {
+        param = params.front();
+        delete param;
+        params.pop();
+      }
+      return false;
+    }
+    params.pop();
+  }
+  return true;
 }
 
 bool ProcedureHelper::AddParameter(Parameter* param) {
-  //TODO
+  if (parameter != NULL) {
+    parameters.push_back(param);
+    return true;
+  } else {
+    cout << "Error: cannot add a NULL parameter to Procedure" << typeName << endl;
+    return false;
+  }
 }
 
 bool ProcedureHelper::sendToSt(STObject* st) {
@@ -50,8 +70,4 @@ bool ProcedureHelper::sendToSt(STObject* st) {
     delete proc;
     return false;
   }
-}
-
-bool ProcedureHelper::validate(void) {
-  //TODO
 }

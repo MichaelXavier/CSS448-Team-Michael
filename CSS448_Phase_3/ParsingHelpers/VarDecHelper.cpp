@@ -12,7 +12,13 @@ VarDecHelper::~VarDecHelper(void)
 	
 bool VarDecHelper::AddVar(string& name)
 {
-	varNames.push_back(name);
+  if (name.length() > 0) {
+    varNames.push_back(name);
+    return true;
+  } else {
+    cout << "Error: cannot declare a zero-length variable name." << endl;
+    return false;
+  }
 }
 
 bool VarDecHelper::AddVars(Queue<string&>& idents) {
