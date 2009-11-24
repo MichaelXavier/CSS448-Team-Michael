@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "IdType.h"
 #include "STObject.h"
 
@@ -38,3 +39,4 @@ extern STObject* symTable;
 
 void startProgram(Program* newProg);
 void endProgram(void);
+int strToInt(const string& str);

@@ -20,6 +20,10 @@ STObject* symTable;
 //variable/const stuff
 string name;
 Constant* const_temp;
+IdentRecord* ident_temp;
+IdentRecord* type_ptr;
+Procedure* proc_temp;
+Parameter* param_temp;
 
 //helpers
 ArrayHelper* array_helper;
@@ -27,6 +31,8 @@ ProgramHelper* program_helper;
 VarDecHelper* var_dec_helper;
 ConstDecHelper* const_dec_helper;
 Queue<string&> ident_queue;
+Queue<Parameter*> param_queue;
+ProcedureHelper* procedure_helper;
 
 extern string s;
 
@@ -117,9 +123,17 @@ ConstExpression    :  UnaryOperator  ConstFactor
                       {const_temp->setConstFactor(s);}
                    ;
 ConstFactor        :  yident
-                      {/*FIXME: lookup*/} /*FIXME: unimplemented*/
+                      {
+                        ident_temp = symTable->lookup(s);
+                        if (ident_temp != NULL) {
+                          const_temp->setConstFactor(ident_temp); 
+                        } else {
+                          cout << "Error: Constant assigned to an undefined ident." << endl;
+                        }
+                      
+                      }
                    |  ynumber
-                      {const_temp->setConstFactor(strToInt(s));} /*FIXME: unimplemented*/
+                      {const_temp->setConstFactor(strToInt(s));}
                    |  ytrue
                       {const_temp->setConstFactor(true);}
                    |  yfalse
@@ -128,6 +142,7 @@ ConstFactor        :  yident
                       {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
                    ;
 Type               :  yident
+                   /*TODO*/
                    |  ArrayType
                    |  PointerType
                    |  RecordType
@@ -276,18 +291,42 @@ ProcedureDecl      :  ProcedureHeading  ysemicolon  Block
 FunctionDecl       :  FunctionHeading  ycolon  Type  ysemicolon  Block
                    ;
 ProcedureHeading   :  yprocedure  yident  
-                   |  yprocedure  yident  FormalParameters
+                      {procedure_helper = new ProcedureHelper(s)}
+                   |  yprocedure  yident  
+                      {procedure_helper = new ProcedureHelper(s)}
+                      FormalParameters
+                      {procedure_helper->AddParameters(param_queue);}
                    ;
 FunctionHeading    :  yfunction  yident  
                    |  yfunction  yident  FormalParameters
                    ;
 FormalParameters   :  yleftparen FormalParamList yrightparen 
                    ;
-FormalParamList    :  OneFormalParam 
+FormalParamList    :  OneFormalParam  /* nothing to do here */
                    |  FormalParamList ysemicolon OneFormalParam
                    ;
-OneFormalParam     :  yvar  IdentList  ycolon  yident
-                   |  IdentList  ycolon  yident
+OneFormalParam     :  yvar  IdentList /* have the param names now */
+                      ycolon  yident
+                      {
+                        ident_temp = symTable->lookup(s);
+                        while(!ident_queue.empty()) {
+                          Parameter* param = new Parameter(ident_queue.front())
+                          param->setTypePtr(ident_temp);
+                          param_queue.push(param);
+                          ident_queue.pop();
+                        }
+                      }
+                   |  IdentList  /* have the param names now */
+                      ycolon  yident
+                      {
+                        ident_temp = symTable->lookup(s);
+                        while(!ident_queue.empty()) {
+                          Parameter* param = new Parameter(ident_queue.front())
+                          param->setTypePtr(ident_temp);
+                          param_queue.push(param);
+                          ident_queue.pop();
+                        }
+                      }
                    ;
 
 /***************************  More Operators  ********************************/

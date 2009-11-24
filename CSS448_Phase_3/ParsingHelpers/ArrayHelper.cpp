@@ -1,3 +1,5 @@
+#include "ArrayHelper.h"
+
 ArrayHelper::ArrayHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
 }

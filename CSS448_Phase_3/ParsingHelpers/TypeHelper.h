@@ -2,6 +2,7 @@
 #ifndef TYPEHELPER_H
 #include <iostream>
 #include <string>
+#include "IdType.h"
 #include "../STObject.h"
 
 using namespace std;

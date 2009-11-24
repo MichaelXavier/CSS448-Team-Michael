@@ -15,7 +15,7 @@ bool VarDecHelper::AddVar(string& name)
 	varNames.push_back(name);
 }
 
-bool VarDecHelper::AddParameterNames(Queue<string&>& idents) {
+bool VarDecHelper::AddVars(Queue<string&>& idents) {
   while (!idents.empty()) {
     if (!AddVar(idents.front())) {
       //clear the stack and bail
