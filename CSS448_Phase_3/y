@@ -299,7 +299,7 @@ SubprogDeclList    :  /*** empty ***/
                    ;
 ProcedureDecl      :  ProcedureHeading  ysemicolon  Block 
                    ;
-FunctionDecl       :  FunctionHeading  ycolon  Type  ysemicolon  Block
+FunctionDecl       :  FunctionHeading  ycolon  yident  ysemicolon  Block
                    ;
 ProcedureHeading   :  yprocedure  yident  
                       {procedure_helper = new ProcedureHelper(s)}
