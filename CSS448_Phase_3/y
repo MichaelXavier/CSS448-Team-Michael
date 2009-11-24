@@ -84,10 +84,21 @@ Declarations       :  ConstantDefBlock              /* you do this one */
                       SubprogDeclList  
                    ;
 ConstantDefBlock   :  /*** empty ***/                                  /* you finish it */
-                   |  yconst ConstantDefList
+                   |  yconst 
+                      {const_dec_helper = new ConstDecHelper(); } 
+                      ConstantDefList
+                      {
+                        const_dec_helper->sendToST(symTable);
+                        delete const_dec_helper;
+                        const_dec_helper = NULL;
+                      }
                    ;
-ConstantDefList    :  ConstantDef ysemicolon
-                   |  ConstantDefList ConstantDef ysemicolon
+ConstantDefList    :  ConstantDef 
+                      {const_dec_helper->AddConst(const_temp);} 
+                      ysemicolon
+                   |  ConstantDefList ConstantDef 
+                      {const_dec_helper->AddConst(const_temp);} 
+                      ysemicolon
                    ;
 TypeDefBlock       :  /*** empty ***/
                    |  ytype  TypeDefList          
