@@ -16,6 +16,12 @@ public:
   void setConstFactor(bool value) { constFactor.b = value; type = "b"; }
   void setConstFactor(IdentRecord* value) { constFactor.ir = value; type = "ir"; }
 
+  int getConstInt() { return typedConst.i;}
+  string getConstString() { return typedConst.s;}
+  bool getConstBool() {return typedConst.b;}
+  IdentRecord* getConstIR() {return typedConst.ir;}
+  string getConstType() {return type;}
+
 private:
   //Switched to using a union
   union typedConst {
