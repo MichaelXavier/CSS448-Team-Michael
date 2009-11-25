@@ -219,16 +219,22 @@ ConstFactor        :  ConstFactor        :  yident
                       }
                    |  ynumber
                       {
-                        if(findingRange == true)
-                        {
-                          if(setLowRange == true)
-                            range_temp->lowInt = strToInt(s);
-                          else
-                            range_temp->highInt = strToInt(s);
-                          range_temp->type = "i";
-                        } else {
-                          const_temp->setConstFactor(strToInt(s));
-                        }
+                        int parsed_int = 0;
+                        if (strToInt(s, parsed_int)) {
+                          if(findingRange == true)
+                          {
+                            if(setLowRange == true) {
+                              range_temp->lowInt = parsed_int;
+                            } else {
+                              range_temp->highInt = parsed_int;
+                            }
+                            range_temp->type = "i";
+                          } else {
+                            cout << "DEBUG: setConstFactor: " << s << " with " << parsed_int << endl;//DEBUG
+                            const_temp->setConstFactor(parsed_int);
+                          }
+                        }                      
+                        //TODO: further error handling
                       }
                    |  ytrue
                       {

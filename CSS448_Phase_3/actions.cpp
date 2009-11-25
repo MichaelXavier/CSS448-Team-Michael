@@ -13,11 +13,13 @@ void endProgram(void) {
   delete symTable;
 }
 
-int strToInt(const string& str) {
+bool strToInt(string& str, int& target) {
   istringstream iss(str);
-  int ret;
-  iss >> ret;
-  return ret;
+  if (iss >> target) {
+    return true;
+  } else {
+    cout << "Error: unable to parse an int out of string " << str << " in call to strToInt" << endl;
+  }
 }
 
 //Loop through pointers declared so far, see if any are supposed to point to this.

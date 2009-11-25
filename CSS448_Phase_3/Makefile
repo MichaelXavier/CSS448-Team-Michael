@@ -47,4 +47,4 @@ clean:
 force_look:
 	true
 
-.PHONY: IdentTypes/*.o
+.PHONY: IdentTypes/*.o ParsingHelpers/*.o

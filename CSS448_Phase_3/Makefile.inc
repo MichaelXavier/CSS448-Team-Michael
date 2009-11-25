@@ -1,3 +1,3 @@
 CC     = g++
-CFLAGS = -c
+CFLAGS = -c -g
 MAKE   = make
