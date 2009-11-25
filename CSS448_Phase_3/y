@@ -115,6 +115,7 @@ ConstantDefList    :  ConstantDef
                    ;
 TypeDefBlock       :  /*** empty ***/
                    |  ytype  TypeDefList          
+                      {checkPointers(declared_ptr_helpers);}
                    ;
 TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  

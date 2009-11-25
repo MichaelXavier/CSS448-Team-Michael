@@ -41,3 +41,4 @@ void startProgram(Program* newProg);
 void endProgram(void);
 int strToInt(const string& str);
 void resolvePointers(IdentRecord* newTypePtr, vector<PointerHelper*>& ptrs);
+void checkPointers(vector<PointerHelper*>& ptrs);
