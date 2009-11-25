@@ -1,5 +1,5 @@
 include Makefile.inc
-OBJ 		= main.o lex.yy.o actions.o y.tab.o IdentTypes/*.o scopenode.o stobject.o 
+OBJ 		= main.o lex.yy.o actions.o y.tab.o IdentTypes/*.o ParsingHelpers/*.o scopenode.o stobject.o 
 SUBDIRS = IdentTypes ParsingHelpers
 ACT 		= actions.h
 H 			= y.tab.h tokenconsts.h
