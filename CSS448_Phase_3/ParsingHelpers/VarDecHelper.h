@@ -19,7 +19,7 @@ public:
   //Pop a queue, on failure, clear the stack
 	bool AddVars(queue<string&>&);
 	bool SetMemberType(const string&);
-	bool sendToST(STObject* st);
+	bool sendToSt(STObject* st);
 
 private:
 	vector<string> varNames;

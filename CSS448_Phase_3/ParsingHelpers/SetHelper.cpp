@@ -21,7 +21,7 @@ void SetHelper::setRangeHigh(int high)
 	rangeHigh = high;
 }
 
-bool SetHelper::sendToST(STObject* st)
+bool SetHelper::sendToSt(STObject* st)
 {	
 	IdentRecord* setRecord = new SetType(typeName);
 	setRecord->setRange(rangeLow, rangeHigh);

@@ -17,7 +17,7 @@ public:
 	bool setCurrentFieldType(const string&);
 	bool addFields(STObject*);
 	
-	bool sendToST(STObject*);
+	bool sendToSt(STObject*);
 
 private:
 

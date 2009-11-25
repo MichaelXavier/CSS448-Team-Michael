@@ -16,7 +16,7 @@ public:
 	void setRangeLow(int);
 	void setRangeHigh(int);
 
-	bool sendToST(STObject*);
+	bool sendToSt(STObject*);
 
 private:
 	int rangeLow;

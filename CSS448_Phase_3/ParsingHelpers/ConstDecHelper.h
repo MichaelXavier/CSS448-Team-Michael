@@ -16,7 +16,7 @@ public:
 	
   //FIXME: constfactors can be strings, numbers, true, false, nil, or idents
 	bool AddConst(Constant* val);
-	bool sendToST(STObject* st);
+	bool sendToSt(STObject* st);
 
 private:
 	vector<Constant*> consts;

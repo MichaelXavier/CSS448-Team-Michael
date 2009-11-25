@@ -47,7 +47,7 @@ bool RecordHelper::addFields(STObject* st)
 }
 	
 
-bool RecordHelper::sendToST(STObject* st)
+bool RecordHelper::sendToSt(STObject* st)
 {
 	IdentRecord* record = new RecordType(typeName);
 	for(int i = 0; i < fields.size(); i++)

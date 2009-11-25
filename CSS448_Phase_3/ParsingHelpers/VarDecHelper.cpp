@@ -43,7 +43,7 @@ bool VarDecHelper::SetMemberType(const string& name)
 }
 
 
-bool VarDecHelper::sendToST(STObject* st)
+bool VarDecHelper::sendToSt(STObject* st)
 {
 	IdentRecord* type = st.lookup(memberType);
 	if(type == NULL)
