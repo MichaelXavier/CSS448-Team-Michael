@@ -11,7 +11,7 @@ ProcedureHelper::~ProcedureHelper(void) {
   }
 }
 
-bool ProcedureHelper::AddParameters(Queue<Parameter*> params) {
+bool ProcedureHelper::AddParameters(queue<Parameter*> params) {
   while (!params.empty()) {
     Parameter* param = params.front();
     if (!AddParameter(param)) {

@@ -24,7 +24,7 @@ bool ProgramHelper::AddParameterName(const string& name)
   return true;
 }
 
-bool ProgramHelper::AddParameterNames(Queue<string&>& idents) {
+bool ProgramHelper::AddParameterNames(queue<string&>& idents) {
   while (!idents.empty()) {
     if (!AddParameterName(idents.front())) {
       //clear the stack and bail

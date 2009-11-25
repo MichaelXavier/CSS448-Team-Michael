@@ -13,14 +13,14 @@ public:
   ProcedureHelper(const string& type_name);
   ~ProcedureHelper();
 
-  bool AddParameters(Queue<Parameter*> params);
+  bool AddParameters(queue<Parameter*> params);
   bool AddParameter(Parameter* param);
 
   bool sendToSt(STObject* st);
 
 private:
 
-  Queue<Parameter*> params;
+  queue<Parameter*> params;
 };
 
 #endif

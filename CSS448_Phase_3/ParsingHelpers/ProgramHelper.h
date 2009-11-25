@@ -16,7 +16,7 @@ public:
 
 	bool AddParameterName(const string&);
   //Pop a queue, on failure, clear the stack
-	bool AddParameterNames(Queue<string&>&);
+	bool AddParameterNames(queue<string&>&);
 	Program* GetProgramObj(void);
 
 private:

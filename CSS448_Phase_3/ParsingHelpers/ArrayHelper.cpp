@@ -84,7 +84,7 @@ bool ArrayHelper::validate(void) {
   TypeHelper::validate();
   if (typePtr == NULL) {
     clean = false;
-    cout << "Error: cannot set NULL typePtr." << endl;
+    cout << "Error: NULL typePtr for array type " << typeName << endl;
   }
   //TODO: more validations
   return clean;
