@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <queue>
-#include <vector>
 #include "STObject.h"
 #include "actions.h"
 using namespace std; 
@@ -20,27 +19,24 @@ STObject* symTable;
 
 //variable/const stuff
 string name;
+string type_name;
 Constant* const_temp;
 IdentRecord* ident_temp;
 IdentRecord* type_ptr;
 Procedure* proc_temp;
 Parameter* param_temp;
-Constant* const_range_low;
-Constant* const_range_high;
-string str_range_low;
-string str_range_high;
-bool range_is_str = false;
-vector<PointerHelper*>declared_ptr_helpers;
 
 //helpers
 ArrayHelper* array_helper;
 ProgramHelper* program_helper;
+RecordHelper* record_helper;
+SetHelper* set_helper;
 VarDecHelper* var_dec_helper;
 ConstDecHelper* const_dec_helper;
-queue<string&> ident_queue;
-queue<Parameter*> param_queue;
+Queue<string&> ident_queue;
+Queue<Constant*> const_queue;
+Queue<Parameter*> param_queue;
 ProcedureHelper* procedure_helper;
-PointerHelper* pointer_helper;
 
 extern string s;
 
@@ -96,7 +92,7 @@ ConstantDefBlock   :  /*** empty ***/                                  /* you fi
                       {const_dec_helper = new ConstDecHelper(); } 
                       ConstantDefList
                       {
-                        const_dec_helper->sendToSt(symTable);
+                        const_dec_helper->sendToST(symTable);
                         delete const_dec_helper;
                         const_dec_helper = NULL;
                       }
@@ -125,10 +121,7 @@ ConstantDef        :  yident
                       {const_temp = new Constant(s);}
                       yequal  ConstExpression /*FIXME: may not cover empty consts*/
                    ;
-TypeDef            :  yident
-                      {name = s;}
-                      yequal  Type
-                      {/*TODO*/}
+TypeDef            :  yident {name = s;}  yequal  Type
                    ;
 VariableDecl       :  {var_dec_helper = new VarDecHelper();} 
                       IdentList  ycolon 
@@ -163,57 +156,60 @@ ConstFactor        :  yident
                    |  ynil
                       {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
                    ;
-Type               :  yident
+Type               :  yident {type_name = s;}
                    /*TODO*/
                    |  ArrayType
                    |  PointerType
                    |  RecordType
-                   |  SetType
+                   |  SetType 
                    ;
-ArrayType          :  yarray 
-                      {array_helper = new ArrayHelper(name)} 
-                      yleftbracket Subrange 
-                      {
-                        if (range_is_str) {
-                          array_helper->addDimension(str_range_low, str_range_high);
-                        } else {
-                          /*FIXME: how do we handle const ranges*/
-                        }
-                      } 
-                      SubrangeList 
+ArrayType          :  yarray yleftbracket Subrange SubrangeList 
                       yrightbracket  yof Type
                    ;
 SubrangeList       :  
                    |  SubrangeList ycomma Subrange 
                    ;
-Subrange           :  ConstFactor 
-                      {const_range_low = const_temp;}
-                      /*consts are set in the constfactor rule, 
-                       * set flag false so we know which to use back in the array/set*/ 
-                      ydotdot ConstFactor
-                      {const_range_high = const_temp; range_is_str = false;}
-                   |  ystring 
-                      {str_range_low = s;}
-                      ydotdot  ystring
-                      {str_range_high = s; range_is_str = true;}
+Subrange           :  ConstFactor {const_queue.push_back(const_temp);} ydotdot ConstFactor {const_queue.push_back(const_temp);}
+                   |  ystring ydotdot  ystring
                    ;
-RecordType         :  yrecord  FieldListSequence  yend
+RecordType         :  yrecord {record_helper = new RecordHelper(name);} FieldListSequence  {recordHelper.sendToST(symTable);} yend 
                    ;
-SetType            :  yset  yof  Subrange
+SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
+                      { 
+							const_temp = const_queue.pop_front(); 
+							if(const_temp->getConstType) == "s")
+							{ 
+								set_helper.setRangeLow(const_temp.getConstInt());
+								delete const_temp;
+							}
+							else
+								cout << "Error: set range must be an integer";
+							
+							const_temp = const_queue.pop_front(); 
+							if(const_temp->getConstType) == "s")
+							{ 
+								set_helper.setRangeHigh(const_temp.getConstInt());
+								delete const_temp;
+							}
+							else
+								cout << "Error: set range must be an integer";
+							
+							set_helper->sendToST(symTable);
+							delete set_helper; 
+							setHelper = NULL;
+					   }					  
                    ;
-PointerType        :  ycaret 
-                      yident 
-                      {
-                       pointer_helper = new PointerHelper(name); /*name is matched in the caling rule*/
-                       pointer_helper->setDeclaredType(s);/*get the name of what it's supposed to point to*/
-                       declared_ptr_helpers.push_back(pointer_helper); /*put it on the vector for later*/
-                       pointer_helper = NULL;
-                      } 
+PointerType        :  ycaret  yident 
                    ;
-FieldListSequence  :  FieldList  
-                   |  FieldListSequence  ysemicolon  FieldList
+FieldListSequence  :  FieldList {record_helper.addFields(symTable);}
+                   |  FieldListSequence  ysemicolon  FieldList {record_helper.addFields(symTable);}
                    ;
-FieldList          :  IdentList  ycolon  Type
+FieldList          :  IdentList 
+					  {
+						for(int i = 0; i < ident_queue.size(); i++)
+							record_helper.addFieldName(ident_queue.pop()); 
+					   }
+					   ycolon  Type {record_helper.setCurrentFieldType(type_name);}
                    ;
 
 /***************************  Statements  ************************************/
