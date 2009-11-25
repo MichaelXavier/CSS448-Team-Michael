@@ -1,11 +1,12 @@
-#define RECORDHELPER_H
 #ifndef RECORDHELPER_H
+#define RECORDHELPER_H
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include "IdType.h"
-#include "../IdentRecords/RecordType.h"
+#include "../IdType.h"
+#include "../IdentTypes/RecordType.h"
+#include "TypeHelper.h"
 
 class RecordHelper : TypeHelper
 {
@@ -24,9 +25,9 @@ private:
 	vector<string> currentFieldNames;
 	string currentFieldType;
 
-	vector<IdentRecord*> fields;
+	vector<RecordField*> fields;
 
-	void clearCurrentFields();
-}
+	void clearCurrentFieldNames();
+};
 
 #endif

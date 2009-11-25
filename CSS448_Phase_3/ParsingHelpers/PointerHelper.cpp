@@ -1,5 +1,6 @@
 #include "PointerHelper.h"
 
+
 PointerHelper::PointerHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
   declared_type = "";
@@ -24,7 +25,7 @@ bool PointerHelper::setTypePtr(IdentRecord* type) {
   }
 }
 
-bool setDeclaredType(const string& declared) {
+bool PointerHelper::setDeclaredType(const string& declared) {
   if (declared_type.length() != 0) {
     clean = false;
     cout << "Error: declared_type already set." << endl;
@@ -68,3 +69,4 @@ bool PointerHelper::validate(void) {
   }
   return clean;
 }
+

@@ -24,7 +24,7 @@ bool ProgramHelper::AddParameterName(const string& name)
   return true;
 }
 
-bool ProgramHelper::AddParameterNames(queue<string&>& idents) {
+bool ProgramHelper::AddParameterNames(queue<string>& idents) {
   while (!idents.empty()) {
     if (!AddParameterName(idents.front())) {
       //clear the stack and bail
@@ -42,11 +42,11 @@ Program* ProgramHelper::GetProgramObj()
 {
 	Program* program = new Program(programName);
 
-	IdentRecord* param;
+	Parameter* param;
 	for(int i = 0; i < parameterNames.size(); i++)
 	{
 		param = new Parameter(parameterNames[i]);
-		if(!program.insertParameter(param))
+		if(!program->insertParameter(param))
 		{
       //Delete the last parameter and program, which will delete the
       //successfully inserted parameters
@@ -59,3 +59,4 @@ Program* ProgramHelper::GetProgramObj()
 
 	return program;
 }
+

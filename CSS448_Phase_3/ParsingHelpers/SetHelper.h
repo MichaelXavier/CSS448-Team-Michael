@@ -1,11 +1,12 @@
-#define SETHELPER_H
 #ifndef SETHELPER_H
+#define SETHELPER_H
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include "IdType.h"
-#include "../IdentRecords/SetType.h"
+#include "../IdType.h"
+#include "../IdentTypes/SetType.h"
+#include "TypeHelper.h"
 
 class SetHelper : TypeHelper
 {
@@ -15,14 +16,15 @@ public:
 
 	void setRangeLow(int);
 	void setRangeHigh(int);
-	void setRangeLow(const string&);
-	void setRangeHigh(const string&);
+	bool setRange(int, int);
+	bool setRange(const string&, const string&);
 
 	bool sendToSt(STObject*);
 
 private:
 	int rangeLow;
 	int rangeHigh;
-}
+};
 
 #endif
+

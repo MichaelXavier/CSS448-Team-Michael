@@ -3,11 +3,11 @@
 ProcedureHelper::ProcedureHelper(const string& type_name) : TypeHelper(type_name) {}
 
 ProcedureHelper::~ProcedureHelper(void) {
-  while (!parameters.empty()) {
-    Parameter* parameter = parameters.pop();
-    if (parameter != NULL) { 
-      delete parameter; 
-    }
+  while (!params.empty()) {
+   Parameter* tempParam = params.front();
+   delete tempParam;
+   tempParam = NULL;
+   params.pop();
   }
 }
 
@@ -30,8 +30,8 @@ bool ProcedureHelper::AddParameters(queue<Parameter*> params) {
 }
 
 bool ProcedureHelper::AddParameter(Parameter* param) {
-  if (parameter != NULL) {
-    parameters.push_back(param);
+  if (param != NULL) {
+    params.push(param);
     return true;
   } else {
     cout << "Error: cannot add a NULL parameter to Procedure" << typeName << endl;
@@ -45,26 +45,29 @@ bool ProcedureHelper::sendToSt(STObject* st) {
   }
 
   Procedure* proc = new Procedure(typeName);
-  //Add dimensions
-  while (!parameters.empty()) {
-    Parameter* parameter = parameters.pop();
+    //Add dimensions
+  while (!params.empty()) {
+    Parameter* parameter = params.front();
+
     if (parameter != NULL) { 
       if (!proc->insertParameter(parameter)) {
         //Can't insert, bail out  
-        cout << "Error: failed to insert parameter into procedure " << typeName << endl;
+        cout << "Error: failed to insert parameter into Function " << typeName << endl;
         delete proc;
         delete parameter;
-        while (!parameters.empty()) {
-          parameter = parameters.front();
-          delete parameter;
-          parameter = parameters.pop();
+        while (!params.empty()) {
+		  parameter = params.front();
+		  delete parameter;
+		  parameter = NULL;
+          params.pop();
         }
         return false;
       }
+	  params.pop();
     }
   }
 
-  if (st->insert(arr, procedure)) {
+  if (st->insert(proc, procedure)) {
     return true;
   } else {
     delete proc;

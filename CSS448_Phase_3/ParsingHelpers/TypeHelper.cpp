@@ -1,3 +1,5 @@
+#include "TypeHelper.h"
+
 TypeHelper::TypeHelper(const string& type_name) {
   typeName = type_name;
   clean = (typeName.length() > 0);

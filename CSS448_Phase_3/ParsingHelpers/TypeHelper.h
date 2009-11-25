@@ -1,8 +1,9 @@
-#define TYPEHELPER_H
 #ifndef TYPEHELPER_H
+#define TYPEHELPER_H
+
 #include <iostream>
 #include <string>
-#include "IdType.h"
+#include "../IdType.h"
 #include "../STObject.h"
 
 using namespace std;
@@ -17,7 +18,7 @@ public:
 
   virtual bool sendToSt(STObject* st) = 0;
 
-private:
+protected:
 
   string typeName;
   bool clean;

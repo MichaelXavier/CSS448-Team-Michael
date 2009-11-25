@@ -1,19 +1,20 @@
 #include "ArrayHelper.h"
 
+
 ArrayHelper::ArrayHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
 }
 
-ArrayHelper::~ArrayHelper(void) {
+ArrayHelper::~ArrayHelper() {
   while (!ranges.empty()) {
-    Range* range = ranges.pop();
-    if (range != NULL) { 
-      delete range; 
+    Range* tempRange = ranges.front();
+	delete tempRange;
+	tempRange = NULL;
+    ranges.pop();
     }
-  }
 }
 
-bool ArrayHelper::addDimension(int low; int high) {
+bool ArrayHelper::addDimension(int low, int high) {
   if (!clean) { return false; }
   //Do not allow a range that goes in reverse
   if (low < high) {
@@ -28,7 +29,7 @@ bool ArrayHelper::addDimension(int low; int high) {
   }
 }
 
-bool addDimension(const string& low; const string& high) {
+bool ArrayHelper::addDimension(const string& low, const string& high) {
   if (low.length() != 1) {
     cout << "Error: invalid size for range lower bound " << low << " given for array " << typeName << endl;
     return false;
@@ -63,10 +64,12 @@ bool ArrayHelper::sendToSt(STObject* st) {
   ArrayType* arr = new ArrayType(typeName);
   //Add dimensions
   while (!ranges.empty()) {
-    Range* range = ranges.pop();
+    Range* range = ranges.front();
     if (range != NULL) { 
       arr->addDimension(range->low, range->high);
-      delete range; 
+	  delete range;
+	  range = NULL;
+      ranges.pop();
     }
   }
   
@@ -89,3 +92,4 @@ bool ArrayHelper::validate(void) {
   //TODO: more validations
   return clean;
 }
+

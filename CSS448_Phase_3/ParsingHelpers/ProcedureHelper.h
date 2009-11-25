@@ -1,10 +1,11 @@
-#define PROCEDUREHELPER_H
 #ifndef PROCEDUREHELPER_H
+#define PROCEDUREHELPER_H
+
 #include <iostream>
 #include <queue>
 #include <string>
 #include "TypeHelper.h"
-#include "../IdentRecords/Procedure.h"
+#include "../IdentTypes/Procedure.h"
 
 using namespace std;
 
@@ -24,3 +25,4 @@ private:
 };
 
 #endif
+

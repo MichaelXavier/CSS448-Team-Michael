@@ -1,16 +1,15 @@
 #include "VarDecHelper.h"
 
-void VarDecHelper::VarDecHelper(void)
+VarDecHelper::VarDecHelper(void)
 {
 }
 
 
 VarDecHelper::~VarDecHelper(void)
 {
-	typePtr = NULL;
 }
 	
-bool VarDecHelper::AddVar(string& name)
+bool VarDecHelper::AddVar(const string& name)
 {
   if (name.length() > 0) {
     varNames.push_back(name);
@@ -21,7 +20,7 @@ bool VarDecHelper::AddVar(string& name)
   }
 }
 
-bool VarDecHelper::AddVars(queue<string&>& idents) {
+bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
     if (!AddVar(idents.front())) {
       //clear the stack and bail
@@ -45,7 +44,7 @@ bool VarDecHelper::SetMemberType(const string& name)
 
 bool VarDecHelper::sendToSt(STObject* st)
 {
-	IdentRecord* type = st.lookup(memberType);
+	IdentRecord* type = st->lookup(memberType);
 	if(type == NULL)
 	{
 		// error handling, type was not found in ST
@@ -56,7 +55,7 @@ bool VarDecHelper::sendToSt(STObject* st)
 		for(int i = 0; i < varNames.size(); i++)
 		{
 			varRecord = new Variable(varNames[i]);
-			bool addedToST = st.insert(varRecord, variable);
+			bool addedToST = st->insert(varRecord, variable);
 			if(addedToST == false)
 			{
 				// variable already exists, handle error

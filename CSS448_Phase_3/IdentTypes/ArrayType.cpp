@@ -1,9 +1,8 @@
 #include "ArrayType.h"
 
-
 // Constructor
 ArrayType::ArrayType(const string& name) : IdentRecord(name) {
-	dimensions = 0;
+  dimensions = 0;
 }
 
 

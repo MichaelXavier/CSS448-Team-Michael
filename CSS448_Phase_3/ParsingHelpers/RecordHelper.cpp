@@ -8,13 +8,12 @@ RecordHelper::RecordHelper(const string& type_name) : TypeHelper(type_name)
 
 RecordHelper::~RecordHelper()
 {
-	currentFieldType = NULL;
 }
 
 
 bool RecordHelper::addFieldName(const string& str)
 {
-	currentFieldNames->push_back(str);
+	currentFieldNames.push_back(str);
 }
 
 
@@ -26,7 +25,7 @@ bool RecordHelper::setCurrentFieldType(const string& name)
 
 bool RecordHelper::addFields(STObject* st)
 {
-	IdentRecord fieldType = st->lookup(currentFieldType);
+	IdentRecord* fieldType = st->lookup(currentFieldType);
 
 	if(fieldType == NULL)
 	{
@@ -34,14 +33,14 @@ bool RecordHelper::addFields(STObject* st)
 	}
 	else
 	{
-		IdentRecord* fieldRecord;
+		RecordField* fieldRecord;
 		for(int i = 0; i < currentFieldNames.size(); i++)
 		{
 			fieldRecord = new RecordField(currentFieldNames[i]);
-			fieldRecord->SetType(fieldType);
+			fieldRecord->setTypePtr(fieldType);
 			fields.push_back(fieldRecord);
 		}
-		clearCurrentFields(); // Clears list of fields so fields with a new type
+		clearCurrentFieldNames(); // Clears list of fields so fields with a new type
 							  // can be added
 	}
 }
@@ -50,16 +49,17 @@ bool RecordHelper::addFields(STObject* st)
 bool RecordHelper::sendToSt(STObject* st)
 {
 	IdentRecord* record = new RecordType(typeName);
+	RecordType* record_temp = static_cast<RecordType*>(record);
 	for(int i = 0; i < fields.size(); i++)
 	{
-		bool fieldWasAdded = record->insertField(fields[i]);
+		bool fieldWasAdded = record_temp->insertField(fields[i]);
 		if(fieldWasAdded == false)
 		{
 			// error handling
 		}
 	}
 
-	bool addedToST = st.insert(record);
+	bool addedToST = st->insert(record, recordtype);
 	if(addedToST == false)
 	{
 		// error handling
@@ -73,3 +73,4 @@ void RecordHelper::clearCurrentFieldNames()
 	currentFieldNames.clear();
 	currentFieldType = "";
 }
+

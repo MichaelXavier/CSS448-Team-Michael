@@ -47,7 +47,7 @@ void checkPointers(vector<PointerHelper*>& ptrs) {
   PointerHelper* helper;
   for(unsigned int i = 0; i < ptrs.size(); i++) {
     helper = ptrs[i];
-    cout << "Stray pointer found with name " << helper->getName() << " and declared type " helper->getDeclaredType() << endl;
+    cout << "Stray pointer found with name " << helper->getName() << " and declared type " << helper->getDeclaredType() << endl;
     delete helper;
     ptrs.erase(ptrs.begin()+i);
   }

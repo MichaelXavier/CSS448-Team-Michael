@@ -1,10 +1,10 @@
-#define POINTERHELPER_H
 #ifndef POINTERHELPER_H
+#define POINTERHELPER_H
 #include <iostream>
 #include <queue>
 #include <string>
 #include "TypeHelper.h"
-#include "../IdentRecords/ArrayType.h"
+#include "../IdentTypes/ArrayType.h"
 
 using namespace std;
 
@@ -19,10 +19,12 @@ public:
 
   bool sendToSt(STObject* st);
 
-  string& getDeclaredType(void)const { return declared_type; }
+  // & removed
+  string getDeclaredType(void)const { return declared_type; }
+  string getName() {return typeName;}
 
 private:
-  queue<Range*> ranges;
+  // queue<Range*> ranges; 
 
   bool validate(void);
 

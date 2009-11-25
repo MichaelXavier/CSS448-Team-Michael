@@ -11,27 +11,23 @@ public:
 
 	void display(ostream& sout, int depth)const;
 
-  void setConstFactor(int value) { constFactor.i = value; type = "i"; }
-  void setConstFactor(const string& value) { constFactor.s = value; type = "s"; }
-  void setConstFactor(bool value) { constFactor.b = value; type = "b"; }
-  void setConstFactor(IdentRecord* value) { constFactor.ir = value; type = "ir"; }
+  void setConstFactor(int value) { i = value; type = "i"; }
+  void setConstFactor(const string& value) { s = value; type = "s"; }
+  void setConstFactor(bool value) { b = value; type = "b"; }
+  void setConstFactor(IdentRecord* value) { ir = value; type = "ir"; }
 
-  int getConstInt() { return typedConst.i;}
-  string getConstString() { return typedConst.s;}
-  bool getConstBool() {return typedConst.b;}
-  IdentRecord* getConstIR() {return typedConst.ir;}
+  int getConstInt() { return i;}
+  string getConstString() { return s;}
+  bool getConstBool() {return b;}
+  IdentRecord* getConstIR() {return ir;}
   string getConstType() {return type;}
 
 private:
-  //Switched to using a union
-  union typedConst {
-    int i;
-    string s;
-    bool b;
-    //FIXME: unsure about this
-    IdentRecord* ir;
-  } constFactor;
-  
+  int i;
+  string s;
+  bool b;
+  IdentRecord* ir;
+
   string type;
 };
 #endif

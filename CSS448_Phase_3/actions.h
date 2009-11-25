@@ -29,7 +29,7 @@
 #include "ParsingHelpers/ProgramHelper.h"
 #include "ParsingHelpers/RecordHelper.h"
 #include "ParsingHelpers/SetHelper.h"
-#include "ParsingHelpers/TypeDefHelper.h"
+#include "ParsingHelpers/TypeHelper.h"
 #include "ParsingHelpers/VarDecHelper.h"
 
 using namespace std;
