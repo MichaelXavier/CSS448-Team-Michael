@@ -41,6 +41,7 @@ void SetHelper::setRangeHigh(int high)
 
 bool SetHelper::sendToSt(STObject* st)
 {	
+  //FIXME: need to call validate, need to define validate. validate must call base class's validate. Reference ArrayHelper for more info
 	IdentRecord* setRecord = new SetType(typeName);
 	setRecord->setRange(rangeLow, rangeHigh);
 	bool addedToST = st.insert(setRecord, settype);
