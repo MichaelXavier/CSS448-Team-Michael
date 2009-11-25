@@ -29,11 +29,11 @@ bool ArrayHelper::addDimension(int low; int high) {
 }
 
 bool addDimension(const string& low; const string& high) {
-  if (low.length() > 1 || low.length() <= 0) {
+  if (low.length() != 1) {
     cout << "Error: invalid size for range lower bound " << low << " given for array " << typeName << endl;
     return false;
   }
-  if (high.length() > 1 || high.length() <= 0) {
+  if (high.length() != 1) {
     cout << "Error: invalid size for range high bound " << high << " given for array " << typeName << endl;
     return false;
   }

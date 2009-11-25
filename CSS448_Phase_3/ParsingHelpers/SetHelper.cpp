@@ -23,19 +23,19 @@ void SetHelper::setRangeHigh(int high)
 
 void SetHelper::setRangeLow(const string& low)
 {
-  if (low.length > 0) {
+  if (low.length == 1) {
     rangeLow = low[0];
   } else {
-    cout << "Error: unable to set the lower bound with zero-length string: " << typeName;
+    cout << "Error: unable to set the lower bound with string that has length != 1: " << typeName;
   }
 }
 	
 void SetHelper::setRangeHigh(int high)
 {
-  if (high.length > 0) {
+  if (high.length == 1) {
     rangeHigh = high[0];
   } else {
-    cout << "Error: unable to set the higher bound with zero-length string: " << typeName;
+    cout << "Error: unable to set the higher bound with string that has length != 1: " << typeName;
   }
 }
 

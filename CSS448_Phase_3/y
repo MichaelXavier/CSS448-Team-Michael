@@ -212,7 +212,7 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                         if (range_is_str) {
                           set_helper.setRangeLow(str_range_low);
                           set_helper.setRangeHigh(str_range_high);
-                        } else {
+                        } else if(!const_queue.empty()) {
                           const_temp = const_queue.pop_front(); 
                           if(const_temp->getConstType() == "i")
                           { 
@@ -220,7 +220,7 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                             delete const_temp;
                           }
                           else
-                            cout << "Error: set range must be an integer";
+                            cout << "Error: set range must be an integer" << endl;
                           
                           const_temp = const_queue.pop_front(); 
                           if(const_temp->getConstType() == "i")
@@ -229,8 +229,11 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                             delete const_temp;
                           }
                           else
-                            cout << "Error: set range must be an integer";
+                            cout << "Error: set range must be an integer" << endl;
+                        } else {
+                          cout << "Error: Const queue was empty when trying to set up SetHelper" << endl;
                         }
+                        /*will fail validation if there's a problem*/
                         set_helper->sendToST(symTable);
                         delete set_helper; 
                         setHelper = NULL;
