@@ -8,7 +8,7 @@
 #include "../IdentTypes/SetType.h"
 #include "TypeHelper.h"
 
-class SetHelper : TypeHelper
+class SetHelper : public TypeHelper
 {
 public:
 	SetHelper(const string&);

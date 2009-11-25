@@ -8,7 +8,7 @@
 #include "../IdentTypes/RecordType.h"
 #include "TypeHelper.h"
 
-class RecordHelper : TypeHelper
+class RecordHelper : public TypeHelper
 {
 public:
 	RecordHelper(const string&);

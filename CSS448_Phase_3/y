@@ -38,7 +38,7 @@ RecordHelper* record_helper;
 SetHelper* set_helper;
 VarDecHelper* var_dec_helper;
 ConstDecHelper* const_dec_helper;
-queue<string&> ident_queue;
+queue<string> ident_queue;
 queue<Constant*> const_queue;
 queue<Parameter*> param_queue;
 ProcedureHelper* procedure_helper;
@@ -57,7 +57,7 @@ struct Range
 	string lowString;
 	string highString;
 	string type;
-}
+};
 Range* range_temp;
 queue<Range*> ranges_queue;
 bool setLowRange;
@@ -87,7 +87,7 @@ CompilationUnit    :  ProgramModule {endProgram();}
                    ;
 ProgramModule      :  yprogram 
                       yident 
-                      {program_helper = new ProgramHelper(s)} 
+                      {program_helper = new ProgramHelper(s);} 
                       ProgramParameters ysemicolon 
                       {startProgram(program_helper->GetProgramObj());}
                       Block ydot
@@ -123,9 +123,11 @@ ConstantDefBlock   :  /*** empty ***/                                  /* you fi
                       }
                    ;
 ConstantDefList    :  ConstantDef 
+                    /*FIXME: not implemented*/
                       {const_dec_helper->AddConst(const_temp);} 
                       ysemicolon
                    |  ConstantDefList ConstantDef 
+                    /*FIXME: not implemented*/
                       {const_dec_helper->AddConst(const_temp);} 
                       ysemicolon
                    ;
@@ -177,83 +179,83 @@ ConstExpression    :  UnaryOperator  ConstFactor
                    ;
 ConstFactor        :  ConstFactor        :  yident
                       {
-						if(findingRange)
-						{
-							ident_temp = symTable->lookup(s);	
-							Constant* constPtr = static_cast<Constant*> ident_temp;
-							string constType = constPtr->getConstType();
-							
-							switch(constType)
-							{
-								case "s": if(setLowRange == true)
-											range_temp.lowString = constPtr->getConstString();
-										  else
-											range_temp.highString = constPtr->getConstString();
-										  range_temp.type = "s"; 
-										  // need to check for low/high of different types
-										  break;
-								case "b": if(setLowRange == true)
-											range_temp.lowBool = constPtr->getConstBool();
-										  else
-										    range_temp.highBool = constPtr->getConstBool();
-										  range_temp.type = "b";
-										  break;
-								case "i": if(setLowRange == true)
-											range_temp.lowInt = constPtr->getConstInt();
-										  else
-											range_temp.highInt = constPtr->getConstInt();
-										  range_temp.type = "i";
-										  break;
-							}
-						 }
-						 else
-						 {
-							// find value, insert value
-							ident_temp = symTable->lookup(s);
-							if (ident_temp != NULL) {
-								const_temp->setConstFactor(ident_temp); 
-							} else {
-							cout << "Error: Constant assigned to an undefined ident." << endl;
-							}
-						 }
+                        if(findingRange) {
+                          ident_temp = symTable->lookup(s);	
+                          Constant* constPtr = static_cast<Constant*> ident_temp;
+                          string constType = constPtr->getConstType();
+                          
+                          //can't use a switch with a string
+                          if (constType == "s") {
+                            if(setLowRange == true) {
+                              range_temp->lowString = constPtr->getConstString();
+                            } else {
+                              range_temp->highString = constPtr->getConstString();
+                            }
+                            range_temp->type = "s"; 
+                          // need to check for low/high of different types
+                          } else if (constType == "b") {
+                            if(setLowRange == true) {
+                              range_temp->lowBool = constPtr->getConstBool();
+                            } else {
+                              range_temp->highBool = constPtr->getConstBool();
+                            }
+                            range_temp->type = "b";
+                          } else if (constType == "i") {
+                            if(setLowRange == true) {
+                              range_temp->lowInt = constPtr->getConstInt();
+                            } else {
+                              range_temp->highInt = constPtr->getConstInt();
+                            }
+                            range_temp->type = "i";
+                          }
+                        } else {
+                          // find value, insert value
+                          ident_temp = symTable->lookup(s);
+                          if (ident_temp != NULL) {
+                            const_temp->setConstFactor(ident_temp); 
+                          } else {
+                            cout << "Error: Constant assigned to an undefined ident." << endl;
+                          }
+                        }
                       }
                    |  ynumber
                       {
-						if(findingRange == true)
-						{
-							if(setLowRange == true)
-								range_temp.lowInt = strToInt(s);
-							else
-								range_temp.highInt = strToInt(s);
-							range_temp.type = "i";
-						}
-						else
-							const_temp->setConstFactor(strToInt(s));
-					   }
+                        if(findingRange == true)
+                        {
+                          if(setLowRange == true)
+                            range_temp->lowInt = strToInt(s);
+                          else
+                            range_temp->highInt = strToInt(s);
+                          range_temp->type = "i";
+                        } else {
+                          const_temp->setConstFactor(strToInt(s));
+                        }
+                      }
                    |  ytrue
                       {
-						if(findingRange == true)
-						{
-							if(setLowRange == true)
-								range_temp.lowBool = true;
-							else
-								range_temp.highBool = true;
-							range_temp.type = "b";
-						}
-						else
-							const_temp->setConstFactor(true);}
+                        if(findingRange == true) {
+                          if(setLowRange == true)
+                            range_temp->lowBool = true;
+                          else
+                            range_temp->highBool = true;
+                          range_temp->type = "b";
+                        } else {
+                          const_temp->setConstFactor(true);
+                        }
+                      }
                    |  yfalse
                       {
-                      	if(findingRange == true)
-						{
-							if(setLowRange == true)
-								range_temp.lowBool = false;
-							else
-								range_temp.highBool = false;
-							range_temp.type = "b";
-						}
-						else
-							const_temp->setConstFactor(false);}
+                      	if(findingRange == true) {
+                          if(setLowRange == true) {
+                            range_temp->lowBool = false;
+                          } else {
+                            range_temp->highBool = false;
+                          }
+                          range_temp->type = "b";
+                        } else {
+                          const_temp->setConstFactor(false);
+                        }
+                      }
                    |  ynil
                       {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
                    ;
@@ -278,23 +280,22 @@ ArrayType          :  yarray
                       } 
                       SubrangeList 
                       {
-						while(ranges.size() != 0)
-						{
-							Range* currentRange = ranges.pop_front();
-							switch(currentRange->type)
-							{
-								case "i": array_helper.addDimension(currentRange.lowInt, currentRange.highInt); break;
-								case "b": array_helper.addDimension(currentRange.lowBool, currentRange.highBool); break;
-								case "s": array_helper.addDimension(currentRange.lowString, currentRange.highString); break;
-							}
-							delete currentRange;
-							currentRange = NULL;
-						}
-									  
-							/*will fail validation if there's a problem*/
-							array_helper->sendToSt(symTable);
-							delete array_helper; 
-							array_helper = NULL;
+                        while(ranges.size() != 0) {
+                          Range* currentRange = ranges.pop_front();
+                          if (currentRange->type == "i") {
+                            array_helper.addDimension(currentRange.lowInt, currentRange.highInt);
+                          } else if (currentRange->type == "b") {
+                            array_helper.addDimension(currentRange.lowBool, currentRange.highBool);
+                          } else if (currentRange->type == "s") {
+                            array_helper.addDimension(currentRange.lowString, currentRange.highString);
+                          }
+                          delete currentRange;
+                          currentRange = NULL;
+                        }
+                        /*will fail validation if there's a problem*/
+                        array_helper->sendToSt(symTable);
+                        delete array_helper; 
+                        array_helper = NULL;
                       }
                       yrightbracket  yof Type
                    ;
@@ -302,27 +303,27 @@ ArrayType          :  yarray
 SubrangeList       :  
                    |  SubrangeList ycomma Subrange 
                    ;
-Subrange           :  {range_temp = new Range(); findingRange = true; setLowRange = true;} 
+Subrange           :  {range_temp = new Range; findingRange = true; setLowRange = true;} 
 					  ConstFactor 
                       ydotdot {setLowRange = false;} 
                       ConstFactor 
                       {
-						ranges.push_back(range_temp);
+                        ranges.push_back(range_temp);
                         range_temp = NULL;
-						findingRange = false;
+                        findingRange = false;
                       }
                    |  ystring 
                       {
-						range_temp = new Range(); 
-						range_temp.lowString = s;
-						range_temp.type = "s";
+                        range_temp = new Range; 
+                        range_temp->lowString = s;
+                        range_temp->type = "s";
                       } 
                       ydotdot  ystring
                       {
-						range_temp.highString = s;
-						ranges.push_back(range_temp);
-						range_temp = NULL;
-						findingRange = false;
+                        range_temp->highString = s;
+                        ranges.push_back(range_temp);
+                        range_temp = NULL;
+                        findingRange = false;
                       } 
                    ;
 RecordType         :  yrecord 
@@ -340,14 +341,14 @@ RecordType         :  yrecord
                    ;
 SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
                       { 
-						  Range* currentRange = ranges.pop_front();
-						  switch(currentRange->type)
-						  {
-							case "i": set_helper.setRange(currentRange.lowInt, currentRange.highInt); break;
-							case "b": set_helper.setRange(currentRange.lowBool, currentRange.highBool); break;
-							case "s": set_helper.setRange(currentRange.lowString, currentRange.highString); break;
-						  }
-									  
+                        Range* currentRange = ranges.pop_front();
+                        if (currentRange->type == "i") {
+                          set_helper.setRange(currentRange.lowInt, currentRange.highInt);
+                        } else if (currentRange->type == "b") {
+                          set_helper.setRange(currentRange.lowBool, currentRange.highBool);
+                        } else if (currentRange->type == "s") {
+                          set_helper.setRange(currentRange.lowString, currentRange.highString);
+                        }
                         /*will fail validation if there's a problem*/
                         set_helper->sendToSt(symTable);
                         delete set_helper; 
@@ -359,10 +360,10 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
 PointerType        :  ycaret 
                       yident 
                       {
-                       pointer_helper = new PointerHelper(name); /*name is matched in the caling rule*/
-                       pointer_helper->setDeclaredType(s);/*get the name of what it's supposed to point to*/
-                       declared_ptr_helpers.push_back(pointer_helper); /*put it on the vector for later*/
-                       pointer_helper = NULL;
+                        pointer_helper = new PointerHelper(name); /*name is matched in the caling rule*/
+                        pointer_helper->setDeclaredType(s);/*get the name of what it's supposed to point to*/
+                        declared_ptr_helpers.push_back(pointer_helper); /*put it on the vector for later*/
+                        pointer_helper = NULL;
                       } 
                    ;
 FieldListSequence  :  FieldList 
@@ -497,27 +498,27 @@ SubprogDeclList    :  /*** empty ***/
                    |  SubprogDeclList FunctionDecl ysemicolon
                    ;
 ProcedureDecl      :  ProcedureHeading 
-					  {
-						procedure_helper->sendToST(symTable);
-						delete procedure_helper;
-						procedure_helper = NULL;
-					  }
-					  ysemicolon  Block 
+                      {
+                        procedure_helper->sendToSt(symTable);
+                        delete procedure_helper;
+                        procedure_helper = NULL;
+                      }
+                      ysemicolon  Block 
                    ;
 FunctionDecl       :  FunctionHeading  ycolon  yident
-					  {
-						IdentRecord* tempPtr = st.lookup(s);
-						if(tempPtr != NULL)
-						{
-							function_helper->SetReturnType(tempPtr);
-							function_helper->sendToST(symTable);
-						}
-						else
-							cout << "Error, function return type is incorrect";
-						delete function_helper;
-						functionHelper = NULL;
-					  }
-					  ysemicolon  Block
+                      {
+                        IdentRecord* tempPtr = st.lookup(s);
+                        if(tempPtr != NULL)
+                        {
+                          function_helper->SetReturnType(tempPtr);
+                          function_helper->sendToSt(symTable);
+                        }
+                        else
+                          cout << "Error, function return type is incorrect";
+                        delete function_helper;
+                        functionHelper = NULL;
+                      }
+                      ysemicolon  Block
                    ;
 ProcedureHeading   :  yprocedure  yident  
                       {procedure_helper = new ProcedureHelper(s);}
@@ -527,7 +528,7 @@ ProcedureHeading   :  yprocedure  yident
                       {procedure_helper->AddParameters(param_queue);}
                    ;
 FunctionHeading    :  yfunction  yident  
-					  {function_helper = new FunctionHelper(s);}
+                      {function_helper = new FunctionHelper(s);}
                    |  yfunction  yident  
                       {function_helper = new FunctionHelper(s);}
                       FormalParameters
