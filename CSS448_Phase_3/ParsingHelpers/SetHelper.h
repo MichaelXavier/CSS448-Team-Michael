@@ -15,6 +15,8 @@ public:
 
 	void setRangeLow(int);
 	void setRangeHigh(int);
+	void setRangeLow(const string&);
+	void setRangeHigh(const string&);
 
 	bool sendToSt(STObject*);
 

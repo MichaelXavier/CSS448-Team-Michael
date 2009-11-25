@@ -21,6 +21,24 @@ void SetHelper::setRangeHigh(int high)
 	rangeHigh = high;
 }
 
+void SetHelper::setRangeLow(const string& low)
+{
+  if (low.length > 0) {
+    rangeLow = low[0];
+  } else {
+    cout << "Error: unable to set the lower bound with zero-length string: " << typeName;
+  }
+}
+	
+void SetHelper::setRangeHigh(int high)
+{
+  if (high.length > 0) {
+    rangeHigh = high[0];
+  } else {
+    cout << "Error: unable to set the higher bound with zero-length string: " << typeName;
+  }
+}
+
 bool SetHelper::sendToSt(STObject* st)
 {	
 	IdentRecord* setRecord = new SetType(typeName);
