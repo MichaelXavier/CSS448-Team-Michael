@@ -204,7 +204,7 @@ Subrange           :  ConstFactor
 RecordType         :  yrecord 
                       {record_helper = new RecordHelper(name);} 
                       FieldListSequence  
-                      {recordHelper.sendToST(symTable);}
+                      {recordHelper.sendToSt(symTable);}
                       yend 
                    ;
 SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
@@ -234,7 +234,7 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                           cout << "Error: Const queue was empty when trying to set up SetHelper" << endl;
                         }
                         /*will fail validation if there's a problem*/
-                        set_helper->sendToST(symTable);
+                        set_helper->sendToSt(symTable);
                         delete set_helper; 
                         setHelper = NULL;
                       }					  
