@@ -30,32 +30,40 @@ private:
 
 #include <iostream>
 #include <string>
+#include <queue>
 #include "../IdType.h"
 #include "../IdentTypes/Constant.h"
 #include "../STObject.h"
+#include "TypeHelper.h"
 
 using namespace std;
 
-class ConstDecHelper
+class ConstDecHelper : public TypeHelper
 {
 public:
-	ConstDecHelper(void);
+	ConstDecHelper(const string& type_name);
 	~ConstDecHelper(void);
 	
   //FIXME: constfactors can be strings, numbers, true, false, nil, or idents
 	bool sendToSt(STObject* st);
 
-	int getConstInt() {return i;}
+	bool addConst(Constant* val);
+
+	/*int getConstInt() {return i;}
 	bool getConstBool() {return b;}
 	string getConstString() {return s;}
-	string getConstType() {return type;}
+	string getConstType() {return type;}*/
 
 private:
-	int i;
+	/*int i;
 	bool b;
-	string s;
+	string s;*/
 	
-	string type;
+	vector<Constant*> consts;
+
+  bool clean;
+
+  bool validate(void); 
 };
 #endif
 

@@ -26,29 +26,41 @@ int strToInt(const string& str) {
 void resolvePointers(IdentRecord* newTypePtr, vector<PointerHelper*>& ptrs) {
   PointerHelper* helper;
   if (newTypePtr != NULL) {
+    queue<int> erase_offsets;
     for(unsigned int i = 0; i < ptrs.size(); i++) {
       if (newTypePtr->getName() == ptrs[i]->getDeclaredType()) {
         helper = ptrs[i];
-        //Delete the element in the helpers vector
-        ptrs.erase(ptrs.begin()+i);
-        //Found it
-          //setup the helper, insert it
-          helper->setTypePtr(newTypePtr); 
-          helper->sendToSt(symTable);
+        //Delete the element in the helpers vector later
+        //ptrs.erase(ptrs.begin()+i);
+        erase_offsets.push(i);
+
+        //setup the helper, insert it
+        helper->setTypePtr(newTypePtr); 
+        helper->sendToSt(symTable);
         //Free the mem no matter what if it's a match
         delete helper;
         break;
       }
+    }
+    //Erase any offsets that are invalid. This prevents the indices of the vector from being thrown off as we did the previous for loop
+    while (!erase_offsets.empty()) {
+      ptrs.erase(ptrs.begin()+erase_offsets.front());
+      erase_offsets.pop();
     }
   }
 }
 
 void checkPointers(vector<PointerHelper*>& ptrs) {
   PointerHelper* helper;
+  queue<int> erase_offsets;
   for(unsigned int i = 0; i < ptrs.size(); i++) {
     helper = ptrs[i];
     cout << "Stray pointer found with name " << helper->getName() << " and declared type " << helper->getDeclaredType() << endl;
     delete helper;
-    ptrs.erase(ptrs.begin()+i);
+    erase_offsets.push(i);
+  }
+  while (!erase_offsets.empty()) {
+    ptrs.erase(ptrs.begin()+erase_offsets.front());
+    erase_offsets.pop();
   }
 }

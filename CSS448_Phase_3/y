@@ -114,7 +114,6 @@ Declarations       :  ConstantDefBlock              /* you do this one */
                    ;
 ConstantDefBlock   :  /*** empty ***/                                  /* you finish it */
                    |  yconst 
-                      {const_dec_helper = new ConstDecHelper(); } 
                       ConstantDefList
                       {
                         const_dec_helper->sendToSt(symTable);
@@ -124,11 +123,11 @@ ConstantDefBlock   :  /*** empty ***/                                  /* you fi
                    ;
 ConstantDefList    :  ConstantDef 
                     /*FIXME: not implemented*/
-                      {const_dec_helper->AddConst(const_temp);} 
+                      {const_dec_helper->addConst(const_temp);} 
                       ysemicolon
                    |  ConstantDefList ConstantDef 
                     /*FIXME: not implemented*/
-                      {const_dec_helper->AddConst(const_temp);} 
+                      {const_dec_helper->addConst(const_temp);} 
                       ysemicolon
                    ;
 TypeDefBlock       :  /*** empty ***/
@@ -146,7 +145,7 @@ VariableDeclList   :  VariableDecl ysemicolon
                    |  VariableDeclList VariableDecl ysemicolon /*ADDED: recursive case*/
                    ;  
 ConstantDef        :  yident 
-                      {const_temp = new Constant(s);}
+                      {const_dec_helper = new ConstDecHelper(s); } 
                       yequal  ConstExpression /*FIXME: may not cover empty consts*/
                    ;
 TypeDef            :  yident
@@ -179,9 +178,9 @@ ConstExpression    :  UnaryOperator  ConstFactor
                    ;
 ConstFactor        :  ConstFactor        :  yident
                       {
-                        if(findingRange) {
+                        if (findingRange) {
                           ident_temp = symTable->lookup(s);	
-                          Constant* constPtr = static_cast<Constant*> ident_temp;
+                          Constant* constPtr = static_cast<Constant*>(ident_temp);
                           string constType = constPtr->getConstType();
                           
                           //can't use a switch with a string
@@ -269,25 +268,17 @@ Type               :  yident
                    |  SetType 
                    ;
 ArrayType          :  yarray 
-                      {array_helper = new ArrayHelper(name)} 
-                      yleftbracket Subrange 
+                      {array_helper = new ArrayHelper(name);} 
+                      yleftbracket Subrange SubrangeList /*Subrange pushes on stack, wait till entire list is done*/
                       {
-                        if (range_is_str) {
-                          array_helper->addDimension(str_range_low, str_range_high);
-                        } else {
-                          /*FIXME: how do we handle const ranges*/
-                        }
-                      } 
-                      SubrangeList 
-                      {
-                        while(ranges.size() != 0) {
-                          Range* currentRange = ranges.pop_front();
+                        while(ranges_queue.size() != 0) {
+                          Range* currentRange = ranges_queue.pop();
                           if (currentRange->type == "i") {
-                            array_helper.addDimension(currentRange.lowInt, currentRange.highInt);
+                            array_helper->addDimension(currentRange->lowInt, currentRange->highInt);
                           } else if (currentRange->type == "b") {
-                            array_helper.addDimension(currentRange.lowBool, currentRange.highBool);
+                            array_helper->addDimension(currentRange->lowBool, currentRange->highBool);
                           } else if (currentRange->type == "s") {
-                            array_helper.addDimension(currentRange.lowString, currentRange.highString);
+                            array_helper->addDimension(currentRange->lowString, currentRange->highString);
                           }
                           delete currentRange;
                           currentRange = NULL;
@@ -304,11 +295,11 @@ SubrangeList       :
                    |  SubrangeList ycomma Subrange 
                    ;
 Subrange           :  {range_temp = new Range; findingRange = true; setLowRange = true;} 
-					  ConstFactor 
+                      ConstFactor 
                       ydotdot {setLowRange = false;} 
                       ConstFactor 
                       {
-                        ranges.push_back(range_temp);
+                        ranges_queue.push(range_temp);
                         range_temp = NULL;
                         findingRange = false;
                       }
@@ -321,7 +312,7 @@ Subrange           :  {range_temp = new Range; findingRange = true; setLowRange 
                       ydotdot  ystring
                       {
                         range_temp->highString = s;
-                        ranges.push_back(range_temp);
+                        ranges_queue.push(range_temp);
                         range_temp = NULL;
                         findingRange = false;
                       } 
@@ -330,7 +321,7 @@ RecordType         :  yrecord
                       {record_helper = new RecordHelper(name);} 
                       FieldListSequence  
                       {
-                        if (recordHelper->sendToSt(symTable)) {
+                        if (record_helper->sendToSt(symTable)) {
                           //get the new IdentRecord back for resolvePointers
                           type_ptr = symTable->lookup(name);
                         } else {
@@ -341,18 +332,18 @@ RecordType         :  yrecord
                    ;
 SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
                       { 
-                        Range* currentRange = ranges.pop_front();
+                        Range* currentRange = ranges_queue.pop();
                         if (currentRange->type == "i") {
-                          set_helper.setRange(currentRange.lowInt, currentRange.highInt);
+                          set_helper->setRange(currentRange->lowInt, currentRange->highInt);
                         } else if (currentRange->type == "b") {
-                          set_helper.setRange(currentRange.lowBool, currentRange.highBool);
+                          set_helper->setRange(currentRange->lowBool, currentRange->highBool);
                         } else if (currentRange->type == "s") {
-                          set_helper.setRange(currentRange.lowString, currentRange.highString);
+                          set_helper->setRange(currentRange->lowString, currentRange->highString);
                         }
                         /*will fail validation if there's a problem*/
                         set_helper->sendToSt(symTable);
                         delete set_helper; 
-                        setHelper = NULL;
+                        set_helper = NULL;
                         delete currentRange;
                         currentRange = NULL;
                       }					  
@@ -367,17 +358,17 @@ PointerType        :  ycaret
                       } 
                    ;
 FieldListSequence  :  FieldList 
-                      {record_helper.addFields(symTable);}
+                      {record_helper->addFields(symTable);}
                    |  FieldListSequence  ysemicolon  FieldList 
-                      {record_helper.addFields(symTable);}
+                      {record_helper->addFields(symTable);}
                    ;
 FieldList          :  IdentList 
                       {
                         for(int i = 0; i < ident_queue.size(); i++) {
-                          record_helper.addFieldName(ident_queue.pop()); 
+                          record_helper->addFieldName(ident_queue.pop()); 
                         }
                       }
-					   ycolon  Type {record_helper.setCurrentFieldType(type_name);}
+					   ycolon  Type {record_helper->setCurrentFieldType(type_name);}
                    ;
 
 /***************************  Statements  ************************************/
@@ -507,16 +498,15 @@ ProcedureDecl      :  ProcedureHeading
                    ;
 FunctionDecl       :  FunctionHeading  ycolon  yident
                       {
-                        IdentRecord* tempPtr = st.lookup(s);
-                        if(tempPtr != NULL)
-                        {
+                        IdentRecord* tempPtr = symTable->lookup(s);
+                        if(tempPtr != NULL) {
                           function_helper->SetReturnType(tempPtr);
                           function_helper->sendToSt(symTable);
+                        } else {
+                          cout << "Error: function return type is incorrect" << endl;
                         }
-                        else
-                          cout << "Error, function return type is incorrect";
                         delete function_helper;
-                        functionHelper = NULL;
+                        function_helper = NULL;
                       }
                       ysemicolon  Block
                    ;
@@ -544,7 +534,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                       {
                         ident_temp = symTable->lookup(s);
                         while(!ident_queue.empty()) {
-                          Parameter* param = new Parameter(ident_queue.front())
+                          Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
                           param_queue.push(param);
                           ident_queue.pop();
@@ -555,7 +545,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                       {
                         ident_temp = symTable->lookup(s);
                         while(!ident_queue.empty()) {
-                          Parameter* param = new Parameter(ident_queue.front())
+                          Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
                           param_queue.push(param);
                           ident_queue.pop();

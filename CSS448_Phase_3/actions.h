@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <queue>
 #include "IdType.h"
 #include "STObject.h"
 
