@@ -23,25 +23,22 @@ int strToInt(const string& str) {
 //Loop through pointers declared so far, see if any are supposed to point to this.
 //If they are, set up the pointerhelper, insert and free the helpers memory
 //Run it after every declaration (consider a flag for it later)
-void resolvePointers(const string& name, vector<PointerHelper*>& ptrs) {
+void resolvePointers(IdentRecord* newTypePtr, vector<PointerHelper*>& ptrs) {
   PointerHelper* helper;
-  for(unsigned int i = 0; i < ptrs.size(); i++) {
-    if (name == ptrs[i]->getDeclaredType()) {
-      helper = ptrs[i];
-      //Delete the element in the helpers vector
-      ptrs.erase(ptrs.begin()+i);
-      IdentRecord* typePtr = st.lookup(name); 
-      //Found it
-      if (typePtr != NULL) {
-        //setup the helper, insert it
-        helper->setTypePtr(typePtr); 
-        helper->sendToSt(symTable);
-      } else {
-        cout << "Error: name match found in pointer helper collection but it was not found in the ST: " << name << endl;
+  if (newTypePtr != NULL) {
+    for(unsigned int i = 0; i < ptrs.size(); i++) {
+      if (newTypePtr->getName() == ptrs[i]->getDeclaredType()) {
+        helper = ptrs[i];
+        //Delete the element in the helpers vector
+        ptrs.erase(ptrs.begin()+i);
+        //Found it
+          //setup the helper, insert it
+          helper->setTypePtr(newTypePtr); 
+          helper->sendToSt(symTable);
+        //Free the mem no matter what if it's a match
+        delete helper;
+        break;
       }
-      //Free the mem no matter what if it's a match
-      delete helper;
-      break;
     }
   }
 }

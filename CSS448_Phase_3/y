@@ -24,6 +24,7 @@ string type_name;
 Constant* const_temp;
 IdentRecord* ident_temp;
 IdentRecord* type_ptr;
+IdType current_idtype;
 Procedure* proc_temp;
 Parameter* param_temp;
 Constant* const_range_low;
@@ -132,7 +133,16 @@ ConstantDef        :  yident
 TypeDef            :  yident
                       {name = s;}
                       yequal  Type
-                      {/*TODO*/}
+                      {
+                        if (symTable->insert(type_ptr, current_idtype)) {
+                          //Attempt to resolve any pointers to this new type
+                          resolvePointers(type_ptr, declared_ptr_helpers);
+                        } else {
+                          cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
+                          delete type_ptr;
+                        }
+                        type_ptr = NULL;
+                      }
                    ;
 VariableDecl       :  {var_dec_helper = new VarDecHelper();} 
                       IdentList  ycolon 
@@ -152,7 +162,7 @@ ConstFactor        :  yident
                       {
                         ident_temp = symTable->lookup(s);
                         if (ident_temp != NULL) {
-                          const_temp->setConstFactor(ident_temp); 
+                          const_temp->setConstFactor(type_ptr); 
                         } else {
                           cout << "Error: Constant assigned to an undefined ident." << endl;
                         }
@@ -168,8 +178,7 @@ ConstFactor        :  yident
                       {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
                    ;
 Type               :  yident 
-                      {type_name = s;}
-                      /*TODO*/
+                      {type_ptr = symTable->lookup(s);}
                    |  ArrayType
                    |  PointerType
                    |  RecordType
@@ -179,6 +188,7 @@ ArrayType          :  yarray
                       {array_helper = new ArrayHelper(name)} 
                       yleftbracket Subrange 
                       {
+                        /*FIXME: use range struct*/
                         if (range_is_str) {
                           array_helper->addDimension(str_range_low, str_range_high);
                         } else {
@@ -188,6 +198,14 @@ ArrayType          :  yarray
                       SubrangeList 
                       /*FIXME: todo*/
                       yrightbracket  yof Type
+                      {
+                        if (array_helper->sendToSt(symTable)) {
+                          //get the new IdentRecord back for resolvePointers
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
+                      }
                    ;
 SubrangeList       :  
                    |  SubrangeList ycomma Subrange 
@@ -204,11 +222,19 @@ Subrange           :  ConstFactor
 RecordType         :  yrecord 
                       {record_helper = new RecordHelper(name);} 
                       FieldListSequence  
-                      {recordHelper.sendToSt(symTable);}
+                      {
+                        if (recordHelper->sendToSt(symTable)) {
+                          //get the new IdentRecord back for resolvePointers
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
+                      }
                       yend 
                    ;
 SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
                       { 
+                        /*FIXME: use range struct*/
                         if (range_is_str) {
                           set_helper.setRangeLow(str_range_low);
                           set_helper.setRangeHigh(str_range_high);
@@ -234,7 +260,12 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                           cout << "Error: Const queue was empty when trying to set up SetHelper" << endl;
                         }
                         /*will fail validation if there's a problem*/
-                        set_helper->sendToSt(symTable);
+                        if (set_helper->sendToSt(symTable)) {
+                          //get the new IdentRecord back for resolvePointers
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
                         delete set_helper; 
                         setHelper = NULL;
                       }					  
