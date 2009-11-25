@@ -272,7 +272,8 @@ ArrayType          :  yarray
                       yleftbracket Subrange SubrangeList /*Subrange pushes on stack, wait till entire list is done*/
                       {
                         while(ranges_queue.size() != 0) {
-                          Range* currentRange = ranges_queue.pop();
+                          Range* currentRange = ranges_queue.front();
+                          ranges_queue.pop();
                           if (currentRange->type == "i") {
                             array_helper->addDimension(currentRange->lowInt, currentRange->highInt);
                           } else if (currentRange->type == "b") {
@@ -332,7 +333,8 @@ RecordType         :  yrecord
                    ;
 SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
                       { 
-                        Range* currentRange = ranges_queue.pop();
+                        Range* currentRange = ranges_queue.front();
+                        ranges_queue.pop();
                         if (currentRange->type == "i") {
                           set_helper->setRange(currentRange->lowInt, currentRange->highInt);
                         } else if (currentRange->type == "b") {
@@ -365,7 +367,9 @@ FieldListSequence  :  FieldList
 FieldList          :  IdentList 
                       {
                         for(int i = 0; i < ident_queue.size(); i++) {
-                          record_helper->addFieldName(ident_queue.pop()); 
+                          string cur_ident = ident_queue.front();
+                          record_helper->addFieldName(cur_ident); 
+                          ident_queue.pop();
                         }
                       }
 					   ycolon  Type {record_helper->setCurrentFieldType(type_name);}
