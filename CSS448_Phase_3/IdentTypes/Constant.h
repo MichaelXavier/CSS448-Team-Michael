@@ -13,25 +13,25 @@ public:
 
 
   void setConstFactor(int value) { 
-    this->i = value;
-    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
-    this->type.clear();
-    this->type = "i";
-    cout << "DEBUG: type set to " << type << endl;}
-  void setConstFactor(const string& value) {  
-    this->s = value;
+    i = value;
     cout << "DEBUG: str const fact set to " << value << " " << s << endl;
     type.clear();
-    this->type = "s";
+    type = "i";
+    cout << "DEBUG: type set to " << type << endl;}
+  void setConstFactor(const string& value) {  
+    s = value;
+    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
+    type.clear();
+    type = "s";
     cout << "DEBUG: type set to " << type << endl; }
   void setConstFactor(bool value) { b = value; type = "b"; }
   void setConstFactor(IdentRecord* value) { ir = value; type = "ir"; }
 
-  int getConstInt() { return i;}
-  string getConstString() { return s;}
-  bool getConstBool() {return b;}
-  IdentRecord* getConstIR() {return ir;}
-  string getConstType() {return type;}
+  int getConstInt(void) { return i;}
+  string getConstString(void) { return s;}
+  bool getConstBool(void) {return b;}
+  IdentRecord* getConstIR(void) {return ir;}
+  string getConstType(void) { cout << "DEBUG: getConstType called." << endl; return type;}
 
 private:
   int i;

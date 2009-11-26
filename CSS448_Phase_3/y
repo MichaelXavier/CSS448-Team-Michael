@@ -193,7 +193,7 @@ ConstFactor        :  ConstFactor        :  yident
                           
                           //can't use a switch with a string
                           if (constType == "s") {
-                            if(setLowRange == true) {
+                            if(setLowRange) {
                               range_temp->lowString = constPtr->getConstString();
                             } else {
                               range_temp->highString = constPtr->getConstString();
@@ -201,14 +201,14 @@ ConstFactor        :  ConstFactor        :  yident
                             range_temp->type = "s"; 
                           // need to check for low/high of different types
                           } else if (constType == "b") {
-                            if(setLowRange == true) {
+                            if(setLowRange) {
                               range_temp->lowBool = constPtr->getConstBool();
                             } else {
                               range_temp->highBool = constPtr->getConstBool();
                             }
                             range_temp->type = "b";
                           } else if (constType == "i") {
-                            if(setLowRange == true) {
+                            if(setLowRange) {
                               range_temp->lowInt = constPtr->getConstInt();
                             } else {
                               range_temp->highInt = constPtr->getConstInt();

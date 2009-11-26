@@ -1,7 +1,7 @@
 #include "ConstDecHelper.h"
 /*FIXME: don't need a string constructor */
 ConstDecHelper::ConstDecHelper(void) {// : TypeHelper(type_name) { 
-  //TODO  
+  clean = true;
 }
 
 ConstDecHelper::~ConstDecHelper(void) {
