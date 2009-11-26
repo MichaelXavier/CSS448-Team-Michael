@@ -160,7 +160,11 @@ TypeDef            :  yident
                           //Attempt to resolve any pointers to this new type
                           resolvePointers(type_ptr, declared_ptr_helpers);
                         } else {
-                          cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
+                          if (type_ptr != NULL) {
+                            cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
+                          } else {
+                            cout << "Error: could not insert type into the ST due to NULL type_ptr" << endl;
+                          }
                           /*delete type_ptr; DEBUG*/
                         }
                         type_ptr = NULL;
