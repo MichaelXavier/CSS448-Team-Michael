@@ -147,7 +147,7 @@ VariableDeclList   :  VariableDecl ysemicolon
                    ;  
 ConstantDef        :  yident 
                       {
-                        if (const_temp == NULL) { delete const_temp; }  
+                        /*if (const_temp == NULL) { delete const_temp; }  DEBUG*/
                         const_temp = new Constant(s);
                       } 
                       yequal  ConstExpression /*FIXME: may not cover empty consts*/
@@ -161,7 +161,7 @@ TypeDef            :  yident
                           resolvePointers(type_ptr, declared_ptr_helpers);
                         } else {
                           cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
-                          delete type_ptr;
+                          /*delete type_ptr; DEBUG*/
                         }
                         type_ptr = NULL;
                       }
@@ -276,7 +276,7 @@ ConstFactor        :  ConstFactor        :  yident
 
                    ;
 Type               :  yident 
-                      {type_ptr = symTable->lookup(s);}
+                      {cout << "DEBUG: looking up " << s << endl; type_ptr = symTable->lookup(s); cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; }
                    |  ArrayType
                    |  PointerType
                    |  RecordType
@@ -304,7 +304,11 @@ ArrayType          :  yarray
                         delete array_helper; 
                         array_helper = NULL;
                       }
-                      yrightbracket  yof Type
+                      yrightbracket  yof Type 
+                      { 
+                        array_helper->setTypePtr(type_ptr);
+                        type_ptr = NULL;//DEBUG: set it null so we don't delete it later
+                      }
                    ;
 
 SubrangeList       :  
@@ -561,6 +565,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                         while(!ident_queue.empty()) {
                           Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
+                          ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                           param_queue.push(param);
                           ident_queue.pop();
                         }
@@ -572,6 +577,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                         while(!ident_queue.empty()) {
                           Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
+                          ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                           param_queue.push(param);
                           ident_queue.pop();
                         }

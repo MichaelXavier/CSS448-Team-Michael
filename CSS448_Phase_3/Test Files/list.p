@@ -10,13 +10,20 @@ const
   avgPosition = 6;                        (* position of grade average *)
   size = 4;                               (* number of students *)
 
+(* before begin type block *)
 type
+(* after begin type block *)
   integerArray = array [1..avgPosition] of integer;
+(* after integerArray *)
 
+  (* before cellPtr *)
   cellPtr = ^cell;
+  (* after cellPtr *)
   cell = record
+  (* begin record *)
      id: integer;
-     info: integerArray; 
+  (* after id  *)
+     info: integerArray;
      next: cellPtr
   end;
 
