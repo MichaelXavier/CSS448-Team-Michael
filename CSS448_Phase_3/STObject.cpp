@@ -34,6 +34,10 @@ STObject::~STObject(void) {
 // insert
 // This inserts an IdentRecord into the ST.  
 bool STObject::insert(IdentRecord* new_rec, IdType type) {
+  if (new_rec == NULL) {
+    cout << "Error: cannot insert a NULL item into the ST " << endl;
+    return false;
+  }
   switch (type) {
     case function:
     case procedure:

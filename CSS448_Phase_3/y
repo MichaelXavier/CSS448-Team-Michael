@@ -299,15 +299,17 @@ ArrayType          :  yarray
                           delete currentRange;
                           currentRange = NULL;
                         }
-                        /*will fail validation if there's a problem*/
-                        array_helper->sendToSt(symTable);
-                        delete array_helper; 
-                        array_helper = NULL;
                       }
                       yrightbracket  yof Type 
                       { 
                         array_helper->setTypePtr(type_ptr);
                         type_ptr = NULL;//DEBUG: set it null so we don't delete it later
+                        /*will fail validation if there's a problem*/
+                        cout << "DEBUG: Inserting array into the ST" << endl;
+                        array_helper->sendToSt(symTable);
+                        cout << "DEBUG: Done" << endl;
+                        delete array_helper; 
+                        array_helper = NULL;
                       }
                    ;
 
