@@ -98,7 +98,11 @@ ProgramParameters  :  yleftparen  IdentList
                       {program_helper->AddParameterNames(ident_queue);} 
                    ;
 IdentList          :  yident 
-                      { cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
+                      { 
+                        while (!ident_queue.empty()) {ident_queue.pop();};//DEBUG
+                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
+                        ident_queue.push(s);
+                      }
                    |  IdentList ycomma yident
                       {cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
                    ;

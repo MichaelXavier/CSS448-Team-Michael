@@ -18,6 +18,7 @@ public:
   int strcmp(const IdentRecord& rhs)const;
 
   // Displays data held in record, pure virtual
+  //NOTE: this is getting called when calling printST instead of the appropriate display
   virtual void display(ostream& out, int depth)const = 0;		
 
   // Returns the identifier name
