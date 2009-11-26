@@ -17,32 +17,23 @@ bool RecordHelper::addFieldName(const string& str)
 }
 
 
-bool RecordHelper::setCurrentFieldType(const string& name)
+bool RecordHelper::setCurrentFieldType(IdentRecord* type)
 {
-	currentFieldType = name;
+	currentFieldType = type;
 }
 
 
 bool RecordHelper::addFields(STObject* st)
 {
-	IdentRecord* fieldType = st->lookup(currentFieldType);
-
-	if(fieldType == NULL)
-	{
-		// cout not find type, error handling
-	}
-	else
-	{
 		RecordField* fieldRecord;
 		for(int i = 0; i < currentFieldNames.size(); i++)
 		{
 			fieldRecord = new RecordField(currentFieldNames[i]);
-			fieldRecord->setTypePtr(fieldType);
+			fieldRecord->setTypePtr(currentFieldType);
 			fields.push_back(fieldRecord);
 		}
 		clearCurrentFieldNames(); // Clears list of fields so fields with a new type
 							  // can be added
-	}
 }
 	
 
@@ -71,6 +62,6 @@ bool RecordHelper::sendToSt(STObject* st)
 void RecordHelper::clearCurrentFieldNames()
 {
 	currentFieldNames.clear();
-	currentFieldType = "";
+	currentFieldType = NULL;
 }
 

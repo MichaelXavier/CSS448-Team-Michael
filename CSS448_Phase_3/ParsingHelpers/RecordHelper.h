@@ -15,7 +15,7 @@ public:
 	~RecordHelper();
 
 	bool addFieldName(const string&);
-	bool setCurrentFieldType(const string&);
+	bool setCurrentFieldType(IdentRecord* type);
 	bool addFields(STObject*);
 	
 	bool sendToSt(STObject*);
@@ -23,7 +23,7 @@ public:
 private:
 
 	vector<string> currentFieldNames;
-	string currentFieldType;
+	IdentRecord* currentFieldType;
 
 	vector<RecordField*> fields;
 
