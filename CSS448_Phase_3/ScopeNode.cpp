@@ -43,20 +43,25 @@ bool ScopeNode::recordExists(const IdentRecord* other)const {
 // Inserts a record into the scope's map of records
 bool ScopeNode::insertRecord(IdentRecord* other) {
   if (other == NULL) {
+    cout << "Error: record is NULL" << endl;
     return false;
   }
   if (scopeRoot->hasConflictingParams(other)) {
     // Checks for parameters with the same identifier name
+    cout << "Error: record has conflicting parameters" << endl;
     return false;
   }
   if (recordExists(other)) {
     // Checks for other variables in this scope with the same ident name
+    cout << "Error: record already exists" << endl;;
     return false;
   }
 
   // Tries to insert record into record map.
   pair<map<string, IdentRecord*>::iterator, bool> ret;
   ret = records.insert(pair<string, IdentRecord*>(other->getName(), other));
+
+  if (ret.second) { cout << "DEBUG: inserted record with name " << other->getName() << endl;}//DEBUG
 
   return ret.second; // Should return true if inserting IdentRecord into map
 					 // was successful

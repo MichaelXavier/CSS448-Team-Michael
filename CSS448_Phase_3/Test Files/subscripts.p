@@ -8,7 +8,7 @@ const
 
 var
    i,j,k: integer;
-   a: array [startSubscript .. endSubscript] of integer;
+   a: array [startSubscript..endSubscript] of integer;
 
 (* **************************    main      ********************************** *)
 

@@ -21,12 +21,12 @@ public:
 	bool AddVar(const string&);
   //Pop a queue, on failure, clear the stack
 	bool AddVars(queue<string>&);
-	bool SetMemberType(const string&);
+	bool SetMemberType(IdentRecord*);
 	bool sendToSt(STObject* st);
 
 private:
 	vector<string> varNames;
-	string memberType;
+	IdentRecord* typePtr;
 };
 
 #endif

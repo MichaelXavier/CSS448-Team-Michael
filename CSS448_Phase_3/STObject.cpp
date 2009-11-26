@@ -60,6 +60,7 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
 	  // All other IdentRecord types are inserted into the current scope's
 	  // records, if the identifier name doesn't already exist
       bool recordInsert;
+      cout << "DEBUG: trying to insert record with name " << new_rec->getName() << endl;
       recordInsert = currentScope->insertRecord(new_rec);
       if(recordInsert == true) {
         return true;
@@ -129,12 +130,12 @@ IdentRecord* STObject::lookup(const string& name) {
 
   // Checks the symbol table for the identifier name
   for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
-    cout << "DEBUG: checking SIT: does given " << name << " == " << (*it)->getName() << (name == (*it)->getName() ? "yes" : "no") << endl;
+    //cout << "DEBUG: checking SIT: does given " << name << " == " << (*it)->getName() << (name == (*it)->getName() ? "yes" : "no") << endl;
     if (name == (*it)->getName()) {
       cout << "DEBUG: FOUND " << (*it)->getName() << endl;
       return (*it);
     }
-    cout << "DEBUG: STILL LOOKING" << endl;
+    //cout << "DEBUG: STILL LOOKING" << endl;
   }
 
   cout << "Couldn't find type with name " << name << endl;

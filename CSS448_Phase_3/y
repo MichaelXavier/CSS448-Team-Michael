@@ -98,9 +98,9 @@ ProgramParameters  :  yleftparen  IdentList
                       {program_helper->AddParameterNames(ident_queue);} 
                    ;
 IdentList          :  yident 
-                      {ident_queue.push(s);}
+                      { cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
                    |  IdentList ycomma yident
-                      {ident_queue.push(s);}
+                      {cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
                    ;
 
 /**************************  Declarations section ***************************/
@@ -156,7 +156,7 @@ TypeDef            :  yident
                       {name = s;}
                       yequal  Type
                       {
-                        if (symTable->insert(type_ptr, current_idtype)) {
+                        /*if (symTable->insert(type_ptr, current_idtype)) {
                           //Attempt to resolve any pointers to this new type
                           resolvePointers(type_ptr, declared_ptr_helpers);
                         } else {
@@ -165,8 +165,10 @@ TypeDef            :  yident
                           } else {
                             cout << "Error: could not insert type into the ST due to NULL type_ptr" << endl;
                           }
-                          /*delete type_ptr; DEBUG*/
-                        }
+                          //delete type_ptr; DEBUG
+                        }*/
+                        //inserted prior to this
+                        if (type_ptr != NULL)  { delete type_ptr; }
                         type_ptr = NULL;
                       }
                    ;
@@ -174,7 +176,7 @@ VariableDecl       :  {var_dec_helper = new VarDecHelper();}
                       IdentList  ycolon 
                       {var_dec_helper->AddVars(ident_queue);} 
                       Type
-                      {delete var_dec_helper; var_dec_helper = NULL;}
+                      {var_dec_helper->SetMemberType(type_ptr); var_dec_helper->sendToSt(symTable); delete var_dec_helper; var_dec_helper = NULL;}
                    ;
 
 /***************************  Const/Type Stuff  ******************************/
@@ -310,8 +312,13 @@ ArrayType          :  yarray
                         type_ptr = NULL;//DEBUG: set it null so we don't delete it later
                         /*will fail validation if there's a problem*/
                         cout << "DEBUG: Inserting array into the ST" << endl;
-                        array_helper->sendToSt(symTable);
-                        cout << "DEBUG: Done" << endl;
+                        if (array_helper->sendToSt(symTable)) {
+                          //cout << "DEBUG: Done" << endl;
+                          //look it up again so it can be used elsewhere
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
                         delete array_helper; 
                         array_helper = NULL;
                       }
@@ -368,7 +375,11 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                           set_helper->setRange(currentRange->lowString, currentRange->highString);
                         }
                         /*will fail validation if there's a problem*/
-                        set_helper->sendToSt(symTable);
+                        if (set_helper->sendToSt(symTable)) {
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
                         delete set_helper; 
                         set_helper = NULL;
                         delete currentRange;

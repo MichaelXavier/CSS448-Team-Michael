@@ -22,6 +22,7 @@ bool VarDecHelper::AddVar(const string& name)
 
 bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
+    cout << "DEBUG: adding var to VarDecHelper queue: " << idents.front() << endl;
     if (!AddVar(idents.front())) {
       //clear the stack and bail
       while (!idents.empty()) {
@@ -35,30 +36,35 @@ bool VarDecHelper::AddVars(queue<string>& idents) {
 }
 
 
-bool VarDecHelper::SetMemberType(const string& name)
+bool VarDecHelper::SetMemberType(IdentRecord* type)
 {
-	memberType = name;
+  //TODO: validations
+  typePtr = type;
 	return true;
 }
 
 
 bool VarDecHelper::sendToSt(STObject* st)
 {
-	IdentRecord* type = st->lookup(memberType);
-	if(type == NULL)
+	if(typePtr == NULL)
 	{
 		// error handling, type was not found in ST
+    cout << "Error: variable missing type" << endl;
 	}
 	else
 	{
-		IdentRecord* varRecord;
+		Variable* varRecord;
 		for(int i = 0; i < varNames.size(); i++)
 		{
 			varRecord = new Variable(varNames[i]);
-			bool addedToST = st->insert(varRecord, variable);
-			if(addedToST == false)
+      varRecord->setTypePtr(typePtr);
+      cout << "DEBUG: Inserting " << varNames[i] << endl;
+			if(!st->insert(varRecord, variable))
 			{
 				// variable already exists, handle error
+        cout << "Variable " << varNames[i] << " already exists and could not be inserted" << endl;
+        delete varRecord;
+        return false;
 			}
 		}
 	}
