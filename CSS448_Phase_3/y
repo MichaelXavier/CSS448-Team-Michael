@@ -408,7 +408,7 @@ FieldList          :  IdentList
                           ident_queue.pop();
                         }
                       }
-					   ycolon  Type {record_helper->setCurrentFieldType(type_name);}
+					   ycolon  Type {record_helper->setCurrentFieldType(type_ptr);}
                    ;
 
 /***************************  Statements  ************************************/
