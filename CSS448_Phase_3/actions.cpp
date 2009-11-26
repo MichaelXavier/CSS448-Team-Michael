@@ -11,6 +11,7 @@ void startProgram(Program* newProg) {
 void endProgram(void) {
   symTable->printST();//FIXME: re we supposed to print?
   delete symTable;
+  symTable = NULL;
 }
 
 bool strToInt(string& str, int& target) {

@@ -11,8 +11,19 @@ public:
 
 	void display(ostream& sout, int depth)const;
 
-  void setConstFactor(int value) { i = value; type = "i"; }
-  void setConstFactor(const string& value) { s = value; type = "s"; }
+
+  void setConstFactor(int value) { 
+    this->i = value;
+    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
+    this->type.clear();
+    this->type = "i";
+    cout << "DEBUG: type set to " << type << endl;}
+  void setConstFactor(const string& value) {  
+    this->s = value;
+    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
+    type.clear();
+    this->type = "s";
+    cout << "DEBUG: type set to " << type << endl; }
   void setConstFactor(bool value) { b = value; type = "b"; }
   void setConstFactor(IdentRecord* value) { ir = value; type = "ir"; }
 

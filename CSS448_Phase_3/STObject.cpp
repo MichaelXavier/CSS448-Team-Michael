@@ -75,6 +75,7 @@ bool STObject::insert(IdentRecord* new_rec, IdType type) {
 // Note: ScopeNodes are not deleted after printST
 void STObject::printST(void) {
   //Print starting from the root
+  cout << "===================================================================" << endl;
   rootScope->printScope(cout);
   //Start back up at the root scope
 	currentScope = rootScope; // Sets the current scope 

@@ -38,10 +38,11 @@ private:
 
 using namespace std;
 
-class ConstDecHelper : public TypeHelper
+class ConstDecHelper// : public TypeHelper
 {
 public:
-	ConstDecHelper(const string& type_name);
+	//ConstDecHelper(const string& type_name);
+	ConstDecHelper(void); //FIXME: added because there isn't really a need to name a "collection" of Constants
 	~ConstDecHelper(void);
 	
   //FIXME: constfactors can be strings, numbers, true, false, nil, or idents

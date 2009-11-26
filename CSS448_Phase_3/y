@@ -21,29 +21,29 @@ STObject* symTable;
 //variable/const stuff
 string name;
 string type_name;
-Constant* const_temp;
-IdentRecord* ident_temp;
-IdentRecord* type_ptr;
+Constant* const_temp = NULL;
+IdentRecord* ident_temp = NULL;
+IdentRecord* type_ptr = NULL;
 IdType current_idtype;
-Procedure* proc_temp;
-Parameter* param_temp;
-Constant* const_range_low;
-Constant* const_range_high;
+Procedure* proc_temp = NULL;
+Parameter* param_temp = NULL;
+Constant* const_range_low = NULL;
+Constant* const_range_high = NULL;
 vector<PointerHelper*>declared_ptr_helpers;
 
 //helpers
-ArrayHelper* array_helper;
-ProgramHelper* program_helper;
-RecordHelper* record_helper;
-SetHelper* set_helper;
-VarDecHelper* var_dec_helper;
-ConstDecHelper* const_dec_helper;
+ArrayHelper* array_helper = NULL;
+ProgramHelper* program_helper = NULL;
+RecordHelper* record_helper = NULL;
+SetHelper* set_helper = NULL;
+VarDecHelper* var_dec_helper = NULL;
+ConstDecHelper* const_dec_helper = NULL;
 queue<string> ident_queue;
 queue<Constant*> const_queue;
 queue<Parameter*> param_queue;
-ProcedureHelper* procedure_helper;
-FunctionHelper* function_helper;
-PointerHelper* pointer_helper;
+ProcedureHelper* procedure_helper = NULL;
+FunctionHelper* function_helper = NULL;
+PointerHelper* pointer_helper = NULL;
 
 
 // for handling ranges
@@ -58,7 +58,7 @@ struct Range
 	string highString;
 	string type;
 };
-Range* range_temp;
+Range* range_temp = NULL;
 queue<Range*> ranges_queue;
 bool setLowRange;
 
@@ -114,6 +114,7 @@ Declarations       :  ConstantDefBlock              /* you do this one */
                    ;
 ConstantDefBlock   :  /*** empty ***/                                  /* you finish it */
                    |  yconst 
+                      {const_dec_helper = new ConstDecHelper(); } 
                       ConstantDefList
                       {
                         const_dec_helper->sendToSt(symTable);
@@ -145,7 +146,10 @@ VariableDeclList   :  VariableDecl ysemicolon
                    |  VariableDeclList VariableDecl ysemicolon /*ADDED: recursive case*/
                    ;  
 ConstantDef        :  yident 
-                      {const_dec_helper = new ConstDecHelper(s); } 
+                      {
+                        if (const_temp == NULL) { delete const_temp; }  
+                        const_temp = new Constant(s);
+                      } 
                       yequal  ConstExpression /*FIXME: may not cover empty consts*/
                    ;
 TypeDef            :  yident
@@ -174,7 +178,11 @@ VariableDecl       :  {var_dec_helper = new VarDecHelper();}
 ConstExpression    :  UnaryOperator  ConstFactor
                    |  ConstFactor
                    |  ystring 
-                      {const_temp->setConstFactor(s);}
+                      {
+                        //if (const_temp == NULL) { delete const_temp; }
+                        //const_temp = new Constant(name); //FIXME:!!!! is this an accurate way of doing it? are we really creating a const?*/
+                        const_temp->setConstFactor(s);
+                      }
                    ;
 ConstFactor        :  ConstFactor        :  yident
                       {
@@ -232,6 +240,7 @@ ConstFactor        :  ConstFactor        :  yident
                           } else {
                             cout << "DEBUG: setConstFactor: " << s << " with " << parsed_int << endl;//DEBUG
                             const_temp->setConstFactor(parsed_int);
+                            //FIXME: turned off for testing
                           }
                         }                      
                         //TODO: further error handling
@@ -504,7 +513,10 @@ ProcedureDecl      :  ProcedureHeading
                         delete procedure_helper;
                         procedure_helper = NULL;
                       }
-                      ysemicolon  Block 
+                      ysemicolon  Block
+                      { 
+                        symTable->printST();
+                      }
                    ;
 FunctionDecl       :  FunctionHeading  ycolon  yident
                       {
@@ -519,6 +531,9 @@ FunctionDecl       :  FunctionHeading  ycolon  yident
                         function_helper = NULL;
                       }
                       ysemicolon  Block
+                      { 
+                        symTable->printST();
+                      }
                    ;
 ProcedureHeading   :  yprocedure  yident  
                       {procedure_helper = new ProcedureHelper(s);}
