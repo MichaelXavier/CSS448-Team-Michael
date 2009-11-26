@@ -3,7 +3,7 @@
 
 // Constructor
 Constant::Constant(const string& name) : IdentRecord(name) {
-  int i = 0;
+  i = 0;
   b = false;
   s = "";
   ir = NULL;
