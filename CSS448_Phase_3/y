@@ -99,7 +99,6 @@ ProgramParameters  :  yleftparen  IdentList
                    ;
 IdentList          :  yident 
                       { 
-                        while (!ident_queue.empty()) {ident_queue.pop();};//DEBUG
                         cout << "DEBUG: pushing " << s << " to ident queue." << endl;
                         ident_queue.push(s);
                       }
