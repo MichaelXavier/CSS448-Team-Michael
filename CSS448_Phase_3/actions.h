@@ -16,6 +16,7 @@
 #include "IdentTypes/Parameter.h"
 #include "IdentTypes/PointerType.h"
 #include "IdentTypes/Procedure.h"
+#include "IdentTypes/ProgramParameter.h"
 #include "IdentTypes/RealType.h"
 #include "IdentTypes/RecordField.h"
 #include "IdentTypes/RecordType.h"

@@ -4,7 +4,7 @@
 #include <vector>
 #include "../IdType.h"
 #include "IdentRecord.h"
-#include "Parameter.h"
+#include "ProgramParameter.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ public:
 	~Program(void);
 
 	void display(ostream& sout, int depth)const;  // Prints data
-	bool insertParameter(Parameter*);  // Adds a parameter to Program's 
+	bool insertParameter(ProgramParameter*);  // Adds a parameter to Program's 
 									   // list of params
 	
   // Checks to see if parameter's identifier name is the same as
@@ -22,6 +22,6 @@ public:
   bool hasConflictingParams(const IdentRecord*)const;
 
 private:
-  vector<Parameter*> parameters; // List of Program's parameters
+  vector<ProgramParameter*> parameters; // List of Program's parameters
 };
 #endif

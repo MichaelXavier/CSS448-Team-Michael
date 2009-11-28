@@ -1,24 +1,17 @@
 #include "SetHelper.h"	
-
-
 SetHelper::SetHelper(const string& type_name) : TypeHelper(type_name)
 {
-}
-
-
+}
 SetHelper::~SetHelper(void)
 {
-}
-
+}
 bool SetHelper::setRange(int low, int high)
 {
 	if(low > high)
 	{
 		cout << "Error: low value is greater than high value for set" << endl;
 		return false;
-	}
-
-	rangeLow = low;
+	}	rangeLow = low;
 	rangeHigh = high;
 	return true;
 }
@@ -34,20 +27,22 @@ bool SetHelper::setRange(const string& low, const string& high)
     return false;
   }
   return setRange(low[0], high[0]);
-}
-
+}
 bool SetHelper::sendToSt(STObject* st)
 {	
   //FIXME: need to call validate, need to define validate. validate must call base class's validate. Reference ArrayHelper for more info
+
 	IdentRecord* setRecord = new SetType(typeName);
 	SetType* setRecordTemp = static_cast<SetType*>(setRecord);
 	setRecordTemp->setRange(rangeLow, rangeHigh);
 	setRecordTemp = NULL;
 	bool addedToST = st->insert(setRecord, settype);
+
 	if(addedToST == false)
 	{
 		// handle error
 	}
+
 	return true;
 }
 

@@ -105,7 +105,6 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
 }
 
 
-
 // lookup
 // Checks the current scope and all parent scopes for the identifier name.
 // Also, checks the SIT.  Afterwards, returns a pointer to the IdentRecord.

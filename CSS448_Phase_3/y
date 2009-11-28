@@ -98,10 +98,7 @@ ProgramParameters  :  yleftparen  IdentList
                       {program_helper->AddParameterNames(ident_queue);} 
                    ;
 IdentList          :  yident 
-                      { 
-                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
-                        ident_queue.push(s);
-                      }
+                      { cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
                    |  IdentList ycomma yident
                       {cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
                    ;
@@ -161,8 +158,7 @@ TypeDef            :  yident
                       {
                         /*if (symTable->insert(type_ptr, current_idtype)) {
                           //Attempt to resolve any pointers to this new type
-                          resolvePointers(type_ptr, declared_ptr_helpers);
-                        } else {
+                          resolvePointers(type_ptr, declared_ptr_helpers);or
                           if (type_ptr != NULL) {
                             cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
                           } else {
@@ -171,8 +167,10 @@ TypeDef            :  yident
                           //delete type_ptr; DEBUG
                         }*/
                         //inserted prior to this
-                        if (type_ptr != NULL)  { delete type_ptr; }
-                        type_ptr = NULL;
+                        // @@@@@@@@@@@@@@@
+                    //    if (type_ptr != NULL)  { delete type_ptr; }
+                     //   type_ptr = NULL;
+                        // @@@@@@@@@@@@@@
                       }
                    ;
 VariableDecl       :  {var_dec_helper = new VarDecHelper();} 
@@ -465,7 +463,7 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
                    |  yreadln  yleftparen DesignatorList  yrightparen 
                    |  ywrite  yleftparen  ExpList  yrightparen
                    |  ywriteln  
-                   |  ywriteln  yleftparen  ExpList  yrightparen 
+                   |  ywriteln yleftparen  ExpList  yrightparen 
                    ;
 
 /***************************  Designator Stuff  ******************************/

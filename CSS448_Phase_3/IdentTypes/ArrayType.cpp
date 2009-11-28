@@ -14,7 +14,8 @@ ArrayType::~ArrayType(void) {
 // display
 // Prints data
 void ArrayType::display(ostream& sout, int depth)const {
-  if (typePtr == NULL) {
+
+	if (typePtr == NULL) {
 	// typePtr must be set in order to display data
     sout << "Error: typePtr of " << identName << " not set";
     return;

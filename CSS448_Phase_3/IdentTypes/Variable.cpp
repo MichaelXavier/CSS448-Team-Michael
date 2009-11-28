@@ -23,7 +23,7 @@ void Variable::display(ostream& sout, int depth)const {
   //also skip the indent so it all prints inline
   if (typePtr->getName().size() == 0) {
     sout << identName;
-    typePtr->display(sout, 0);
+   // typePtr->display(sout, 0);
   } else {
     sout << identName << " " << typePtr->getName();
   }

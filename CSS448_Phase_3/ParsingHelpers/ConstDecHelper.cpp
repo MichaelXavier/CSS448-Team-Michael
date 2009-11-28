@@ -3,7 +3,6 @@
 ConstDecHelper::ConstDecHelper(void) {// : TypeHelper(type_name) { 
   clean = true;
 }
-
 ConstDecHelper::~ConstDecHelper(void) {
   //TODO  
 }
@@ -14,12 +13,12 @@ bool ConstDecHelper::addConst(Constant* val) {
   } else {
     cout << "Error: null Constant* given to ConstDecHelper" << endl;
   }
-}
-
+}
 bool ConstDecHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return false;
   }
+
   for (unsigned int i = 0; i < consts.size(); i++) {
     //If at any point there's a failure, stop, error and return false
     if (!st->insert(consts[i], constant)) {
@@ -27,6 +26,7 @@ bool ConstDecHelper::sendToSt(STObject* st) {
       return false;
     }
   }
+
   return false;
 }
 

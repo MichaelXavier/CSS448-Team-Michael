@@ -2,13 +2,11 @@
 
 VarDecHelper::VarDecHelper(void)
 {
-}
-
-
+}
 VarDecHelper::~VarDecHelper(void)
 {
 }
-	
+
 bool VarDecHelper::AddVar(const string& name)
 {
   if (name.length() > 0) {
@@ -18,8 +16,7 @@ bool VarDecHelper::AddVar(const string& name)
     cout << "Error: cannot declare a zero-length variable name." << endl;
     return false;
   }
-}
-
+}
 bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
     cout << "DEBUG: adding var to VarDecHelper queue: " << idents.front() << endl;
@@ -35,15 +32,12 @@ bool VarDecHelper::AddVars(queue<string>& idents) {
   return true;
 }
 
-
 bool VarDecHelper::SetMemberType(IdentRecord* type)
 {
   //TODO: validations
   typePtr = type;
 	return true;
-}
-
-
+}
 bool VarDecHelper::sendToSt(STObject* st)
 {
 	if(typePtr == NULL)
@@ -57,14 +51,15 @@ bool VarDecHelper::sendToSt(STObject* st)
 		for(int i = 0; i < varNames.size(); i++)
 		{
 			varRecord = new Variable(varNames[i]);
-      varRecord->setTypePtr(typePtr);
-      cout << "DEBUG: Inserting " << varNames[i] << endl;
+			varRecord->setTypePtr(typePtr);
+	
+			cout << "DEBUG: Inserting " << varNames[i] << endl;
 			if(!st->insert(varRecord, variable))
 			{
 				// variable already exists, handle error
-        cout << "Variable " << varNames[i] << " already exists and could not be inserted" << endl;
-        delete varRecord;
-        return false;
+				cout << "Variable " << varNames[i] << " already exists and could not be inserted" << endl;
+				delete varRecord;
+				return false;
 			}
 		}
 	}

@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 class ArrayHelper : public TypeHelper {
 public:
   ArrayHelper(const string& type_name);
@@ -26,6 +27,7 @@ private:
     int low;
     int high;
   };
+
   queue<Range*> ranges;
 
   bool validate(void);
@@ -34,3 +36,4 @@ private:
 };
 
 #endif
+

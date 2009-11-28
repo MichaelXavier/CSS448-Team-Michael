@@ -18,14 +18,14 @@ bool ProgramHelper::AddParameterName(const string& name)
     if (parameterNames[i] == name) {
       cout << "ERROR: duplicate program parameter name " << name << endl;
       return false;
-    }
-    parameterNames.push_back(name);
-  }
+      }
+	}
+	parameterNames.push_back(name);
   return true;
 }
 
 bool ProgramHelper::AddParameterNames(queue<string>& idents) {
-  while (!idents.empty()) {
+	while (!idents.empty()) {
     if (!AddParameterName(idents.front())) {
       //clear the stack and bail
       while (!idents.empty()) {
@@ -42,11 +42,12 @@ Program* ProgramHelper::GetProgramObj()
 {
 	Program* program = new Program(programName);
 
-	Parameter* param;
+	ProgramParameter* param;
 	for(int i = 0; i < parameterNames.size(); i++)
 	{
-		param = new Parameter(parameterNames[i]);
-		if(!program->insertParameter(param))
+		param = new ProgramParameter(parameterNames[i]);
+		bool addedParam = program->insertParameter(param);
+		if(addedParam == false)
 		{
       //Delete the last parameter and program, which will delete the
       //successfully inserted parameters

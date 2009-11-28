@@ -91,8 +91,9 @@ void ScopeNode::printScope(ostream& sout) {
 	map<string, IdentRecord*>::iterator it;
 	for(it = records.begin(); it != records.end(); it++)
 	{
-		(*it).second->display(sout, scopeDepth+1);
-    sout << endl; //Newline at the end of each record.
+		IdentRecord* printTemp = (*it).second;
+		printTemp->display(sout, scopeDepth+1);
+		sout << endl; //Newline at the end of each record.
 	}
 	
 	// Loops through and prints each child scope
@@ -108,6 +109,7 @@ void ScopeNode::printScope(ostream& sout) {
 // such an IdentRecord of the matching name exists
 IdentRecord* ScopeNode::lookup(const string& name) {
   map<string, IdentRecord*>::iterator result = records.find(name);
+
   //Not found in current scope, check parent
   if (result == records.end()) {
     if (parentScope == NULL) {

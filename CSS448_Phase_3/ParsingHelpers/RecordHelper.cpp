@@ -1,27 +1,21 @@
 #include "RecordHelper.h"
 
-
 RecordHelper::RecordHelper(const string& type_name) : TypeHelper(type_name)
 {
 }
-
 
 RecordHelper::~RecordHelper()
 {
 }
 
-
 bool RecordHelper::addFieldName(const string& str)
 {
 	currentFieldNames.push_back(str);
-}
-
-
+}
 bool RecordHelper::setCurrentFieldType(IdentRecord* type)
 {
 	currentFieldType = type;
 }
-
 
 bool RecordHelper::addFields(STObject* st)
 {
@@ -35,12 +29,12 @@ bool RecordHelper::addFields(STObject* st)
 		clearCurrentFieldNames(); // Clears list of fields so fields with a new type
 							  // can be added
 }
-	
 
 bool RecordHelper::sendToSt(STObject* st)
 {
 	IdentRecord* record = new RecordType(typeName);
 	RecordType* record_temp = static_cast<RecordType*>(record);
+	
 	for(int i = 0; i < fields.size(); i++)
 	{
 		bool fieldWasAdded = record_temp->insertField(fields[i]);
@@ -49,19 +43,17 @@ bool RecordHelper::sendToSt(STObject* st)
 			// error handling
 		}
 	}
-
 	bool addedToST = st->insert(record, recordtype);
 	if(addedToST == false)
 	{
 		// error handling
 	}
+
 	return true;
 }
-
 
 void RecordHelper::clearCurrentFieldNames()
 {
 	currentFieldNames.clear();
 	currentFieldType = NULL;
-}
-
+}

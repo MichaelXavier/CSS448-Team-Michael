@@ -52,7 +52,7 @@ bool Program::hasConflictingParams(const IdentRecord* record)const
 // insertParameter
 // Adds a parameter to the Program's parameter list, as long as
 // no conflicting parameter identifier names exist.
-bool Program::insertParameter(Parameter* parameter) {
+bool Program::insertParameter(ProgramParameter* parameter) {
   if (hasConflictingParams(parameter)) {
     return false;
   }

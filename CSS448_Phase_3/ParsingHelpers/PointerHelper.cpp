@@ -1,15 +1,11 @@
-#include "PointerHelper.h"
-
-
+#include "PointerHelper.h"
 PointerHelper::PointerHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
   declared_type = "";
 }
 
-
 PointerHelper::~PointerHelper() { 
-}
-
+}
 bool PointerHelper::setTypePtr(IdentRecord* type) {
   if (typePtr != NULL) {
     clean = false;
@@ -23,8 +19,7 @@ bool PointerHelper::setTypePtr(IdentRecord* type) {
     typePtr = type;
     return true;
   }
-}
-
+}
 bool PointerHelper::setDeclaredType(const string& declared) {
   if (declared_type.length() != 0) {
     clean = false;
@@ -38,15 +33,12 @@ bool PointerHelper::setDeclaredType(const string& declared) {
     declared_type = declared;
     return true;
   }
-}
-
+}
 bool PointerHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return false;
   }
-
   PointerType* ptr = new PointerType(typeName, declared_type);
-  
   ptr->setPointObj(typePtr);
 
   if (st->insert(ptr, pointertype)) {
@@ -67,6 +59,7 @@ bool PointerHelper::validate(void) {
     clean = false;
     cout << "Error: empty declared type for " << typeName << endl;
   }
+
   return clean;
 }
 

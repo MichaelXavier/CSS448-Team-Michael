@@ -1,10 +1,7 @@
-#include "ArrayHelper.h"
-
-
+#include "ArrayHelper.h"
 ArrayHelper::ArrayHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
 }
-
 ArrayHelper::~ArrayHelper() {
   while (!ranges.empty()) {
     Range* tempRange = ranges.front();
@@ -13,7 +10,6 @@ ArrayHelper::~ArrayHelper() {
     ranges.pop();
     }
 }
-
 bool ArrayHelper::addDimension(int low, int high) {
   if (!clean) { return false; }
   //Do not allow a range that goes in reverse
@@ -55,26 +51,26 @@ bool ArrayHelper::setTypePtr(IdentRecord* type) {
     typePtr = type;
     return true;
   }
-}
-
+}
 bool ArrayHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return false;
   }
 
-  ArrayType* arr = new ArrayType(typeName);
+  IdentRecord* arr = new ArrayType(typeName);
+  ArrayType* arr_temp = static_cast<ArrayType*>(arr);
+  
   //Add dimensions
   while (!ranges.empty()) {
     Range* range = ranges.front();
     if (range != NULL) { 
-      arr->addDimension(range->low, range->high);
+      arr_temp->addDimension(range->low, range->high);
 	  delete range;
 	  range = NULL;
       ranges.pop();
     }
   }
-  
-  arr->setTypePtr(typePtr);
+  arr_temp->setTypePtr(typePtr);
 
   if (st->insert(arr, arraytype)) {
     return true;
