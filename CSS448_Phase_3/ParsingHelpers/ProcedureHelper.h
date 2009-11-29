@@ -13,7 +13,7 @@ public:
   ~ProcedureHelper();
   bool AddParameters(queue<Parameter*> params);
   bool AddParameter(Parameter* param);
-  bool sendToSt(STObject* st);
+  IdentRecord* sendToSt(STObject* st);
 private:
   queue<Parameter*> params;
 };

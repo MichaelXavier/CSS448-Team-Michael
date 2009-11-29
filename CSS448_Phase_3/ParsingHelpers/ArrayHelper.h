@@ -20,7 +20,7 @@ public:
 
   bool setTypePtr(IdentRecord* type);
 
-  bool sendToSt(STObject* st);
+  IdentRecord* sendToSt(STObject* st);
 
 private:
   struct Range {

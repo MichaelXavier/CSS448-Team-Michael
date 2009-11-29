@@ -40,6 +40,7 @@ bool VarDecHelper::SetMemberType(IdentRecord* type)
 }
 IdentRecord* VarDecHelper::sendToSt(STObject* st)
 {
+  Variable* varRecord;
 	if(typePtr == NULL)
 	{
 		// error handling, type was not found in ST
@@ -48,7 +49,6 @@ IdentRecord* VarDecHelper::sendToSt(STObject* st)
 	}
 	else
 	{
-		Variable* varRecord;
 		for(int i = 0; i < varNames.size(); i++)
 		{
 			varRecord = new Variable(varNames[i]);

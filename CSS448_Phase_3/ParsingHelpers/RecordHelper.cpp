@@ -38,13 +38,11 @@ IdentRecord* RecordHelper::sendToSt(STObject* st)
 	for(int i = 0; i < fields.size(); i++)
 	{
 		if (!record_temp->insertField(fields[i])) {
-		{
       cout << "Error: Failed to insert field on record " << typeName << endl;
       return NULL;
 		}
 	}
 	if (!st->insert(record, recordtype)) {
-	{
       cout << "Error: Failed to insert record to ST with name " << typeName << endl;
       return NULL;
 	}

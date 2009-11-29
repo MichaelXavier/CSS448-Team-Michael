@@ -16,7 +16,7 @@ public:
 	ConstDecHelper(void); //FIXME: added because there isn't really a need to name a "collection" of Constants
 	~ConstDecHelper(void);
   //FIXME: constfactors can be strings, numbers, true, false, nil, or idents
-	bool sendToSt(STObject* st);
+	IdentRecord* sendToSt(STObject* st);
 	bool addConst(Constant* val);
 private:
 	

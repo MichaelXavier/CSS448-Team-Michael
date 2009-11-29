@@ -14,7 +14,7 @@ public:
 	bool addFieldName(const string&);
 	bool setCurrentFieldType(IdentRecord* type);
 	bool addFields(STObject*);
-	bool sendToSt(STObject*);
+	IdentRecord* sendToSt(STObject*);
 
 private:
 	vector<string> currentFieldNames;

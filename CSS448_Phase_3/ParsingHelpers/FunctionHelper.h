@@ -13,7 +13,7 @@ public:
   bool AddParameters(queue<Parameter*> params);
   bool AddParameter(Parameter* param);
   bool SetReturnType(IdentRecord* ret) {returnType = ret;}
-  bool sendToSt(STObject* st);
+  IdentRecord* sendToSt(STObject* st);
 private:
   queue<Parameter*> params;
   IdentRecord* returnType;

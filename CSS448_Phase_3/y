@@ -285,6 +285,7 @@ ConstFactor        :  ConstFactor
                    ;
 Type               :  yident 
                       {cout << "DEBUG: looking up " << s << endl; type_ptr = symTable->lookup(s); cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; }
+                      /*FIXME: might need to implement anonymous types at this point*/
                    |  ArrayType
                    |  PointerType
                    |  RecordType

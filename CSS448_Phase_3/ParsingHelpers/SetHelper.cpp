@@ -28,6 +28,7 @@ bool SetHelper::setRange(const string& low, const string& high)
   }
   return setRange(low[0], high[0]);
 }
+
 IdentRecord* SetHelper::sendToSt(STObject* st)
 {	
   //FIXME: need to call validate, need to define validate. validate must call base class's validate. Reference ArrayHelper for more info
@@ -37,7 +38,6 @@ IdentRecord* SetHelper::sendToSt(STObject* st)
 	setRecordTemp->setRange(rangeLow, rangeHigh);
 	setRecordTemp = NULL;
 	if (st->insert(setRecord, settype) != NULL) {
-	{
     cout << "Error: Failed to insert set into ST " << typeName << endl;
     return NULL;
 	}
