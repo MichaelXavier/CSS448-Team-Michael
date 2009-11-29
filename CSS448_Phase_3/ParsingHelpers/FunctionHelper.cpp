@@ -40,40 +40,40 @@ bool FunctionHelper::AddParameter(Parameter* param) {
   }
 }
 
-bool FunctionHelper::sendToSt(STObject* st) {
+IdentRecord* FunctionHelper::sendToSt(STObject* st) {
   if (!validate()) {
-    return false;
+    return NULL;
   }
 
-  Function* proc = new Function(typeName);
+  Function* func = new Function(typeName);
   //Add dimensions
   while (!params.empty()) {
     Parameter* parameter = params.front();
-	params.front() = NULL;
+    params.front() = NULL;
 
     if (parameter != NULL) { 
-      if (!proc->insertParameter(parameter)) {
+      if (!func->insertParameter(parameter)) {
         //Can't insert, bail out  
         cout << "Error: failed to insert parameter into Function " << typeName << endl;
-        delete proc;
+        delete func;
         delete parameter;
         while (!params.empty()) {
-		  parameter = params.front();
-		  delete parameter;
-		  parameter = NULL;
+          parameter = params.front();
+          delete parameter;
+          parameter = NULL;
           params.pop();
         }
-        return false;
+        return NULL;
       }
 	  params.pop();
     }
   }
 
-  if (st->insert(proc, function)) {
-    return true;
+  if (st->insert(func, function) != NULL) {
+    return func;
   } else {
-    delete proc;
-    return false;
+    delete func;
+    return NULL;
   }
 }
 

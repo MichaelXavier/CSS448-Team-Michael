@@ -11,7 +11,7 @@ public:
   virtual ~TypeHelper(void);
 
   bool isClean(void)const { return clean; }
-  virtual bool sendToSt(STObject* st) = 0;
+  virtual IdentRecord* sendToSt(STObject* st) = 0;
 protected:
   string typeName;
   bool clean;

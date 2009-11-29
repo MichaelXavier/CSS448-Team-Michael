@@ -11,7 +11,7 @@ RecordHelper::~RecordHelper()
 bool RecordHelper::addFieldName(const string& str)
 {
 	currentFieldNames.push_back(str);
-}
+}
 bool RecordHelper::setCurrentFieldType(IdentRecord* type)
 {
 	currentFieldType = type;
@@ -30,30 +30,30 @@ bool RecordHelper::addFields(STObject* st)
 							  // can be added
 }
 
-bool RecordHelper::sendToSt(STObject* st)
+IdentRecord* RecordHelper::sendToSt(STObject* st)
 {
 	IdentRecord* record = new RecordType(typeName);
 	RecordType* record_temp = static_cast<RecordType*>(record);
 	
 	for(int i = 0; i < fields.size(); i++)
 	{
-		bool fieldWasAdded = record_temp->insertField(fields[i]);
-		if(fieldWasAdded == false)
+		if (!record_temp->insertField(fields[i])) {
 		{
-			// error handling
+      cout << "Error: Failed to insert field on record " << typeName << endl;
+      return NULL;
 		}
 	}
-	bool addedToST = st->insert(record, recordtype);
-	if(addedToST == false)
+	if (!st->insert(record, recordtype)) {
 	{
-		// error handling
+      cout << "Error: Failed to insert record to ST with name " << typeName << endl;
+      return NULL;
 	}
 
-	return true;
+	return record;
 }
 
 void RecordHelper::clearCurrentFieldNames()
 {
 	currentFieldNames.clear();
 	currentFieldType = NULL;
-}
+}

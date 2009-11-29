@@ -5,7 +5,7 @@
 #include <string>
 #include "../IdType.h"
 #include "../IdentTypes/RecordType.h"
-#include "TypeHelper.h"
+#include "TypeHelper.h"
 class RecordHelper : public TypeHelper
 {
 public:

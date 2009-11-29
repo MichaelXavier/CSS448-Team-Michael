@@ -13,21 +13,21 @@ bool ConstDecHelper::addConst(Constant* val) {
   } else {
     cout << "Error: null Constant* given to ConstDecHelper" << endl;
   }
-}
-bool ConstDecHelper::sendToSt(STObject* st) {
+}
+IdentRecord* ConstDecHelper::sendToSt(STObject* st) {
   if (!validate()) {
-    return false;
+    return NULL;
   }
 
   for (unsigned int i = 0; i < consts.size(); i++) {
     //If at any point there's a failure, stop, error and return false
-    if (!st->insert(consts[i], constant)) {
+    if (st->insert(consts[i], constant) == NULL) {
       cout << "Error: failed to insert a constant " << consts[i]->getName() << "into ST inside ConstDecHelper at vector index " << i << ". Aborting." << endl;
-      return false;
+      return NULL;
     }
   }
 
-  return false;
+  return consts[consts.size()];//return the last one
 }
 
 bool ConstDecHelper::validate(void) {

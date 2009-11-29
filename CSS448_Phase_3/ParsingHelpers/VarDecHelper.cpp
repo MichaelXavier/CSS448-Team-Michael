@@ -2,7 +2,7 @@
 
 VarDecHelper::VarDecHelper(void)
 {
-}
+}
 VarDecHelper::~VarDecHelper(void)
 {
 }
@@ -16,7 +16,7 @@ bool VarDecHelper::AddVar(const string& name)
     cout << "Error: cannot declare a zero-length variable name." << endl;
     return false;
   }
-}
+}
 bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
     cout << "DEBUG: adding var to VarDecHelper queue: " << idents.front() << endl;
@@ -37,13 +37,14 @@ bool VarDecHelper::SetMemberType(IdentRecord* type)
   //TODO: validations
   typePtr = type;
 	return true;
-}
-bool VarDecHelper::sendToSt(STObject* st)
+}
+IdentRecord* VarDecHelper::sendToSt(STObject* st)
 {
 	if(typePtr == NULL)
 	{
 		// error handling, type was not found in ST
     cout << "Error: variable missing type" << endl;
+    return NULL;
 	}
 	else
 	{
@@ -59,10 +60,11 @@ bool VarDecHelper::sendToSt(STObject* st)
 				// variable already exists, handle error
 				cout << "Variable " << varNames[i] << " already exists and could not be inserted" << endl;
 				delete varRecord;
-				return false;
+				return NULL;
 			}
 		}
 	}
-	return true;
+  //Return the last one
+	return varRecord;
 }
 

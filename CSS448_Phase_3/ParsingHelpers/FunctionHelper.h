@@ -5,7 +5,7 @@
 #include <string>
 #include "TypeHelper.h"
 #include "../IdentTypes/Procedure.h"
-using namespace std;
+using namespace std;
 class FunctionHelper : public TypeHelper {
 public:
   FunctionHelper(const string& type_name);

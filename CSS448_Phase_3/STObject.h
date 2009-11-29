@@ -33,7 +33,7 @@ public:
   STObject(Program* root);
   ~STObject(void);
 
-  bool insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
+  IdentRecord* insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
 
   // Loops up a name in the ST or SIT and returns a pointer to the IdentRecord

@@ -39,9 +39,9 @@ bool ProcedureHelper::AddParameter(Parameter* param) {
   }
 }
 
-bool ProcedureHelper::sendToSt(STObject* st) {
+IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
   if (!validate()) {
-    return false;
+    return NULL;
   }
 
   Procedure* proc = new Procedure(typeName);
@@ -56,21 +56,21 @@ bool ProcedureHelper::sendToSt(STObject* st) {
         delete proc;
         delete parameter;
         while (!params.empty()) {
-		  parameter = params.front();
-		  delete parameter;
-		  parameter = NULL;
+          parameter = params.front();
+          delete parameter;
+          parameter = NULL;
           params.pop();
         }
-        return false;
+        return NULL;
       }
 	  params.pop();
     }
   }
 
-  if (st->insert(proc, procedure)) {
-    return true;
+  if (st->insert(proc, procedure) != NULL) {
+    return proc;
   } else {
     delete proc;
-    return false;
+    return NULL;
   }
 }

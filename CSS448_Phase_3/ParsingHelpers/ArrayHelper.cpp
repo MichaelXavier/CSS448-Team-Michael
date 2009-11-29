@@ -1,4 +1,4 @@
-#include "ArrayHelper.h"
+#include "ArrayHelper.h"
 ArrayHelper::ArrayHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
 }
@@ -51,8 +51,8 @@ bool ArrayHelper::setTypePtr(IdentRecord* type) {
     typePtr = type;
     return true;
   }
-}
-bool ArrayHelper::sendToSt(STObject* st) {
+}
+IdentRecord* ArrayHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return false;
   }
@@ -72,11 +72,11 @@ bool ArrayHelper::sendToSt(STObject* st) {
   }
   arr_temp->setTypePtr(typePtr);
 
-  if (st->insert(arr, arraytype)) {
-    return true;
+  if (st->insert(arr, arraytype) != NULL) {
+    return arr;
   } else {
     delete arr;
-    return false;
+    return NULL;
   }
 }
 

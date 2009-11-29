@@ -33,40 +33,38 @@ STObject::~STObject(void) {
 
 // insert
 // This inserts an IdentRecord into the ST.  
-bool STObject::insert(IdentRecord* new_rec, IdType type) {
+IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
   if (new_rec == NULL) {
     cout << "Error: cannot insert a NULL item into the ST " << endl;
-    return false;
+    return NULL;
   }
   switch (type) {
     case function:
     case procedure:
       if (scopeEntry(new_rec, type)) {
-        return true;
+        return new_rec;
       } else {
         // This handles when a parent scope procedure/function/program has
         // the same identifier
         cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n"; 
-        return false;
+        return NULL;
       }
       break;
     case program:
 		// A program can't be inserted since this was already done when
 		// the ST was created
         cout << "Error: cannot nest Program types: \"" << new_rec->getName() << "\"\n";
-        return false;
+        return NULL;
       break;
     default:
 	  // All other IdentRecord types are inserted into the current scope's
 	  // records, if the identifier name doesn't already exist
-      bool recordInsert;
       cout << "DEBUG: trying to insert record with name " << new_rec->getName() << endl;
-      recordInsert = currentScope->insertRecord(new_rec);
-      if(recordInsert == true) {
-        return true;
+      if(currentScope->insertRecord(new_rec)) {
+        return new_rec;
       } else {
         cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n";
-        return false;
+        return NULL;
       }
       break;
   }

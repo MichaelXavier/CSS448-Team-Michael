@@ -6,7 +6,7 @@ TypeHelper::TypeHelper(const string& type_name) {
 }
 TypeHelper::~TypeHelper(void) {
   //nothing to do here
-}
+}
 bool TypeHelper::validate(void) {
   if (typeName.length() == 0) {
     clean = false;
