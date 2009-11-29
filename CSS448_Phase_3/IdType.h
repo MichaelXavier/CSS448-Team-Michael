@@ -1,1 +1,5 @@
-../CSS448_Phase_2/IdType.h
+#pragma once
+
+// Enumeration of IdentRecord types
+enum IdType {arraytype, pointertype, recordtype, settype,
+             constant, variable, procedure, program, function, recordfield, parameter};

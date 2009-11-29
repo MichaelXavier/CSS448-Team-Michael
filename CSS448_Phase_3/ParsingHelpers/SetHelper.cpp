@@ -11,7 +11,7 @@ bool SetHelper::setRange(int low, int high)
 	{
 		cout << "Error: low value is greater than high value for set" << endl;
 		return false;
-	}	rangeLow = low;
+	}	rangeLow = low;
 	rangeHigh = high;
 	return true;
 }
