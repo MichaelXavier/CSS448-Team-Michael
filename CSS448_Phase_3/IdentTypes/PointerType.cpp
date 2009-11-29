@@ -28,8 +28,8 @@ void PointerType::display(ostream& sout, int depth)const {
 // Sets typePtr and checks if obj's identifier matches declared_type
 void PointerType::setPointObj(IdentRecord* obj) {
   if (obj == NULL) {
-    cout << "Error: cannot set the pointer target of a PointerType to NULL" << endl;
-    return;
+    cout << "Warning: setting the  pointer target of a PointerType to NULL" << endl;
+    typePtr = NULL;
   } else if (obj->getName() != declared_type) {
     cout << "Error: pointObj identifier name does not match the declared name" << endl;
   } else {

@@ -18,6 +18,7 @@ public:
 
   string getDeclaredType(void)const { return declared_type; }
   string getName() {return typeName;}
+
 private:
   bool validate(void);
   string declared_type;

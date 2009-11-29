@@ -12,6 +12,8 @@ public:
 	void display(ostream& sout, int depth)const;
 	void setPointObj(IdentRecord* obj);	// Sets typePtr and checks if
 									  // obj's identifier matches declared_type
+	string getDeclaredType() {return declared_type;}
+	IdentRecord* getTypePtr() { return typePtr;}
 
 private:
 	IdentRecord* typePtr; // The data type of this object

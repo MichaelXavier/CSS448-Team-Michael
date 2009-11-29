@@ -27,9 +27,10 @@ IdentRecord* type_ptr = NULL;
 IdType current_idtype;
 Procedure* proc_temp = NULL;
 Parameter* param_temp = NULL;
+PointerType* pointer_temp = NULL;
 Constant* const_range_low = NULL;
 Constant* const_range_high = NULL;
-vector<PointerHelper*>declared_ptr_helpers;
+vector<PointerType*> pointer_list;
 
 //helpers
 ArrayHelper* array_helper = NULL;
@@ -47,7 +48,6 @@ PointerHelper* pointer_helper = NULL;
 
 
 // for handling ranges
-bool findingRange;
 struct Range
 {
 	int lowInt;
@@ -60,7 +60,6 @@ struct Range
 };
 Range* range_temp = NULL;
 queue<Range*> ranges_queue;
-bool setLowRange;
 
 
 extern string s;
@@ -98,9 +97,15 @@ ProgramParameters  :  yleftparen  IdentList
                       {program_helper->AddParameterNames(ident_queue);} 
                    ;
 IdentList          :  yident 
-                      { cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
+                      { 
+                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
+                        ident_queue.push(s);
+                      }
                    |  IdentList ycomma yident
-                      {cout << "DEBUG: pushing " << s << " to ident queue." << endl;ident_queue.push(s);}
+                      {
+                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
+                        ident_queue.push(s);
+                      }
                    ;
 
 /**************************  Declarations section ***************************/
@@ -113,33 +118,23 @@ Declarations       :  ConstantDefBlock              /* you do this one */
                       SubprogDeclList  
                    ;
 ConstantDefBlock   :  /*** empty ***/                                  /* you finish it */
-                   |  yconst 
-                      {const_dec_helper = new ConstDecHelper(); } 
+                   |  yconst  
                       ConstantDefList
-                      {
-                        const_dec_helper->sendToSt(symTable);
-                        delete const_dec_helper;
-                        const_dec_helper = NULL;
-                      }
                    ;
 ConstantDefList    :  ConstantDef 
-                    /*FIXME: not implemented*/
-                      {const_dec_helper->addConst(const_temp);} 
                       ysemicolon
                    |  ConstantDefList ConstantDef 
-                    /*FIXME: not implemented*/
-                      {const_dec_helper->addConst(const_temp);} 
                       ysemicolon
                    ;
 TypeDefBlock       :  /*** empty ***/
                    |  ytype  TypeDefList          
-                      {checkPointers(declared_ptr_helpers);}
+                      {/* checkPointers(declared_ptr_helpers);*/}
                    ;
 TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  
                    ;
 VariableDeclBlock  :  /*** empty ***/
-				           |  yvar 
+				   |  yvar 
                       VariableDeclList
                    ;
 VariableDeclList   :  VariableDecl ysemicolon
@@ -147,37 +142,41 @@ VariableDeclList   :  VariableDecl ysemicolon
                    ;  
 ConstantDef        :  yident 
                       {
-                        /*if (const_temp == NULL) { delete const_temp; }  DEBUG*/
-                        const_temp = new Constant(s);
+                        const_dec_helper = new ConstDecHelper();
+                        const_dec_helper->setConstName(s);
                       } 
-                      yequal  ConstExpression /*FIXME: may not cover empty consts*/
+                      yequal  ConstExpression
+                      { 
+                        const_dec_helper->setConstObj(const_temp);
+                        delete const_temp;
+                        const_temp = NULL;
+                        const_dec_helper->sendToSt(symTable);
+                        delete const_dec_helper;
+                        const_dec_helper = NULL;
+                      }
                    ;
 TypeDef            :  yident
                       {name = s;}
-                      yequal  Type
+                      yequal Type
                       {
-                        /*if (symTable->insert(type_ptr, current_idtype)) {
-                          //Attempt to resolve any pointers to this new type
-                          resolvePointers(type_ptr, declared_ptr_helpers);or
-                          if (type_ptr != NULL) {
-                            cout << "Error: could not insert type into the ST: " << type_ptr->getName() << endl;
-                          } else {
-                            cout << "Error: could not insert type into the ST due to NULL type_ptr" << endl;
-                          }
-                          //delete type_ptr; DEBUG
-                        }*/
-                        //inserted prior to this
-                        // @@@@@@@@@@@@@@@
-                    //    if (type_ptr != NULL)  { delete type_ptr; }
-                     //   type_ptr = NULL;
-                        // @@@@@@@@@@@@@@
+                        resolvePointers(type_ptr, pointer_list);                     
                       }
                    ;
-VariableDecl       :  {var_dec_helper = new VarDecHelper();} 
+                   
+VariableDecl       :  {
+                        var_dec_helper = new VarDecHelper();
+                      } 
                       IdentList  ycolon 
-                      {var_dec_helper->AddVars(ident_queue);} 
+                      {
+                        var_dec_helper->AddVars(ident_queue);
+                      } 
                       Type
-                      {var_dec_helper->SetMemberType(type_ptr); var_dec_helper->sendToSt(symTable); delete var_dec_helper; var_dec_helper = NULL;}
+                      {
+                        var_dec_helper->SetMemberType(type_ptr);
+                        var_dec_helper->sendToSt(symTable);
+                        delete var_dec_helper;
+                        var_dec_helper = NULL;
+                      }
                    ;
 
 /***************************  Const/Type Stuff  ******************************/
@@ -186,97 +185,53 @@ ConstExpression    :  UnaryOperator  ConstFactor
                    |  ConstFactor
                    |  ystring 
                       {
-                        //if (const_temp == NULL) { delete const_temp; }
-                        //const_temp = new Constant(name); //FIXME:!!!! is this an accurate way of doing it? are we really creating a const?*/
+                        const_temp = new Constant("");
                         const_temp->setConstFactor(s);
                       }
                    ;
-ConstFactor        :  ConstFactor        
-                   :  yident
+ConstFactor        :  yident
                       {
-                        if (findingRange) {
                           ident_temp = symTable->lookup(s);	
-                          Constant* constPtr = static_cast<Constant*>(ident_temp);
-                          string constType = constPtr->getConstType();
-                          
-                          //can't use a switch with a string
-                          if (constType == "s") {
-                            if(setLowRange) {
-                              range_temp->lowString = constPtr->getConstString();
-                            } else {
-                              range_temp->highString = constPtr->getConstString();
-                            }
-                            range_temp->type = "s"; 
-                          // need to check for low/high of different types
-                          } else if (constType == "b") {
-                            if(setLowRange) {
-                              range_temp->lowBool = constPtr->getConstBool();
-                            } else {
-                              range_temp->highBool = constPtr->getConstBool();
-                            }
-                            range_temp->type = "b";
-                          } else if (constType == "i") {
-                            if(setLowRange) {
-                              range_temp->lowInt = constPtr->getConstInt();
-                            } else {
-                              range_temp->highInt = constPtr->getConstInt();
-                            }
-                            range_temp->type = "i";
-                          }
-                        } else {
-                          // find value, insert value
-                          ident_temp = symTable->lookup(s);
-                          if (ident_temp != NULL) {
-                            const_temp->setConstFactor(ident_temp); 
+                          if(ident_temp == NULL) {
+                            cout << "Error: unable to locate temporary ident for this constant given the name " << s << endl;
                           } else {
-                            cout << "Error: Constant assigned to an undefined ident." << endl;
-                          }
+                            Constant* findConst = static_cast<Constant*>(ident_temp);
+                            string constType = findConst->getConstType();
+                            
+                            const_temp = new Constant("");
+                          
+                            if (constType == "s") {
+                              const_temp->setConstFactor(findConst->getConstString());
+                            } else if(constType == "b") {
+                              const_temp->setConstFactor(findConst->getConstBool());
+                            } else if(constType == "i") {
+                              const_temp->setConstFactor(findConst->getConstInt());
+                            } else {
+                              cout << "Error: cannot handle constant with an invalid constType " << constType << endl;
+                            }
                         }
                       }
                    |  ynumber
                       {
-                        int parsed_int = 0;
+                        const_temp = new Constant("");//anonymous constant
+
+                        int parsed_int = 0;            
                         if (strToInt(s, parsed_int)) {
-                          if(findingRange == true)
-                          {
-                            if(setLowRange == true) {
-                              range_temp->lowInt = parsed_int;
-                            } else {
-                              range_temp->highInt = parsed_int;
-                            }
-                            range_temp->type = "i";
-                          } else {
-                            cout << "DEBUG: setConstFactor: " << s << " with " << parsed_int << endl;//DEBUG
-                            const_temp->setConstFactor(parsed_int);
-                            //FIXME: turned off for testing
-                          }
+                          const_temp->setConstFactor(parsed_int);
+                        } else {
+                          cout << "DEBUG: setConstFactor: " << s << " with " << parsed_int << endl;//DEBUG
+                          const_temp->setConstFactor(parsed_int);
                         }                      
-                        //TODO: further error handling
                       }
                    |  ytrue
                       {
-                        if(findingRange == true) {
-                          if(setLowRange == true)
-                            range_temp->lowBool = true;
-                          else
-                            range_temp->highBool = true;
-                          range_temp->type = "b";
-                        } else {
-                          const_temp->setConstFactor(true);
-                        }
-                      }
+						const_temp = new Constant("");
+						const_temp->setConstFactor(true);
+					  }
                    |  yfalse
                       {
-                      	if(findingRange == true) {
-                          if(setLowRange == true) {
-                            range_temp->lowBool = false;
-                          } else {
-                            range_temp->highBool = false;
-                          }
-                          range_temp->type = "b";
-                        } else {
-                          const_temp->setConstFactor(false);
-                        }
+						const_temp = new Constant("");
+						const_temp->setConstFactor(true);
                       }
                    |  ynil
                       {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
@@ -285,7 +240,6 @@ ConstFactor        :  ConstFactor
                    ;
 Type               :  yident 
                       {cout << "DEBUG: looking up " << s << endl; type_ptr = symTable->lookup(s); cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; }
-                      /*FIXME: might need to implement anonymous types at this point*/
                    |  ArrayType
                    |  PointerType
                    |  RecordType
@@ -324,14 +278,52 @@ ArrayType          :  yarray
 SubrangeList       :  
                    |  SubrangeList ycomma Subrange 
                    ;
-Subrange           :  {range_temp = new Range; findingRange = true; setLowRange = true;} 
-                      ConstFactor 
-                      ydotdot {setLowRange = false;} 
+Subrange           :  {range_temp = new Range;} 
+                      ConstFactor
+                      {
+                        string constType = const_temp->getConstType();
+                        if(constType == "s")
+                        {
+                          range_temp->lowString = const_temp->getConstString();
+                          range_temp->type = "s";
+                        }
+                        else if(constType == "b")
+                        {
+                          range_temp->lowBool = const_temp->getConstBool();
+                          range_temp->type = "b";
+                        }
+                        else if(constType == "i")
+                        {
+                          range_temp->lowInt = const_temp->getConstInt();
+                          range_temp->type = "i";
+                        }
+                        delete const_temp;
+                        const_temp = NULL;
+                      }	
+                      ydotdot
                       ConstFactor 
                       {
-                        ranges_queue.push(range_temp);
-                        range_temp = NULL;
-                        findingRange = false;
+						string constType = const_temp->getConstType();
+						if(constType == "s")
+						{
+							range_temp->highString = const_temp->getConstString();
+							range_temp->type = "s";
+						}
+						else if(constType == "b")
+						{
+							range_temp->highBool = const_temp->getConstBool();
+							range_temp->type = "b";
+						}
+						else if(constType == "i")
+						{
+							range_temp->highInt = const_temp->getConstInt();
+							range_temp->type = "i";
+						}
+						ranges_queue.push(range_temp);
+						range_temp = NULL;
+						delete const_temp;
+						const_temp = NULL;
+						
                       }
                    |  ystring 
                       {
@@ -344,7 +336,8 @@ Subrange           :  {range_temp = new Range; findingRange = true; setLowRange 
                         range_temp->highString = s;
                         ranges_queue.push(range_temp);
                         range_temp = NULL;
-                        findingRange = false;
+                        delete const_temp;
+                        const_temp = NULL;
                       } 
                    ;
 RecordType         :  yrecord 
@@ -352,6 +345,8 @@ RecordType         :  yrecord
                       FieldListSequence  
                       {
                         type_ptr = record_helper->sendToSt(symTable);
+                        delete record_helper;
+                        record_helper = NULL;
                       }
                       yend 
                    ;
@@ -367,26 +362,33 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                           set_helper->setRange(currentRange->lowString, currentRange->highString);
                         }
                         /*will fail validation if there's a problem*/
-                        type_ptr = set_helper->sendToSt(symTable);
+                        if (set_helper->sendToSt(symTable)) {
+                          type_ptr = symTable->lookup(name);
+                        } else {
+                          type_ptr = NULL;
+                        }
                         delete set_helper; 
                         set_helper = NULL;
                         delete currentRange;
                         currentRange = NULL;
                       }					  
                    ;
-PointerType        :  ycaret 
+PointerType        :  ycaret
                       yident 
                       {
                         pointer_helper = new PointerHelper(name); /*name is matched in the caling rule*/
                         pointer_helper->setDeclaredType(s);/*get the name of what it's supposed to point to*/
-                        declared_ptr_helpers.push_back(pointer_helper); /*put it on the vector for later*/
+                        pointer_helper->sendToSt(symTable);
+                        delete pointer_helper;
                         pointer_helper = NULL;
+                        
+                        type_ptr = symTable->lookup(name);
+                        pointer_temp = static_cast<PointerType*>(type_ptr);
+                        pointer_list.push_back(pointer_temp);
                       } 
                    ;
 FieldListSequence  :  FieldList 
-                      {record_helper->addFields(symTable);}
-                   |  FieldListSequence  ysemicolon  FieldList 
-                      {record_helper->addFields(symTable);}
+                   |  FieldListSequence  ysemicolon  FieldList
                    ;
 FieldList          :  IdentList 
                       {
@@ -396,7 +398,11 @@ FieldList          :  IdentList
                           ident_queue.pop();
                         }
                       }
-					   ycolon  Type {record_helper->setCurrentFieldType(type_ptr);}
+					   ycolon Type 
+					   {
+						  record_helper->setCurrentFieldType(type_ptr);
+						  record_helper->addFields(symTable);
+					   }
                    ;
 
 /***************************  Statements  ************************************/
@@ -524,6 +530,7 @@ ProcedureDecl      :  ProcedureHeading
                       }
                       ysemicolon  Block
                       { 
+                        checkPointers(pointer_list);
                         symTable->printST();
                       }
                    ;

@@ -18,7 +18,6 @@ STObject::STObject(Program* root) {
   currentScope = rootScope;
 }
 
-
 // Destructor
 // Recursively deletes all ScopeNodes and SIT
 STObject::~STObject(void) {
@@ -59,8 +58,9 @@ IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
     default:
 	  // All other IdentRecord types are inserted into the current scope's
 	  // records, if the identifier name doesn't already exist
-      cout << "DEBUG: trying to insert record with name " << new_rec->getName() << endl;
-      if(currentScope->insertRecord(new_rec)) {
+      bool recordInsert;
+      recordInsert = currentScope->insertRecord(new_rec);
+      if(recordInsert == true) {
         return new_rec;
       } else {
         cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n";
@@ -81,9 +81,13 @@ void STObject::printST(void) {
   cout << "===================================================================" << endl;
   rootScope->printScope(cout);
   //Start back up at the root scope
-	currentScope = rootScope; // Sets the current scope 
+  while(currentScopeNumber != 0)
+  {
+	  scopeExit();
+  }
+//	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
-	currentScopeNumber = 0;
+//	currentScopeNumber = 0;
 
 	cout << endl;
 }
@@ -100,6 +104,17 @@ bool STObject::scopeEntry(IdentRecord* new_rec, IdType type) {
 	currentScope->insertScope(nested_scope);
 	currentScope = nested_scope;
 	return true;
+}
+
+void STObject::scopeExit()
+{
+	if(currentScopeNumber != 0)
+	{
+		currentScope = currentScope->getParent();
+		currentScopeNumber--;
+	}
+	else
+		cout << "Can't call scopeExit on root (program)" << endl;
 }
 
 

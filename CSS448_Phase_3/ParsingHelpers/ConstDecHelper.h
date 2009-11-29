@@ -17,10 +17,11 @@ public:
 	~ConstDecHelper(void);
   //FIXME: constfactors can be strings, numbers, true, false, nil, or idents
 	IdentRecord* sendToSt(STObject* st);
-	bool addConst(Constant* val);
+	bool setConstName(string name);
+	void setConstObj(Constant* obj);
 private:
-	
-	vector<Constant*> consts;
+	string constName;
+	IdentRecord* constObj;
     bool clean;
     bool validate(void); 
 };

@@ -61,11 +61,8 @@ bool ScopeNode::insertRecord(IdentRecord* other) {
   pair<map<string, IdentRecord*>::iterator, bool> ret;
   ret = records.insert(pair<string, IdentRecord*>(other->getName(), other));
 
-  if (ret.second) { cout << "DEBUG: inserted record with name " << other->getName() << endl;}//DEBUG
-
   return ret.second; // Should return true if inserting IdentRecord into map
 					 // was successful
-
 }
 
 

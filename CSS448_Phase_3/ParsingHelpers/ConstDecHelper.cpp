@@ -7,46 +7,18 @@ ConstDecHelper::~ConstDecHelper(void) {
   //TODO  
 }
 
-bool ConstDecHelper::addConst(Constant* val) {
-  if (val != NULL) {
-    consts.push_back(val);
-  } else {
-    cout << "Error: null Constant* given to ConstDecHelper" << endl;
-  }
-}
+bool ConstDecHelper::setConstName(string name) {
+	constName = name;
+}void ConstDecHelper::setConstObj(Constant* obj){	constObj = new Constant(constName);	Constant* ptr = static_cast<Constant*>(constObj);	string constType = obj->getConstType();	if(constType == "s")		ptr->setConstFactor(obj->getConstString());	else if(constType == "b")		ptr->setConstFactor(obj->getConstBool());	else if(constType == "i")		ptr->setConstFactor(obj->getConstInt());}
 IdentRecord* ConstDecHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return NULL;
   }
 
-  for (unsigned int i = 0; i < consts.size(); i++) {
-    //If at any point there's a failure, stop, error and return false
-    if (st->insert(consts[i], constant) == NULL) {
-      cout << "Error: failed to insert a constant " << consts[i]->getName() << "into ST inside ConstDecHelper at vector index " << i << ". Aborting." << endl;
-      return NULL;
-    }
-  }
-
-  return consts[consts.size()];//return the last one
+  return st->insert(constObj, constant);
 }
 
 bool ConstDecHelper::validate(void) {
-  //look for redefinitions with n^2 comparison
-  Constant* cur;
-  for(unsigned int i = 0; i < consts.size(); i++) {
-    cur = consts[i];
-    if (cur == NULL) {
-      clean = false;
-      cout << "NULL Constant* found in ConstDecHelper at vector index " << i << endl;
-      continue;
-    }
-    for(unsigned int j = 0; j < consts.size(); j++) {
-      if (i != j && consts[j] != NULL && consts[i]->getName() == consts[j]->getName()) {
-        clean = false;
-        cout << "Error: Conflicting Constant declaration found with name " << consts[i]->getName() << " found in ConstDecHelper at vector indices " << i << " and " << j << endl; 
-      }
-    }
-  }
   return clean;
 }
 

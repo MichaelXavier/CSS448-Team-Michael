@@ -17,6 +17,7 @@ public:
 	bool setRange(int, int);
 	bool setRange(const string&, const string&);
 	IdentRecord* sendToSt(STObject*);
+	
 private:
 	int rangeLow;
 	int rangeHigh;

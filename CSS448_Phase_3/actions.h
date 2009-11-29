@@ -42,5 +42,5 @@ extern STObject* symTable;
 void startProgram(Program* newProg);
 void endProgram(void);
 bool strToInt(string& str, int& target);
-void resolvePointers(IdentRecord* newTypePtr, vector<PointerHelper*>& ptrs);
-void checkPointers(vector<PointerHelper*>& ptrs);
+void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs);
+void checkPointers(vector<PointerType*>& ptrs);
