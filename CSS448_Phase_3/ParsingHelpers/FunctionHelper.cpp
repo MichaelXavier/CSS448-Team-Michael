@@ -6,10 +6,10 @@ FunctionHelper::FunctionHelper(const string& type_name) : TypeHelper(type_name)
 }
 
 FunctionHelper::~FunctionHelper(void) {
-   Parameter* tempParam = params.front();
+   /*Parameter* tempParam = params.front();
    delete tempParam;
    tempParam = NULL;
-   params.pop();
+   params.pop();*///FIXME: causing a crash, looks like scopeNode deletes this
 }
 
 bool FunctionHelper::AddParameters(queue<Parameter*> params) {
@@ -17,6 +17,7 @@ bool FunctionHelper::AddParameters(queue<Parameter*> params) {
     Parameter* param = params.front();
     if (!AddParameter(param)) {
       delete param;
+      params.pop();
       //clear the stack and bail
       while (!params.empty()) {
         param = params.front();
@@ -55,11 +56,14 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
       if (!func->insertParameter(parameter)) {
         //Can't insert, bail out  
         cout << "Error: failed to insert parameter into Function " << typeName << endl;
-        delete func;
-        delete parameter;
+        //delete func;//FIXME: crashing
+        //delete parameter;//FIXME: crashing
+        params.pop();
         while (!params.empty()) {
           parameter = params.front();
-          delete parameter;
+          if (parameter != NULL) {
+            //delete parameter;//FIXME: crashing
+          }
           parameter = NULL;
           params.pop();
         }

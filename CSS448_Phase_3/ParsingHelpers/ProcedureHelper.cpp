@@ -3,12 +3,12 @@
 ProcedureHelper::ProcedureHelper(const string& type_name) : TypeHelper(type_name) {}
 
 ProcedureHelper::~ProcedureHelper(void) {
-  while (!params.empty()) {
+  /*while (!params.empty()) {
    Parameter* tempParam = params.front();
    delete tempParam;
    tempParam = NULL;
    params.pop();
-  }
+  }*///FIXME: causing a crash, looks like scopeNode deletes this
 }
 
 bool ProcedureHelper::AddParameters(queue<Parameter*> params) {
@@ -53,17 +53,21 @@ IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
       if (!proc->insertParameter(parameter)) {
         //Can't insert, bail out  
         cout << "Error: failed to insert parameter into Function " << typeName << endl;
-        delete proc;
-        delete parameter;
+        //delete proc;//FIXME: crashing
+        //delete parameter;//FIXME: crashing
+        params.pop();
         while (!params.empty()) {
           parameter = params.front();
-          delete parameter;
+          if (parameter != NULL) {
+            //delete parameter;//FIXME: crashing
+          }
           parameter = NULL;
           params.pop();
         }
         return NULL;
+      } else {
+        params.pop();
       }
-	  params.pop();
     }
   }
 
