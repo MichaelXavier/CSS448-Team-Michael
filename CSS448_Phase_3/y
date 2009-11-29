@@ -191,7 +191,8 @@ ConstExpression    :  UnaryOperator  ConstFactor
                         const_temp->setConstFactor(s);
                       }
                    ;
-ConstFactor        :  ConstFactor        :  yident
+ConstFactor        :  ConstFactor        
+                   :  yident
                       {
                         if (findingRange) {
                           ident_temp = symTable->lookup(s);	
@@ -313,13 +314,7 @@ ArrayType          :  yarray
                         type_ptr = NULL;//DEBUG: set it null so we don't delete it later
                         /*will fail validation if there's a problem*/
                         cout << "DEBUG: Inserting array into the ST" << endl;
-                        if (array_helper->sendToSt(symTable)) {
-                          //cout << "DEBUG: Done" << endl;
-                          //look it up again so it can be used elsewhere
-                          type_ptr = symTable->lookup(name);
-                        } else {
-                          type_ptr = NULL;
-                        }
+                        type_ptr = array_helper->sendToSt(symTable);
                         delete array_helper; 
                         array_helper = NULL;
                       }
@@ -355,12 +350,7 @@ RecordType         :  yrecord
                       {record_helper = new RecordHelper(name);} 
                       FieldListSequence  
                       {
-                        if (record_helper->sendToSt(symTable)) {
-                          //get the new IdentRecord back for resolvePointers
-                          type_ptr = symTable->lookup(name);
-                        } else {
-                          type_ptr = NULL;
-                        }
+                        type_ptr = record_helper->sendToSt(symTable);
                       }
                       yend 
                    ;
@@ -376,11 +366,7 @@ SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange
                           set_helper->setRange(currentRange->lowString, currentRange->highString);
                         }
                         /*will fail validation if there's a problem*/
-                        if (set_helper->sendToSt(symTable)) {
-                          type_ptr = symTable->lookup(name);
-                        } else {
-                          type_ptr = NULL;
-                        }
+                        type_ptr = set_helper->sendToSt(symTable);
                         delete set_helper; 
                         set_helper = NULL;
                         delete currentRange;
