@@ -28,19 +28,33 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 	vector<PointerType*>::iterator it;
 	int i = 0;
   for(it = ptrs.begin(); it != ptrs.end(); it++) {
-	if (newTypePtr->getName() == ptrs[i]->getDeclaredType()) {
-		ptrs[i]->setPointObj(newTypePtr);
-	}
-	i++;
+    if (newTypePtr == NULL) {
+      cout << "Error: newTypePtr argument passed to resolvePointers is NULL" << endl;
+      return;
+      //TODO: further error handling?
+    }
+    if (ptrs[i] == NULL) {
+      cout << "Error: PointerType* NULL in ptrs argument to resolvePointers at index" << i << ". Skipping." << endl;
+      continue;
+      //TODO: further error handling?
+    }
+    if (newTypePtr->getName() == ptrs[i]->getDeclaredType()) {
+      ptrs[i]->setPointObj(newTypePtr);
+    }
+    i++;
   }
 }
 
 void checkPointers(vector<PointerType*>& ptrs) {
   for(unsigned int i = 0; i < ptrs.size(); i++) {
-	if(ptrs[i]->getTypePtr() == NULL)
-	{
-		cout << "Stray pointer found with name " << ptrs[i]->getName() << " and declared type " << ptrs[i]->getDeclaredType() << endl;
-	}
+    if (ptrs[i] == NULL) {
+      cout << "Error: PointerType* NULL in ptrs argument to checkPointers at index" << i << ". Skipping." << endl;
+      continue;
+    }
+    if(ptrs[i]->getTypePtr() == NULL)
+    {
+      cout << "Stray pointer found with name " << ptrs[i]->getName() << " and declared type " << ptrs[i]->getDeclaredType() << endl;
+    }
   }
   ptrs.clear();
 }
