@@ -1,5 +1,5 @@
 include Makefile.inc
-OBJ 		= main.o lex.yy.o actions.o y.tab.o IdentTypes/*.o ParsingHelpers/*.o scopenode.o stobject.o 
+OBJ 		= main.o lex.yy.o actions.o y.tab.o IdentTypes/*.o ParsingHelpers/*.o scopenode.o stobject.o cppgenerator.o
 SUBDIRS = IdentTypes ParsingHelpers
 ACT 		= actions.h
 H 			= y.tab.h tokenconsts.h
@@ -12,6 +12,9 @@ a.out: $(SUBDIRS) $(OBJ) $H $(ACT)
 
 main.o: main.cpp 
 	$(CC) $(CFLAGS) $<
+
+cppgenerator.o: CPPGenerator.cpp
+	$(CC) $(CFLAGS) $< -o $@
 
 stobject.o: STObject.cpp
 	$(CC) $(CFLAGS) $< -o $@
