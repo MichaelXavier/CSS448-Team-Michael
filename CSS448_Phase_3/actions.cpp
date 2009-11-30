@@ -58,3 +58,7 @@ void checkPointers(vector<PointerType*>& ptrs) {
   }
   ptrs.clear();
 }
+
+void dumpPointer(PointerType* ptr) {
+  //TODO: need an ST method for this  
+}
