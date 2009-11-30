@@ -39,6 +39,8 @@ public:
   // Loops up a name in the ST or SIT and returns a pointer to the IdentRecord
   IdentRecord* lookup(const string& name);  
 
+  void scopeExit(void);	 // Exits current scope
+
 private:
   ScopeNode* rootScope;		// Pointer to root scope 
   ScopeNode* currentScope;	// Pointer to current scope node
@@ -47,7 +49,6 @@ private:
 
   void fillIdentTable(void);	   // Function for filling the SIT
   bool scopeEntry(IdentRecord*, IdType); // Function for creating new scope
-  void scopeExit(void);	 // Exits current scope
 };
 #endif
 

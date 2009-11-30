@@ -47,6 +47,7 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
   }
 
   Function* func = new Function(typeName);
+  func->setReturnType(returnType);
   //Add dimensions
   while (!params.empty()) {
     Parameter* parameter = params.front();

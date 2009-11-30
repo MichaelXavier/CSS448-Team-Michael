@@ -30,7 +30,7 @@ bool PointerHelper::setDeclaredType(const string& declared) {
     cout << "Error: cannot set empty declared_type." << endl;
     return false;
   } else {
-    declared_type = declared;
+	  declared_type = declared;
     return true;
   }
 }
@@ -52,10 +52,10 @@ IdentRecord* PointerHelper::sendToSt(STObject* st) {
 bool PointerHelper::validate(void) {
   TypeHelper::validate();
   if (typePtr == NULL) {
-    clean = false;
-    cout << "Error: NULL typePtr for pointer type " << typeName << endl;
+    clean = true;
+    cout << "Warning: NULL typePtr for pointer type " << typeName << endl;
   }
-  if (declared_type.length()) {
+  if (declared_type.length() == 0) {
     clean = false;
     cout << "Error: empty declared type for " << typeName << endl;
   }

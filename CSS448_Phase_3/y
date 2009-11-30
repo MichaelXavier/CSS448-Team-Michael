@@ -531,7 +531,7 @@ ProcedureDecl      :  ProcedureHeading
                       ysemicolon  Block
                       { 
                         checkPointers(pointer_list);
-                        symTable->printST();
+                        symTable->scopeExit();
                       }
                    ;
 FunctionDecl       :  FunctionHeading  ycolon  yident
@@ -548,7 +548,8 @@ FunctionDecl       :  FunctionHeading  ycolon  yident
                       }
                       ysemicolon  Block
                       { 
-                        symTable->printST();
+                        checkPointers(pointer_list);
+                        symTable->scopeExit();
                       }
                    ;
 ProcedureHeading   :  yprocedure  yident  
@@ -577,10 +578,10 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                         while(!ident_queue.empty()) {
                           Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
-                          ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                           param_queue.push(param);
                           ident_queue.pop();
                         }
+                        ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                       }
                    |  IdentList  /* have the param names now */
                       ycolon  yident
@@ -589,10 +590,10 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                         while(!ident_queue.empty()) {
                           Parameter* param = new Parameter(ident_queue.front());
                           param->setTypePtr(ident_temp);
-                          ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                           param_queue.push(param);
                           ident_queue.pop();
                         }
+                        ident_temp = NULL;//DEBUG: set it null so we don't delete it later
                       }
                    ;
 
