@@ -88,9 +88,9 @@ extern string s;
 
 CompilationUnit    :  ProgramModule 
                       {
-                        endProgram();
                         codegen.teardown();
                         codegen.print();
+                        endProgram();
                       }
                    ;
 ProgramModule      :  yprogram 
@@ -538,9 +538,16 @@ SubprogDeclList    :  /*** empty ***/
                    ;
 ProcedureDecl      :  ProcedureHeading 
                       {
-                        procedure_helper->sendToSt(symTable);
+                        type_ptr = procedure_helper->sendToSt(symTable);
+                        if (type_ptr != NULL) {
+                          //codegen it
+                          codegen.declareProc(type_ptr->getName(), param_name_queue);
+                          //clear param queue
+                          while (!param_name_queue.empty()) { param_name_queue.pop(); }
+                        }
                         delete procedure_helper;
                         procedure_helper = NULL;
+                        type_ptr = NULL;
                       }
                       ysemicolon  Block
                       { 
@@ -556,9 +563,10 @@ FunctionDecl       :  FunctionHeading
                           function_helper->SetReturnType(tempPtr);
                           type_ptr = function_helper->sendToSt(symTable);
                           //codegen it
-                          codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr);
+                          codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
+                          type_ptr = NULL;
                         } else {
                           cout << "Error: function return type is incorrect" << endl;
                         }
@@ -567,9 +575,9 @@ FunctionDecl       :  FunctionHeading
                       }
                       ysemicolon  Block
                       { 
+                        codegen.closeScope();//close function scope on codegen
                         checkPointers(pointer_list);
                         symTable->scopeExit();
-                        codegen.closeScope();//close function scope on codegen
                       }
                    ;
 ProcedureHeading   :  yprocedure  yident  

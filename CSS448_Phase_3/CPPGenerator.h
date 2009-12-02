@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <queue>
+#include <stack>
 #include <vector>
 #include "IdentTypes/IdentRecord.h"
 
@@ -22,17 +23,21 @@ public:
 
   void declareVars(queue<string> idents, IdentRecord* type);
 
-  void declareFunct(string, queue<string>, IdentRecord*);
+  void declareProc(const string&, queue<string>);
+  void declareFunct(const string&, queue<string>, const string&);
 
   void closeScope(void);
 private:
-  void changeStream(ostringstream*);
+  void popScope(void);
+
+  void closeAllScopes(void);
 
   ostringstream* cur_stream;
   //FIXME: consider stack of streams for scope?
   
   ostringstream* before_main;
   ostringstream* main;
+  stack<ostringstream*>scope_stack;
   vector<ostringstream*>function_streams;
   ostream& output; 
 };
