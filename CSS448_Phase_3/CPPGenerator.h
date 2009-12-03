@@ -32,15 +32,11 @@ public:
 
   void declareConst(ConstDecHelper*, Constant*);
 
-  /*void startConstDec(const string&);
+  void startIfExpr(void);
+  void closeIfExpr(void);
 
-  void setConstFactor(int i);
-
-  void setConstFactor(const string& str);
-
-  void setConstFactor(bool b);
-
-  void setNullConstFactor(void);*/
+  void startBlock(void);
+  void endBlock(void);
 
   void closeScope(void);
 private:

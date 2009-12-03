@@ -105,25 +105,20 @@ void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
   }
 }
 
-/*void CPPGenerator::startConstDec(const string& name) {
-  *cur_stream << "const " << name << " = ";
+void CPPGenerator::startIfExpr(void) {
+  *cur_stream << "if (";
 }
 
-void CPPGenerator::setConstFactor(int i) {
-  *cur_stream << i << ";" << endl;
+void CPPGenerator::closeIfExpr(void) {
+  *cur_stream << ")" << endl;
 }
 
-void CPPGenerator::setConstFactor(const string& str) {
-  *cur_stream << str << ";" << endl;
+void CPPGenerator::startBlock(void) {
+  *cur_stream << "{" << endl;
 }
-
-void CPPGenerator::setConstFactor(bool b) {
-  *cur_stream << (b ? "true" : "false") << ";" << endl;
+void CPPGenerator::endBlock(void) {
+  *cur_stream << "}" << endl;
 }
-
-void CPPGenerator::setNullConstFactor(void) {
-  *cur_stream << "NULL;" << endl;
-}*/
 
 void CPPGenerator::closeScope(void) {
   //FIXME: is it safe to assume we will always end with a curly?

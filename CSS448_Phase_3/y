@@ -146,7 +146,7 @@ TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  
                    ;
 VariableDeclBlock  :  /*** empty ***/
-				   |  yvar 
+                   |  yvar 
                       VariableDeclList
                    ;
 VariableDeclList   :  VariableDecl ysemicolon
@@ -169,7 +169,9 @@ ConstantDef        :  yident
                       }
                    ;
 TypeDef            :  yident
-                      {name = s;}
+                      {
+                        name = s;
+                      }
                       yequal Type
                       {
                         resolvePointers(type_ptr, pointer_list);                     
@@ -444,7 +446,17 @@ Assignment         :  Designator yassign Expression
 ProcedureCall      :  yident 
                    |  yident ActualParameters
                    ;
-IfStatement        :  yif  Expression  ythen  Statement  ElsePart
+IfStatement        :  yif  
+                      {
+                        codegen.startIfExpr();
+                      }
+                      Expression  
+                      {
+                        codegen.closeIfExpr();
+                        /*FIXME: stopped here*/
+                      }
+                      ythen  
+                      Statement  ElsePart
                    ;
 ElsePart           :  /*** empty ***/
                    |  yelse  Statement  
