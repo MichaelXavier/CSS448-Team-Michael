@@ -1,9 +1,14 @@
 program simplest(input, output);
+const
+  size = 5;
+  thestr = "junk";
 var
   i,j,k: integer;
 
   procedure E(x: real);
-      var a: integer;
+    const
+      Esize = 8;
+    var a: integer;
   begin
       (* in E *)
   end;

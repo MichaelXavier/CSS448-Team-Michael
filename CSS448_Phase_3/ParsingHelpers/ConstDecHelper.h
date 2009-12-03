@@ -19,6 +19,9 @@ public:
 	IdentRecord* sendToSt(STObject* st);
 	bool setConstName(string name);
 	void setConstObj(Constant* obj);
+
+  string getConstName(void) { return constName; }
+  //IdentRecord* getConstObj(void) { return constObj; }
 private:
 	string constName;
 	IdentRecord* constObj;

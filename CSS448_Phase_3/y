@@ -160,6 +160,7 @@ ConstantDef        :  yident
                       yequal  ConstExpression
                       { 
                         const_dec_helper->setConstObj(const_temp);
+                        codegen.declareConst(const_dec_helper, const_temp);
                         delete const_temp;
                         const_temp = NULL;
                         const_dec_helper->sendToSt(symTable);
@@ -239,16 +240,18 @@ ConstFactor        :  yident
                       }
                    |  ytrue
                       {
-						const_temp = new Constant("");
-						const_temp->setConstFactor(true);
-					  }
+                        const_temp = new Constant("");
+                        const_temp->setConstFactor(true);
+                      }
                    |  yfalse
                       {
-						const_temp = new Constant("");
-						const_temp->setConstFactor(true);
+                        const_temp = new Constant("");
+                        const_temp->setConstFactor(true);
                       }
                    |  ynil
-                      {const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));} /*FIXME: unsure about this*/
+                      {
+                        const_temp->setConstFactor(static_cast<IdentRecord*>(NULL));
+                      } /*FIXME: unsure about this*/
                    ;
 
                    ;

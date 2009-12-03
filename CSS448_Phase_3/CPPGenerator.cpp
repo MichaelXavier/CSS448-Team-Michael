@@ -17,8 +17,8 @@ CPPGenerator::~CPPGenerator(void) {
 
 
 void CPPGenerator::setup(void) {
-  *before_main << "#include <iostream>" << endl 
-    << "#typedef integer int" << endl
+  addInclude("<iostream>");
+  *before_main << "#typedef integer int" << endl
     << "#typedef real double" << endl
     << "#typedef boolean bool" << endl
     << "#define True true" << endl
@@ -82,6 +82,48 @@ void CPPGenerator::declareFunct(const string& name, queue<string> param_names, c
   //set up the current stream to this scope
   cur_stream = oss;
 }
+
+void CPPGenerator::addInclude(const string& include) {
+  //FIXME: error check?
+  *before_main << "#include " << include << endl;
+}
+
+void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
+  if (c != NULL) {
+    *cur_stream << "const "; 
+    
+    string constType = c->getConstType();
+    
+    if (constType == "s") {
+      *cur_stream << "char* " << ch->getConstName() << " = " << c->getConstString();
+    } else if(constType == "b") {
+      *cur_stream << "bool " << ch->getConstName() << " = " << (c->getConstBool() ? "true" : "false");
+    } else if(constType == "i") {
+      *cur_stream << "int " << ch->getConstName() << " = " << c->getConstInt();
+    }    
+    *cur_stream << ";" << endl;
+  }
+}
+
+/*void CPPGenerator::startConstDec(const string& name) {
+  *cur_stream << "const " << name << " = ";
+}
+
+void CPPGenerator::setConstFactor(int i) {
+  *cur_stream << i << ";" << endl;
+}
+
+void CPPGenerator::setConstFactor(const string& str) {
+  *cur_stream << str << ";" << endl;
+}
+
+void CPPGenerator::setConstFactor(bool b) {
+  *cur_stream << (b ? "true" : "false") << ";" << endl;
+}
+
+void CPPGenerator::setNullConstFactor(void) {
+  *cur_stream << "NULL;" << endl;
+}*/
 
 void CPPGenerator::closeScope(void) {
   //FIXME: is it safe to assume we will always end with a curly?

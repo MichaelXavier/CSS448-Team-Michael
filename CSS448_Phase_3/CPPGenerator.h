@@ -7,6 +7,8 @@
 #include <stack>
 #include <vector>
 #include "IdentTypes/IdentRecord.h"
+#include "IdentTypes/Constant.h"
+#include "ParsingHelpers/ConstDecHelper.h"
 
 using namespace std;
 
@@ -25,6 +27,20 @@ public:
 
   void declareProc(const string&, queue<string>);
   void declareFunct(const string&, queue<string>, const string&);
+
+  void addInclude(const string&);
+
+  void declareConst(ConstDecHelper*, Constant*);
+
+  /*void startConstDec(const string&);
+
+  void setConstFactor(int i);
+
+  void setConstFactor(const string& str);
+
+  void setConstFactor(bool b);
+
+  void setNullConstFactor(void);*/
 
   void closeScope(void);
 private:
