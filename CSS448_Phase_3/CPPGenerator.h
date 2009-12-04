@@ -37,8 +37,15 @@ public:
 
   void startCase(void);
   void breakCase(void);
-  void closeCase(void);
   void writeCaseLabel(Constant*);
+
+  void startWhile(void);
+
+  void startRepeat(void);
+  void closeRepeat(const string&);
+
+  void startFor(const string&, const string&);
+  void completeFor(const string&, const string&, bool);
 
   void writeStr(string);
 

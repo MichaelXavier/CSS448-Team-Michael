@@ -136,6 +136,28 @@ void CPPGenerator::writeCaseLabel(Constant* constant) {
 	*cur_stream << ": ";
 }
 
+void CPPGenerator::startWhile(void) {
+  *cur_stream << "while(";
+}
+
+void CPPGenerator::startRepeat(void) {
+  *cur_stream << "do";
+  startBlock();
+}
+
+void CPPGenerator::closeRepeat(const string& expr) {
+  endBlock();
+  *cur_stream << "while(!" << expr << ");" << endl;
+}
+
+void CPPGenerator::startFor(const string& iter, const string& expr) {
+  *cur_stream << "for(" << iter << " = " << expr << "; ";
+}
+
+void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc) {
+  *cur_stream <<  expr << ";" << iter << (inc ? "++" : "--") << endl;
+}
+
 void CPPGenerator::writeStr(string expression)
 {
 	*cur_stream << expression;

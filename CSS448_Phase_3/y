@@ -34,6 +34,7 @@ PointerType* pointer_temp = NULL;
 Constant* const_range_low = NULL;
 Constant* const_range_high = NULL;
 vector<PointerType*> pointer_list;
+bool increment = true;
 
 //helpers
 ArrayHelper* array_helper = NULL;
@@ -102,13 +103,19 @@ ProgramModule      :  yprogram
                         codegen.setup();
                       } 
                       ProgramParameters ysemicolon 
-                      {startProgram(program_helper->GetProgramObj());}
+                      {
+                        startProgram(program_helper->GetProgramObj());
+                      }
                       Block ydot
-                      {delete program_helper; program_helper = NULL;}
+                      {
+                        delete program_helper; program_helper = NULL;
+                      }
                    ;
 ProgramParameters  :  yleftparen  IdentList  
                       yrightparen
-                      {program_helper->AddParameterNames(ident_queue);} 
+                      {
+                        program_helper->AddParameterNames(ident_queue);
+                      } 
                    ;
 IdentList          :  yident 
                       { 
@@ -260,14 +267,20 @@ ConstFactor        :  yident
 
                    ;
 Type               :  yident 
-                      {cout << "DEBUG: looking up " << s << endl; type_ptr = symTable->lookup(s); cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; }
+                      {
+                        cout << "DEBUG: looking up " << s << endl;
+                        type_ptr = symTable->lookup(s);
+                        cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; 
+                      }
                    |  ArrayType
                    |  PointerType
                    |  RecordType
                    |  SetType 
                    ;
 ArrayType          :  yarray 
-                      {array_helper = new ArrayHelper(name);} 
+                      {
+                        array_helper = new ArrayHelper(name);
+                      } 
                       yleftbracket Subrange SubrangeList /*Subrange pushes on stack, wait till entire list is done*/
                       {
                         while(ranges_queue.size() != 0) {
@@ -299,7 +312,9 @@ ArrayType          :  yarray
 SubrangeList       :  
                    |  SubrangeList ycomma Subrange 
                    ;
-Subrange           :  {range_temp = new Range;} 
+Subrange           :  {
+                        range_temp = new Range;
+                      } 
                       ConstFactor
                       {
                         string constType = const_temp->getConstType();
@@ -324,27 +339,26 @@ Subrange           :  {range_temp = new Range;}
                       ydotdot
                       ConstFactor 
                       {
-						string constType = const_temp->getConstType();
-						if(constType == "s")
-						{
-							range_temp->highString = const_temp->getConstString();
-							range_temp->type = "s";
-						}
-						else if(constType == "b")
-						{
-							range_temp->highBool = const_temp->getConstBool();
-							range_temp->type = "b";
-						}
-						else if(constType == "i")
-						{
-							range_temp->highInt = const_temp->getConstInt();
-							range_temp->type = "i";
-						}
-						ranges_queue.push(range_temp);
-						range_temp = NULL;
-						delete const_temp;
-						const_temp = NULL;
-						
+                        string constType = const_temp->getConstType();
+                        if(constType == "s")
+                        {
+                          range_temp->highString = const_temp->getConstString();
+                          range_temp->type = "s";
+                        }
+                        else if(constType == "b")
+                        {
+                          range_temp->highBool = const_temp->getConstBool();
+                          range_temp->type = "b";
+                        }
+                        else if(constType == "i")
+                        {
+                          range_temp->highInt = const_temp->getConstInt();
+                          range_temp->type = "i";
+                        }
+                        ranges_queue.push(range_temp);
+                        range_temp = NULL;
+                        delete const_temp;
+                        const_temp = NULL;
                       }
                    |  ystring 
                       {
@@ -371,7 +385,11 @@ RecordType         :  yrecord
                       }
                       yend 
                    ;
-SetType            :  yset {set_helper = new SetHelper(name);}  yof  Subrange 
+SetType            :  yset 
+                      {
+                        set_helper = new SetHelper(name);
+                      }
+                      yof  Subrange 
                       { 
                         Range* currentRange = ranges_queue.front();
                         ranges_queue.pop();
@@ -463,23 +481,26 @@ IfStatement        :  yif
                       Statement  ElsePart
                       {
                         codegen.writeStr("\n");
-						codegen.endBlock();
-					  }
+                        codegen.endBlock();
+                      }
                    ;
 ElsePart           :  /*** empty ***/
                    |  yelse  Statement  
                    ;
-CaseStatement      :  ycase {codegen.startCase();} 
-					  Expression 
-					  {
-						codegen.writeStr(expression + ")"); 
-						expression = "";
-						codegen.startBlock();
-					  }
-					  yof  CaseList  yend
-					  {
-						codegen.endBlock();
-					  }
+CaseStatement      :  ycase 
+                      {
+                        codegen.startCase();
+                      } 
+                      Expression 
+                      {
+                        codegen.writeStr(expression + ")"); 
+                        expression = "";
+                        codegen.startBlock();
+                      }
+                      yof  CaseList  yend
+                      {
+                        codegen.endBlock();
+                      }
                    ;
 CaseList           :  Case
                       {
@@ -493,40 +514,87 @@ CaseList           :  Case
 Case               :  CaseLabelList  ycolon  Statement
                    ;
 CaseLabelList      :  ConstExpression 
-					  {
-              if (const_temp->getConstType() == "s" && const_temp->getConstString().length() > 1) {
-                cout << "Error: Cannot have a case statement with a length > 0" << endl;
-              } else {
-                codegen.writeCaseLabel(const_temp);
-              }
-					    delete const_temp;
-              const_temp = NULL;  
-					  }
+                      {
+                        if (const_temp->getConstType() == "s" && const_temp->getConstString().length() > 1) {
+                          cout << "Error: Cannot have a case statement with a length > 0" << endl;
+                        } else {
+                          codegen.writeCaseLabel(const_temp);
+                        }
+                        delete const_temp;
+                        const_temp = NULL;  
+                      }
                    |  CaseLabelList  ycomma  ConstExpression    
                    ;
-WhileStatement     :  ywhile  Expression  ydo  Statement  
+WhileStatement     :  ywhile  
+                      {
+                        codegen.startWhile();
+                      }
+                      Expression
+                      {
+                        codegen.writeStr(expression + ")"); 
+                        expression = "";
+                      }
+                      ydo  
+                      {
+                        codegen.startBlock();
+                      }
+                      Statement  
+                      {
+                        codegen.endBlock();
+                      }
                    ;
-RepeatStatement    :  yrepeat  StatementSequence  yuntil  Expression
+RepeatStatement    :  yrepeat
+                      {
+                        codegen.startRepeat();
+                      }
+                      StatementSequence  yuntil  Expression
+                      {
+                        codegen.closeRepeat(expression);
+                        expression = "";
+                      }
                    ;
-ForStatement       :  yfor  yident  yassign  Expression  WhichWay  Expression
-                            ydo  Statement
+ForStatement       :  yfor  yident  
+                      yassign  Expression  
+                      {
+                        name = s;//Store for later
+                        codegen.startFor(name, expression);
+                        expression = "";
+                      }
+                      WhichWay  Expression
+                      {
+                        codegen.completeFor(name, expression, increment);
+                        expression = "";
+                        name = "";
+                        codegen.startBlock();
+                      }
+                      ydo  Statement
+                      {
+                        codegen.endBlock();
+                      }
                    ;
-WhichWay           :  yto  |  ydownto
+WhichWay           :  yto  
+                      {
+                        increment = true;
+                      }
+                   |  ydownto
+                      {
+                        increment = false;
+                      }
                    ;
 IOStatement        :  yread  yleftparen  DesignatorList  yrightparen 
-					  {
-						codegen.writeStr("cin >> " + expression + ";\n");
-						expression = "";
-					  }
-                   |  yreadln  
+                      {
+                        codegen.writeStr("cin >> " + expression + ";\n");
+                        expression = "";
+                      }
+                   |  yreadln  /*TODO: getline*/
                    |  yreadln  yleftparen DesignatorList  yrightparen 
                    |  ywrite  yleftparen  ExpList  yrightparen
                    |  ywriteln
                    |  ywriteln yleftparen ExpList 
                       {
-						codegen.writeStr("cout << " + expression + ";\n");
-						expression = "";
-					  } 
+                        codegen.writeStr("cout << " + expression + ";\n");
+                        expression = "";
+                      } 
                       yrightparen  
                    ;
 
@@ -535,7 +603,11 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
 DesignatorList     :  Designator  
                    |  DesignatorList  ycomma  Designator 
                    ;
-Designator         :  yident {expression += s;} DesignatorStuff 
+Designator         :  yident 
+                      {
+                        expression += s;
+                      } 
+                      DesignatorStuff 
                    ;
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
@@ -567,16 +639,40 @@ TermExpr           :  Term
 Term               :  Factor  
                    |  Term  MultOperator  Factor
                    ;
-Factor             :  ynumber {expression += s;}
-                   |  ytrue {expression += "true";}
-                   |  yfalse {expression += "false";}
-                   |  ynil {expression += "NULL";}
-                   |  ystring {expression += s;}
+Factor             :  ynumber 
+                      {
+                        expression += s;
+                      }
+                   |  ytrue 
+                      {
+                        expression += "true";
+                      }
+                   |  yfalse 
+                      {
+                        expression += "false";
+                      }
+                   |  ynil 
+                      {
+                        expression += "NULL";
+                      }
+                   |  ystring 
+                      {
+                        expression += s;
+                      }
                    |  Designator
-                   |  yleftparen {expression += "(";}  
-                      Expression  
-                      yrightparen {expression += ")";}
-                   |  ynot {expression += "!";} Factor 
+                   |  yleftparen 
+                      {
+                        expression += "(";
+                      }  
+                      Expression  yrightparen 
+                      {
+                        expression += ")";
+                      }
+                   |  ynot 
+                      {
+                        expression += "!";
+                      }
+                      Factor 
                    |  Setvalue
                    ;
 Setvalue           :  yleftbracket ElementList  yrightbracket
@@ -640,18 +736,30 @@ FunctionDecl       :  FunctionHeading
                       }
                    ;
 ProcedureHeading   :  yprocedure  yident  
-                      {procedure_helper = new ProcedureHelper(s);}
+                      {
+                        procedure_helper = new ProcedureHelper(s);
+                      }
                    |  yprocedure  yident  
-                      {procedure_helper = new ProcedureHelper(s);}
+                      {
+                        procedure_helper = new ProcedureHelper(s);
+                      }
                       FormalParameters
-                      {procedure_helper->AddParameters(param_queue);}
+                      {
+                        procedure_helper->AddParameters(param_queue);
+                      }
                    ;
 FunctionHeading    :  yfunction  yident  
-                      {function_helper = new FunctionHelper(s);}
+                      {
+                        function_helper = new FunctionHelper(s);
+                      }
                    |  yfunction  yident  
-                      {function_helper = new FunctionHelper(s);}
+                      {
+                        function_helper = new FunctionHelper(s);
+                      }
                       FormalParameters
-                      {function_helper->AddParameters(param_queue);}
+                      {
+                        function_helper->AddParameters(param_queue);
+                      }
                    ;
 FormalParameters   :  yleftparen FormalParamList yrightparen 
                    ;
@@ -688,25 +796,71 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
 
 /***************************  More Operators  ********************************/
 
-UnaryOperator      :  yplus {expression += "+";} 
-				   |  yminus {expression += "-";} 
+UnaryOperator      :  yplus 
+                      {
+                        expression += "+";
+                      } 
+                   |  yminus 
+                      {
+                        expression += "-";
+                      } 
                    ;
-MultOperator       :  ymultiply {expression += "*";} 
-				   |  ydivide {expression += "/";} 
-				   |  ydiv {expression += "/";} 
-				   |  ymod {expression += "%";}
-				   |  yand {expression += "&&";}
+MultOperator       :  ymultiply 
+                      {
+                        expression += "*";
+                      } 
+                   |  ydivide 
+                      {
+                        expression += "/";
+                      } 
+                   |  ydiv 
+                      {
+                        expression += "/";
+                      } 
+                   |  ymod 
+                      {
+                        expression += "%";
+                      }
+                   |  yand 
+                      {
+                        expression += "&&";
+                      }
                    ;
-AddOperator        :  yplus {expression += "+";}
-				   |  yminus {expression += "-";}
-				   |  yor {expression += "||";}
+AddOperator        :  yplus 
+                      {expression += "+";}
+                   |  yminus 
+                      {
+                        expression += "-";
+                      }
+                   |  yor 
+                      {
+                        expression += "||";
+                      }
                    ;
-Relation           :  yequal {expression += "==";}
-				   |  ynotequal {expression += "!=";}
-				   |  yless {expression += "<";}
-				   |  ygreater {expression += ">";} 
-                   |  ylessequal {expression += "<=";}
-                   |  ygreaterequal {expression += ">=";}
+Relation           :  yequal 
+                      {
+                        expression += "==";
+                      }
+                   |  ynotequal 
+                      {
+                        expression += "!=";
+                      }
+                   |  yless 
+                      {
+                        expression += "<";
+                      }
+                   |  ygreater 
+                      {
+                        expression += ">";
+                      } 
+                   |  ylessequal 
+                      {
+                        expression += "<=";
+                      }
+                   |  ygreaterequal 
+                      {
+                        expression += ">=";
+                      }
                    |  yin 
                    ;
 
