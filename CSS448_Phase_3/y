@@ -482,15 +482,21 @@ CaseStatement      :  ycase {codegen.startCase();}
 					  }
                    ;
 CaseList           :  Case
+                      {codegen.writeStr("break;");}/*TEST*/
                    |  CaseList  ysemicolon  Case  
+                      {codegen.writeStr("break;");}/*TEST*/
                    ;
 Case               :  CaseLabelList  ycolon  Statement
                    ;
 CaseLabelList      :  ConstExpression 
 					  {
-						codegen.writeCaseLabel(const_temp);
+              if (const_temp->getConstType() == "s" && const_temp->getConstString().length() > 1) {
+                cout << "Error: Cannot have a case statement with a length > 0" << endl;
+              } else {
+                codegen.writeCaseLabel(const_temp);
+              }
 					    delete const_temp;
-						const_temp = NULL;  
+              const_temp = NULL;  
 					  }
                    |  CaseLabelList  ycomma  ConstExpression    
                    ;

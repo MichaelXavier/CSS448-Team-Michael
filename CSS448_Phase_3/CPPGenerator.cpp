@@ -118,16 +118,16 @@ void CPPGenerator::startCase(void) {
 }
 
 void CPPGenerator::writeCaseLabel(Constant* constant) {
-	if(constant->getName() != "")
-	cout << endl << constant->getName();
-	else
-	{
+  *cur_stream << endl << "case ";
+	if(constant->getName() != "") {
+     *cur_stream <<  constant->getName();
+  } else { 
 		if(constant->getConstType() == "i")
-			*cur_stream << endl << constant->getConstInt();
+			*cur_stream << constant->getConstInt();
 		else if(constant->getConstType() == "s")
-			*cur_stream << endl << constant->getConstString();
+			*cur_stream << "'" << constant->getConstString()[0] << "'";
 		else if(constant->getConstType() == "b")
-			*cur_stream << endl << constant->getConstBool();
+			*cur_stream << constant->getConstBool();
 	}
 	*cur_stream << ": ";
 }
