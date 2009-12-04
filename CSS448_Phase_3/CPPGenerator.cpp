@@ -117,6 +117,10 @@ void CPPGenerator::startCase(void) {
 	*cur_stream << "switch(";
 }
 
+void CPPGenerator::breakCase(void) {
+	*cur_stream << "break;";
+}
+
 void CPPGenerator::writeCaseLabel(Constant* constant) {
   *cur_stream << endl << "case ";
 	if(constant->getName() != "") {

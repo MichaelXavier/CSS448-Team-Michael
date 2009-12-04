@@ -482,9 +482,13 @@ CaseStatement      :  ycase {codegen.startCase();}
 					  }
                    ;
 CaseList           :  Case
-                      {codegen.writeStr("break;");}/*TEST*/
+                      {
+                        codegen.breakCase();
+                      }
                    |  CaseList  ysemicolon  Case  
-                      {codegen.writeStr("break;");}/*TEST*/
+                      {
+                        codegen.breakCase();
+                      }
                    ;
 Case               :  CaseLabelList  ycolon  Statement
                    ;

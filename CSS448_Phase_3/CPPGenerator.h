@@ -36,6 +36,7 @@ public:
   void closeIfExpr(void);
 
   void startCase(void);
+  void breakCase(void);
   void closeCase(void);
   void writeCaseLabel(Constant*);
 
