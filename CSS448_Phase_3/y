@@ -621,8 +621,16 @@ ActualParameters   :  yleftparen  ExpList  yrightparen
 ExpList            :  Expression   
                    |  ExpList  ycomma  Expression       
                    ;
-MemoryStatement    :  ynew  yleftparen  yident  yrightparen  
-                   |  ydispose yleftparen  yident  yrightparen
+MemoryStatement    :  ynew  yleftparen  yident
+                      {
+                        codegen.allocVar(s);
+                      }
+                      yrightparen  
+                   |  ydispose yleftparen  yident  
+                      {
+                        codegen.deallocVar(s);
+                      }
+                      yrightparen
                    ;
 
 /***************************  Expression Stuff  ******************************/

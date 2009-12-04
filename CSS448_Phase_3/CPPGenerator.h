@@ -47,6 +47,9 @@ public:
   void startFor(const string&, const string&);
   void completeFor(const string&, const string&, bool);
 
+  void allocVar(const string&);
+  void deallocVar(const string&);
+
   void writeStr(string);
 
   void startBlock(void);

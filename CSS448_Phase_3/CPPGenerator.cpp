@@ -158,6 +158,14 @@ void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc)
   *cur_stream <<  expr << ";" << iter << (inc ? "++" : "--") << endl;
 }
 
+void CPPGenerator::allocVar(const string& var) {
+  *cur_stream << "new " << var << ";" << endl;
+}
+
+void CPPGenerator::deallocVar(const string& var) {
+  *cur_stream << "delete " << var << ";" << endl;
+}
+
 void CPPGenerator::writeStr(string expression)
 {
 	*cur_stream << expression;
