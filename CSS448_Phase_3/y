@@ -65,6 +65,8 @@ struct Range
 Range* range_temp = NULL;
 queue<Range*> ranges_queue;
 
+// expressions
+string expression = "";
 
 extern string s;
 
@@ -440,7 +442,7 @@ Statement          :  Assignment
                    |  MemoryStatement
                    |  ybegin StatementSequence yend
                    |  /*** empty ***/
-                   ;
+                   ; 
 Assignment         :  Designator yassign Expression
                    ;
 ProcedureCall      :  yident 
@@ -452,24 +454,45 @@ IfStatement        :  yif
                       }
                       Expression  
                       {
+                        codegen.writeStr(expression); 
+                        expression = "";
                         codegen.closeIfExpr();
-                        /*FIXME: stopped here*/
+                        codegen.startBlock();
                       }
                       ythen  
                       Statement  ElsePart
+                      {
+                        codegen.writeStr("\n");
+						codegen.endBlock();
+					  }
                    ;
 ElsePart           :  /*** empty ***/
                    |  yelse  Statement  
                    ;
-CaseStatement      :  ycase  Expression  yof  CaseList  yend
+CaseStatement      :  ycase {codegen.startCase();} 
+					  Expression 
+					  {
+						codegen.writeStr(expression + ")"); 
+						expression = "";
+						codegen.startBlock();
+					  }
+					  yof  CaseList  yend
+					  {
+						codegen.endBlock();
+					  }
                    ;
 CaseList           :  Case
                    |  CaseList  ysemicolon  Case  
                    ;
 Case               :  CaseLabelList  ycolon  Statement
                    ;
-CaseLabelList      :  ConstExpression  
-                   |  CaseLabelList  ycomma  ConstExpression   
+CaseLabelList      :  ConstExpression 
+					  {
+						codegen.writeCaseLabel(const_temp);
+					    delete const_temp;
+						const_temp = NULL;  
+					  }
+                   |  CaseLabelList  ycomma  ConstExpression    
                    ;
 WhileStatement     :  ywhile  Expression  ydo  Statement  
                    ;
@@ -480,12 +503,21 @@ ForStatement       :  yfor  yident  yassign  Expression  WhichWay  Expression
                    ;
 WhichWay           :  yto  |  ydownto
                    ;
-IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
+IOStatement        :  yread  yleftparen  DesignatorList  yrightparen 
+					  {
+						codegen.writeStr("cin >> " + expression + ";\n");
+						expression = "";
+					  }
                    |  yreadln  
                    |  yreadln  yleftparen DesignatorList  yrightparen 
                    |  ywrite  yleftparen  ExpList  yrightparen
-                   |  ywriteln  
-                   |  ywriteln yleftparen  ExpList  yrightparen 
+                   |  ywriteln
+                   |  ywriteln yleftparen ExpList 
+                      {
+						codegen.writeStr("cout << " + expression + ";\n");
+						expression = "";
+					  } 
+                      yrightparen  
                    ;
 
 /***************************  Designator Stuff  ******************************/
@@ -493,7 +525,7 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
 DesignatorList     :  Designator  
                    |  DesignatorList  ycomma  Designator 
                    ;
-Designator         :  yident  DesignatorStuff 
+Designator         :  yident {expression += s;} DesignatorStuff 
                    ;
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
@@ -513,7 +545,7 @@ MemoryStatement    :  ynew  yleftparen  yident  yrightparen
 
 /***************************  Expression Stuff  ******************************/
 
-Expression         :  SimpleExpression  
+Expression         :  SimpleExpression
                    |  SimpleExpression  Relation  SimpleExpression 
                    ;
 SimpleExpression   :  TermExpr
@@ -525,14 +557,16 @@ TermExpr           :  Term
 Term               :  Factor  
                    |  Term  MultOperator  Factor
                    ;
-Factor             :  ynumber
-                   |  ytrue
-                   |  yfalse
-                   |  ynil
-                   |  ystring
+Factor             :  ynumber {expression += s;}
+                   |  ytrue {expression += "true";}
+                   |  yfalse {expression += "false";}
+                   |  ynil {expression += "NULL";}
+                   |  ystring {expression += s;}
                    |  Designator
-                   |  yleftparen  Expression  yrightparen
-                   |  ynot Factor
+                   |  yleftparen {expression += "(";}  
+                      Expression  
+                      yrightparen {expression += ")";}
+                   |  ynot {expression += "!";} Factor 
                    |  Setvalue
                    ;
 Setvalue           :  yleftbracket ElementList  yrightbracket
@@ -644,14 +678,26 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
 
 /***************************  More Operators  ********************************/
 
-UnaryOperator      :  yplus | yminus
+UnaryOperator      :  yplus {expression += "+";} 
+				   |  yminus {expression += "-";} 
                    ;
-MultOperator       :  ymultiply | ydivide | ydiv | ymod | yand 
+MultOperator       :  ymultiply {expression += "*";} 
+				   |  ydivide {expression += "/";} 
+				   |  ydiv {expression += "/";} 
+				   |  ymod {expression += "%";}
+				   |  yand {expression += "&&";}
                    ;
-AddOperator        :  yplus | yminus | yor
+AddOperator        :  yplus {expression += "+";}
+				   |  yminus {expression += "-";}
+				   |  yor {expression += "||";}
                    ;
-Relation           :  yequal  | ynotequal | yless | ygreater 
-                   |  ylessequal | ygreaterequal | yin
+Relation           :  yequal {expression += "==";}
+				   |  ynotequal {expression += "!=";}
+				   |  yless {expression += "<";}
+				   |  ygreater {expression += ">";} 
+                   |  ylessequal {expression += "<=";}
+                   |  ygreaterequal {expression += ">=";}
+                   |  yin 
                    ;
 
 %%

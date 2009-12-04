@@ -35,6 +35,12 @@ public:
   void startIfExpr(void);
   void closeIfExpr(void);
 
+  void startCase(void);
+  void closeCase(void);
+  void writeCaseLabel(Constant*);
+
+  void writeStr(string);
+
   void startBlock(void);
   void endBlock(void);
 

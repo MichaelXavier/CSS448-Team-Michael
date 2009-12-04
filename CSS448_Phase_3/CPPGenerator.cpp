@@ -113,6 +113,30 @@ void CPPGenerator::closeIfExpr(void) {
   *cur_stream << ")" << endl;
 }
 
+void CPPGenerator::startCase(void) {
+	*cur_stream << "switch(";
+}
+
+void CPPGenerator::writeCaseLabel(Constant* constant) {
+	if(constant->getName() != "")
+	cout << endl << constant->getName();
+	else
+	{
+		if(constant->getConstType() == "i")
+			*cur_stream << endl << constant->getConstInt();
+		else if(constant->getConstType() == "s")
+			*cur_stream << endl << constant->getConstString();
+		else if(constant->getConstType() == "b")
+			*cur_stream << endl << constant->getConstBool();
+	}
+	*cur_stream << ": ";
+}
+
+void CPPGenerator::writeStr(string expression)
+{
+	*cur_stream << expression;
+}
+
 void CPPGenerator::startBlock(void) {
   *cur_stream << "{" << endl;
 }
