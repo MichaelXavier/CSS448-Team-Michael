@@ -5,6 +5,7 @@ CPPGenerator::CPPGenerator(ostream& out) : output(out) {
   main = new ostringstream();
   cur_stream = main;
   scope_stack.push(main);
+  indent_level = 1;
 }
 
 CPPGenerator::~CPPGenerator(void) {
@@ -43,6 +44,7 @@ void CPPGenerator::print(void) {
 
 void CPPGenerator::declareVars(queue<string> idents, IdentRecord* type) {
   if (type != NULL) {
+    printIndent();
     *cur_stream << type->getName() << " ";
     while (!idents.empty()) {
       *cur_stream << idents.front();
@@ -81,6 +83,9 @@ void CPPGenerator::declareFunct(const string& name, queue<string> param_names, c
 
   //set up the current stream to this scope
   cur_stream = oss;
+
+  //Reset indent level for this scope
+  indent_level = 1;
 }
 
 void CPPGenerator::addInclude(const string& include) {
@@ -90,6 +95,7 @@ void CPPGenerator::addInclude(const string& include) {
 
 void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
   if (c != NULL) {
+    printIndent();
     *cur_stream << "const "; 
     
     string constType = c->getConstType();
@@ -106,6 +112,7 @@ void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
 }
 
 void CPPGenerator::startIfExpr(void) {
+  printIndent();
   *cur_stream << "if (";
 }
 
@@ -114,19 +121,23 @@ void CPPGenerator::closeIfExpr(void) {
 }
 
 void CPPGenerator::startElseExpr(void) {
+  printIndent();
 	*cur_stream << "else ";
   startBlock();
 }
 
 void CPPGenerator::startCase(void) {
+  printIndent();
 	*cur_stream << "switch(";
 }
 
 void CPPGenerator::breakCase(void) {
+  printIndent();
 	*cur_stream << "break;";
 }
 
 void CPPGenerator::writeCaseLabel(Constant* constant) {
+  printIndent();
   *cur_stream << endl << "case ";
 	if(constant->getName() != "") {
      *cur_stream <<  constant->getName();
@@ -142,20 +153,24 @@ void CPPGenerator::writeCaseLabel(Constant* constant) {
 }
 
 void CPPGenerator::startWhile(void) {
+  printIndent();
   *cur_stream << "while(";
 }
 
 void CPPGenerator::startRepeat(void) {
+  printIndent();
   *cur_stream << "do";
   startBlock();
 }
 
 void CPPGenerator::closeRepeat(const string& expr) {
   endBlock();
+  printIndent();
   *cur_stream << "while(!" << expr << ");" << endl;
 }
 
 void CPPGenerator::startFor(const string& iter, const string& expr) {
+  printIndent();
   *cur_stream << "for(" << iter << " = " << expr << "; ";
 }
 
@@ -164,42 +179,72 @@ void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc)
 }
 
 void CPPGenerator::allocVar(const string& var) {
+  printIndent();
   *cur_stream << "new " << var << ";" << endl;
 }
 
 void CPPGenerator::deallocVar(const string& var) {
+  printIndent();
   *cur_stream << "delete " << var << ";" << endl;
 }
 
 void CPPGenerator::writeStr(string expression)
 {
+  //printIndent();
 	*cur_stream << expression;
 }
 
 void CPPGenerator::startBlock(void) {
+  *cur_stream << endl; 
+  printIndent();
   *cur_stream << "{" << endl;
+  indent_level++;
 }
 void CPPGenerator::endBlock(void) {
+  indent_level--;
+  printIndent();
   *cur_stream << "}" << endl;
 }
 
 void CPPGenerator::closeScope(void) {
   //FIXME: is it safe to assume we will always end with a curly?
-  cout << "DEBUG: closing scope" << endl;
+  //cout << "DEBUG: closing scope" << endl;
 
-  *cur_stream << "}" << endl;
+  //*cur_stream << "}" << endl;
+  endBlock();
 
-  if (scope_stack.top() != main) {
+  if (scope_stack.top() != main && !scope_stack.empty()) {
     scope_stack.pop();
   }
 
   cur_stream = scope_stack.top();
 }
 
+void CPPGenerator::coutExpr(const string& expr, bool newline) {
+  printIndent();
+  *cur_stream << "cout << " << expr; 
+  if (newline) {
+    *cur_stream << " << endl";
+  }
+  *cur_stream << ";" << endl;
+}
+
+void CPPGenerator::cinExpr(const string& expr) {
+  printIndent();
+  *cur_stream << "cin >> " << expr << ";" << endl;
+}
+
 void CPPGenerator::closeAllScopes(void) {
   while (scope_stack.top() != main && !scope_stack.empty()) {
-    *scope_stack.top() << "}" << endl;
-    scope_stack.pop();
+    //*scope_stack.top() << "}" << endl;
+    //scope_stack.pop();
+    closeScope();
   }
   cur_stream = main;
+}
+
+void CPPGenerator::printIndent(void) {
+  for (int i = 0; i < indent_level; i++) {
+    *cur_stream << "  ";
+  }
 }

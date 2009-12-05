@@ -57,6 +57,9 @@ public:
   void endBlock(void);
 
   void closeScope(void);
+
+  void coutExpr(const string& expr, bool newline = false);
+  void cinExpr(const string&);
 private:
   void popScope(void);
 
@@ -70,5 +73,9 @@ private:
   stack<ostringstream*>scope_stack;
   vector<ostringstream*>function_streams;
   ostream& output; 
+
+  void printIndent(void);
+
+  int indent_level;
 };
 #endif

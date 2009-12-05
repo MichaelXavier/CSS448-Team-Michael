@@ -591,24 +591,24 @@ WhichWay           :  yto
                    ;
 IOStatement        :  yread  yleftparen  DesignatorList  yrightparen 
                       {
-                        codegen.writeStr("cin >> " + expression + ";\n");
+                        codegen.cinExpr(expression);
                         expression = "";
                       }
                    |  yreadln
                       {
-                        codegen.writeStr("cin >> " + expression + ";\n");  // TO DO
+                        codegen.cinExpr(expression);//TODO
                         expression = "";
                       }
                    |  yreadln  yleftparen DesignatorList  yrightparen 
                    |  ywrite  yleftparen  ExpList  yrightparen
-					  {
-                        codegen.writeStr("cout << " + expression + ";\n");
+                      {
+                        codegen.coutExpr(expression);
                         expression = "";
                       } 
                    |  ywriteln
                    |  ywriteln yleftparen ExpList 
                       {
-                        codegen.writeStr("cout << " + expression + " << endl;\n");
+                        codegen.coutExpr(expression, true);
                         expression = "";
                       } 
                       yrightparen  
