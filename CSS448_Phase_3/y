@@ -490,6 +490,10 @@ ElsePart           :  /*** empty ***/
                         codegen.startElseExpr();
                       }
                       Statement  
+                      {
+                        codegen.endBlock();
+                        /*FIXME: ends up with an extra curly brace*/
+                      }
                    ;
 CaseStatement      :  ycase 
                       {

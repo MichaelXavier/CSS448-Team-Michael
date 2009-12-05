@@ -115,6 +115,7 @@ void CPPGenerator::closeIfExpr(void) {
 
 void CPPGenerator::startElseExpr(void) {
 	*cur_stream << "else ";
+  startBlock();
 }
 
 void CPPGenerator::startCase(void) {
