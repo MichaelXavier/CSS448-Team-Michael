@@ -110,7 +110,11 @@ void CPPGenerator::startIfExpr(void) {
 }
 
 void CPPGenerator::closeIfExpr(void) {
-  *cur_stream << ")" << endl;
+  *cur_stream << ")";
+}
+
+void CPPGenerator::startElseExpr(void) {
+	*cur_stream << "else ";
 }
 
 void CPPGenerator::startCase(void) {

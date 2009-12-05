@@ -69,6 +69,7 @@ queue<Range*> ranges_queue;
 // expressions
 string expression = "";
 
+
 extern string s;
 
 %}
@@ -467,7 +468,7 @@ ProcedureCall      :  yident
                    |  yident ActualParameters
                    ;
 IfStatement        :  yif  
-                      {
+                      { 
                         codegen.startIfExpr();
                       }
                       Expression  
@@ -477,15 +478,18 @@ IfStatement        :  yif
                         codegen.closeIfExpr();
                         codegen.startBlock();
                       }
-                      ythen  
-                      Statement  ElsePart
+                      ythen  Statement  
                       {
-                        codegen.writeStr("\n");
                         codegen.endBlock();
                       }
+                      ElsePart
                    ;
 ElsePart           :  /*** empty ***/
-                   |  yelse  Statement  
+                   |  yelse 
+                      {
+                        codegen.startElseExpr();
+                      }
+                      Statement  
                    ;
 CaseStatement      :  ycase 
                       {
@@ -586,13 +590,21 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
                         codegen.writeStr("cin >> " + expression + ";\n");
                         expression = "";
                       }
-                   |  yreadln  /*TODO: getline*/
+                   |  yreadln
+                      {
+                        codegen.writeStr("cin >> " + expression + ";\n");  // TO DO
+                        expression = "";
+                      }
                    |  yreadln  yleftparen DesignatorList  yrightparen 
                    |  ywrite  yleftparen  ExpList  yrightparen
+					  {
+                        codegen.writeStr("cout << " + expression + ";\n");
+                        expression = "";
+                      } 
                    |  ywriteln
                    |  ywriteln yleftparen ExpList 
                       {
-                        codegen.writeStr("cout << " + expression + ";\n");
+                        codegen.writeStr("cout << " + expression + " << endl;\n");
                         expression = "";
                       } 
                       yrightparen  
@@ -806,68 +818,68 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
 
 UnaryOperator      :  yplus 
                       {
-                        expression += "+";
+                        expression += " + ";
                       } 
                    |  yminus 
                       {
-                        expression += "-";
+                        expression += " - ";
                       } 
                    ;
 MultOperator       :  ymultiply 
                       {
-                        expression += "*";
+                        expression += " * ";
                       } 
                    |  ydivide 
                       {
-                        expression += "/";
+                        expression += " / ";
                       } 
                    |  ydiv 
                       {
-                        expression += "/";
+                        expression += " / ";
                       } 
                    |  ymod 
                       {
-                        expression += "%";
+                        expression += " % ";
                       }
                    |  yand 
                       {
-                        expression += "&&";
+                        expression += " && ";
                       }
                    ;
 AddOperator        :  yplus 
-                      {expression += "+";}
+                      {expression += " + ";}
                    |  yminus 
                       {
-                        expression += "-";
+                        expression += " - ";
                       }
                    |  yor 
                       {
-                        expression += "||";
+                        expression += " || ";
                       }
                    ;
 Relation           :  yequal 
                       {
-                        expression += "==";
+                        expression += " == ";
                       }
                    |  ynotequal 
                       {
-                        expression += "!=";
+                        expression += " != ";
                       }
                    |  yless 
                       {
-                        expression += "<";
+                        expression += " < ";
                       }
                    |  ygreater 
                       {
-                        expression += ">";
+                        expression += " > ";
                       } 
                    |  ylessequal 
                       {
-                        expression += "<=";
+                        expression += " <= ";
                       }
                    |  ygreaterequal 
                       {
-                        expression += ">=";
+                        expression += " >= ";
                       }
                    |  yin 
                    ;

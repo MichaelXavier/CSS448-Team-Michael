@@ -34,6 +34,7 @@ public:
 
   void startIfExpr(void);
   void closeIfExpr(void);
+  void startElseExpr(void);
 
   void startCase(void);
   void breakCase(void);
