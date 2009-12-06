@@ -443,11 +443,11 @@ FieldList          :  IdentList
                           ident_queue.pop();
                         }
                       }
-					   ycolon Type 
-					   {
-						  record_helper->setCurrentFieldType(type_ptr);
-						  record_helper->addFields(symTable);
-					   }
+                      ycolon Type 
+                      {
+                        record_helper->setCurrentFieldType(type_ptr);
+                        record_helper->addFields(symTable);
+                      }
                    ;
 
 /***************************  Statements  ************************************/
@@ -468,10 +468,10 @@ Statement          :  Assignment
                    |  /*** empty ***/
                    ; 
 Assignment         :  Designator yassign {expression += " = ";} Expression
-					  { 
-						codegen.writeStrWI(expression + ";\n");
-						expression = "";
-					  }
+                      { 
+                        codegen.writeStrWI(expression + ";\n");
+                        expression = "";
+                      }
                    ;
 ProcedureCall      :  yident 
                    |  yident ActualParameters
@@ -571,11 +571,15 @@ RepeatStatement    :  yrepeat
                       }
                    ;
 ForStatement       :  yfor  yident 
-					  {
-						expression += s;
-						name = s;//Store for later 
-				   	  }
-                      yassign {expression += " = ";}  Expression  
+                      {
+                        expression += s;
+                        name = s;//Store for later 
+                      }
+                      yassign 
+                      {
+                        expression += " = ";
+                      }  
+                      Expression  
                       {
                         codegen.startFor(expression);
                         expression = "";
@@ -602,7 +606,7 @@ WhichWay           :  yto
                       }
                    ;
 IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
-					  yleftparen  DesignatorList  yrightparen 
+                      yleftparen  DesignatorList  yrightparen 
                       {
                         codegen.cinExpr(expression, false);
                         expression = "";
@@ -613,8 +617,8 @@ IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
                         codegen.cinLn();
                       }
                    |  yreadln {readingIO = true; IO_Operator = " >> ";}
-					  yleftparen DesignatorList  yrightparen 
-					  {
+                      yleftparen DesignatorList  yrightparen 
+                      {
                         codegen.cinExpr(expression, true);
                         expression = "";
                         readingIO = false;
@@ -629,8 +633,8 @@ IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
                       } 
                    |  ywriteln
                       {
-						codegen.coutLn();
-					  }
+                        codegen.coutLn();
+                      }
                    |  ywriteln {readingIO = true; IO_Operator = " << ";} 
                       yleftparen ExpList 
                       {
@@ -646,11 +650,12 @@ IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
 DesignatorList     :  Designator  
                    |  DesignatorList  ycomma 
                       {
-						if(readingIO == true)
-							expression += IO_Operator;
-						else
-							expression += ", ";
-					  }  
+                        if(readingIO == true) {
+                          expression += IO_Operator;
+                        } else { 
+                          expression += ", ";
+                        }
+                      }  
 					  Designator 
                    ;
 Designator         :  yident 
@@ -664,29 +669,30 @@ DesignatorStuff    :  /*** empty ***/
                    ;
 theDesignatorStuff :  ydot yident 
                    |  yleftbracket 
-					  {
-						expression += "[";
-						readingIndices = true;
-					  } 
-					  ExpList yrightbracket 
-					  {
-						expression += "]";
-						readingIndices = false;
-					  } 
+                      {
+                        expression += "[";
+                        readingIndices = true;
+                      } 
+                      ExpList yrightbracket 
+                      {
+                        expression += "]";
+                        readingIndices = false;
+                      } 
                    |  ycaret 
                    ;
 ActualParameters   :  yleftparen  ExpList  yrightparen
                    ;
 ExpList            :  Expression   
                    |  ExpList  ycomma 
-					  { 
-						if(readingIndices == true)
-							expression += ", ";
-						else if(readingIO == true)
-							expression += IO_Operator;
-						else
-							expression += ", ";
-					  }  Expression       
+                      { 
+                        if(readingIndices == true) {
+                          expression += ", ";
+                        } else if(readingIO == true) {
+                          expression += IO_Operator;
+                        } else {
+                          expression += ", ";
+                        }
+                      }  Expression       
                    ;
 MemoryStatement    :  ynew  yleftparen  yident
                       {
