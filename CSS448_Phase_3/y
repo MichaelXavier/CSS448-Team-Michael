@@ -575,7 +575,7 @@ ForStatement       :  yfor  yident
                         name = "";
                         codegen.startBlock();
                       }
-                      ydo  Statement
+                      ydo  Statemet
                       {
                         codegen.endBlock();
                       }
@@ -608,7 +608,7 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
                    |  ywriteln
                    |  ywriteln yleftparen ExpList 
                       {
-                        codegen.coutExpr(expression, true);
+                        codegen.coutExprLine(expression, true);
                         expression = "";
                       } 
                       yrightparen  
@@ -635,7 +635,11 @@ theDesignatorStuff :  ydot yident
 ActualParameters   :  yleftparen  ExpList  yrightparen
                    ;
 ExpList            :  Expression   
-                   |  ExpList  ycomma  Expression       
+                   |  ExpList  ycomma
+                      {
+                        expression += ',';//FIXME
+                      }
+                      Expression       
                    ;
 MemoryStatement    :  ynew  yleftparen  yident
                       {
@@ -699,7 +703,7 @@ Factor             :  ynumber
                       Factor 
                    |  Setvalue
                    ;
-Setvalue           :  yleftbracket ElementList  yrightbracket
+Setvalue           :  yleftbracket ElementList  yrightbracket  /*TODO: use a class?*/
                    |  yleftbracket yrightbracket
                    ;
 ElementList        :  Element  

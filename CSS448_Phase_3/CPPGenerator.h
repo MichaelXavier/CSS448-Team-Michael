@@ -59,6 +59,7 @@ public:
   void closeScope(void);
 
   void coutExpr(const string& expr, bool newline = false);
+  void coutExprLine(const string& expr);
   void cinExpr(const string&);
 private:
   void popScope(void);

@@ -229,6 +229,39 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   *cur_stream << ";" << endl;
 }
 
+void CPPGenerator::coutExprLine(const string& expr) {
+  printIndent();
+  istringstream iss(expr);
+  //split by commas except when inside quoted string
+  *cur_stream << "cout ";
+  while (!iss.eof()) {
+    string chunk = ""; 
+    char ch;
+    iss.get(ch);
+    if (ch == '"') {
+      //double quoted string
+      chunk += ch;
+      while (iss.peek() != '"') {
+        iss.get(ch);
+        //look for escaped double quote
+        if (ch == '\\') {
+          chunk += ch;
+          if (iss.peek() == '"') {
+            iss.get(ch);
+          }
+        }
+        chunk += ch;
+      }
+      chunk += ch;
+      //dump it
+      *cur_stream << "<<" << chunk;
+    } else if (ch == ',') {
+      //TODO
+      *cur_stream << "<<" << chunk;
+    }
+  }
+}
+
 void CPPGenerator::cinExpr(const string& expr) {
   printIndent();
   *cur_stream << "cin >> " << expr << ";" << endl;
