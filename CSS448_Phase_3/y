@@ -451,7 +451,11 @@ FieldList          :  IdentList
 /***************************  Statements  ************************************/
 
 StatementSequence  :  Statement  
-                   |  StatementSequence  ysemicolon  Statement
+                   |  StatementSequence  ysemicolon
+                      {
+                        codegen.writeStr(";\n");
+                      }
+                      Statement
                    ;
 Statement          :  Assignment
                    |  ProcedureCall
@@ -467,12 +471,30 @@ Statement          :  Assignment
                    ; 
 Assignment         :  Designator yassign {expression += " = ";} Expression
                       { 
-                        codegen.writeStrWI(expression + ";\n");
+                        codegen.writeStrWI(expression);
                         expression = "";
                       }
                    ;
 ProcedureCall      :  yident 
-                   |  yident ActualParameters
+                      {
+                        if (symTable->lookup(s) == NULL) {
+                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                        } else {
+                          codegen.callProc(s, "");
+                        }
+                      }
+                   |  yident 
+                      { 
+                        name = s;
+                      }
+                      ActualParameters
+                      {
+                        if (symTable->lookup(s) == NULL) {
+                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                        } else {
+                          codegen.callProc(name, expression);
+                        }
+                      }
                    ;
 IfStatement        :  yif  
                       { 

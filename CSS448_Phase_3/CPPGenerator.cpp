@@ -180,12 +180,12 @@ void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc)
 
 void CPPGenerator::allocVar(const string& var) {
   printIndent();
-  *cur_stream << "new " << var << ";" << endl;
+  *cur_stream << "new " << var;// << ";" << endl;
 }
 
 void CPPGenerator::deallocVar(const string& var) {
   printIndent();
-  *cur_stream << "delete " << var << ";" << endl;
+  *cur_stream << "delete " << var;// << ";" << endl;
 }
 
 void CPPGenerator::writeStr(string expression)
@@ -231,7 +231,7 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  *cur_stream << ";" << endl;
+  //*cur_stream << ";" << endl;
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
@@ -268,6 +268,11 @@ void CPPGenerator::defineIO(queue<string> params) {
     return;
   }
   *before_main << "#define " << params.front() << " cout" << endl;
+}
+
+void CPPGenerator::callProc(const string& proc, const string& expr) {
+  printIndent();
+  *cur_stream << proc << '(' << expr << ')';//FIXME: semicolon?
 }
 
 void CPPGenerator::closeAllScopes(void) {

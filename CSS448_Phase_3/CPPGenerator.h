@@ -65,8 +65,10 @@ public:
   void cinLn(void);
 
   void defineIO(queue<string>);
+
+  void callProc(const string&, const string&);
 private:
-	  void popScope(void);
+  void popScope(void);
 
   void closeAllScopes(void);
 
