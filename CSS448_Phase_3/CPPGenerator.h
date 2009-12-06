@@ -45,24 +45,26 @@ public:
   void startRepeat(void);
   void closeRepeat(const string&);
 
-  void startFor(const string&, const string&);
+  void startFor(const string&);
   void completeFor(const string&, const string&, bool);
 
   void allocVar(const string&);
   void deallocVar(const string&);
 
   void writeStr(string);
+  void writeStrWI(string);
 
   void startBlock(void);
   void endBlock(void);
 
   void closeScope(void);
 
-  void coutExpr(const string& expr, bool newline = false);
-  void coutExprLine(const string& expr);
-  void cinExpr(const string&);
+  void coutExpr(const string&, bool newline = false);
+  void cinExpr(const string&, bool readln = false);
+  void coutLn(void);
+  void cinLn(void);
 private:
-  void popScope(void);
+	  void popScope(void);
 
   void closeAllScopes(void);
 

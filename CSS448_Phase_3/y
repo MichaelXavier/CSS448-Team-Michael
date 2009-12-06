@@ -69,6 +69,11 @@ queue<Range*> ranges_queue;
 // expressions
 string expression = "";
 
+// I/O
+bool readingIO = false;
+string IO_Operator = "";
+bool readingIndices = false;
+
 
 extern string s;
 
@@ -462,7 +467,11 @@ Statement          :  Assignment
                    |  ybegin StatementSequence yend
                    |  /*** empty ***/
                    ; 
-Assignment         :  Designator yassign Expression
+Assignment         :  Designator yassign {expression += " = ";} Expression
+					  { 
+						codegen.writeStrWI(expression + ";\n");
+						expression = "";
+					  }
                    ;
 ProcedureCall      :  yident 
                    |  yident ActualParameters
@@ -561,11 +570,14 @@ RepeatStatement    :  yrepeat
                         expression = "";
                       }
                    ;
-ForStatement       :  yfor  yident  
-                      yassign  Expression  
+ForStatement       :  yfor  yident 
+					  {
+						expression += s;
+						name = s;//Store for later 
+				   	  }
+                      yassign {expression += " = ";}  Expression  
                       {
-                        name = s;//Store for later
-                        codegen.startFor(name, expression);
+                        codegen.startFor(expression);
                         expression = "";
                       }
                       WhichWay  Expression
@@ -575,7 +587,7 @@ ForStatement       :  yfor  yident
                         name = "";
                         codegen.startBlock();
                       }
-                      ydo  Statemet
+                      ydo  Statement
                       {
                         codegen.endBlock();
                       }
@@ -589,27 +601,42 @@ WhichWay           :  yto
                         increment = false;
                       }
                    ;
-IOStatement        :  yread  yleftparen  DesignatorList  yrightparen 
+IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
+					  yleftparen  DesignatorList  yrightparen 
                       {
-                        codegen.cinExpr(expression);
+                        codegen.cinExpr(expression, false);
                         expression = "";
+                        readingIO = false;
                       }
                    |  yreadln
                       {
-                        codegen.cinExpr(expression);//TODO
-                        expression = "";
+                        codegen.cinLn();
                       }
-                   |  yreadln  yleftparen DesignatorList  yrightparen 
-                   |  ywrite  yleftparen  ExpList  yrightparen
-                      {
-                        codegen.coutExpr(expression);
+                   |  yreadln {readingIO = true; IO_Operator = " >> ";}
+					  yleftparen DesignatorList  yrightparen 
+					  {
+                        codegen.cinExpr(expression, true);
                         expression = "";
+                        readingIO = false;
+                      }
+                   
+                   |  ywrite {readingIO = true; IO_Operator = " << ";}  
+                      yleftparen  ExpList  yrightparen
+                      {
+                        codegen.coutExpr(expression, false);
+                        expression = "";
+                        readingIO = false;
                       } 
                    |  ywriteln
-                   |  ywriteln yleftparen ExpList 
                       {
-                        codegen.coutExprLine(expression, true);
+						codegen.coutLn();
+					  }
+                   |  ywriteln {readingIO = true; IO_Operator = " << ";} 
+                      yleftparen ExpList 
+                      {
+                        codegen.coutExpr(expression, true);
                         expression = "";
+                        readingIO = false;
                       } 
                       yrightparen  
                    ;
@@ -617,7 +644,14 @@ IOStatement        :  yread  yleftparen  DesignatorList  yrightparen
 /***************************  Designator Stuff  ******************************/
 
 DesignatorList     :  Designator  
-                   |  DesignatorList  ycomma  Designator 
+                   |  DesignatorList  ycomma 
+                      {
+						if(readingIO == true)
+							expression += IO_Operator;
+						else
+							expression += ", ";
+					  }  
+					  Designator 
                    ;
 Designator         :  yident 
                       {
@@ -629,17 +663,30 @@ DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
                    ;
 theDesignatorStuff :  ydot yident 
-                   |  yleftbracket ExpList yrightbracket 
+                   |  yleftbracket 
+					  {
+						expression += "[";
+						readingIndices = true;
+					  } 
+					  ExpList yrightbracket 
+					  {
+						expression += "]";
+						readingIndices = false;
+					  } 
                    |  ycaret 
                    ;
 ActualParameters   :  yleftparen  ExpList  yrightparen
                    ;
 ExpList            :  Expression   
-                   |  ExpList  ycomma
-                      {
-                        expression += ',';//FIXME
-                      }
-                      Expression       
+                   |  ExpList  ycomma 
+					  { 
+						if(readingIndices == true)
+							expression += ", ";
+						else if(readingIO == true)
+							expression += IO_Operator;
+						else
+							expression += ", ";
+					  }  Expression       
                    ;
 MemoryStatement    :  ynew  yleftparen  yident
                       {
@@ -703,7 +750,7 @@ Factor             :  ynumber
                       Factor 
                    |  Setvalue
                    ;
-Setvalue           :  yleftbracket ElementList  yrightbracket  /*TODO: use a class?*/
+Setvalue           :  yleftbracket ElementList  yrightbracket
                    |  yleftbracket yrightbracket
                    ;
 ElementList        :  Element  

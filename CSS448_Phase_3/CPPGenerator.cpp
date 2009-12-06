@@ -132,13 +132,13 @@ void CPPGenerator::startCase(void) {
 }
 
 void CPPGenerator::breakCase(void) {
-  printIndent();
-	*cur_stream << "break;";
+	printIndent();
+	*cur_stream << "break;" << endl;
 }
 
 void CPPGenerator::writeCaseLabel(Constant* constant) {
   printIndent();
-  *cur_stream << endl << "case ";
+  *cur_stream <<  "case ";
 	if(constant->getName() != "") {
      *cur_stream <<  constant->getName();
   } else { 
@@ -149,7 +149,7 @@ void CPPGenerator::writeCaseLabel(Constant* constant) {
 		else if(constant->getConstType() == "b")
 			*cur_stream << constant->getConstBool();
 	}
-	*cur_stream << ": ";
+	*cur_stream << ": " << endl;
 }
 
 void CPPGenerator::startWhile(void) {
@@ -169,13 +169,13 @@ void CPPGenerator::closeRepeat(const string& expr) {
   *cur_stream << "while(!" << expr << ");" << endl;
 }
 
-void CPPGenerator::startFor(const string& iter, const string& expr) {
+void CPPGenerator::startFor(const string& expr) {
   printIndent();
-  *cur_stream << "for(" << iter << " = " << expr << "; ";
+  *cur_stream << "for(" << expr << "; ";
 }
 
 void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc) {
-  *cur_stream <<  expr << ";" << iter << (inc ? "++" : "--") << endl;
+	*cur_stream <<  expr << "; " << iter << (inc ? " <= " : " >= ") << expr << "; " << iter << (inc ? "++" : "--") << ")";
 }
 
 void CPPGenerator::allocVar(const string& var) {
@@ -190,7 +190,12 @@ void CPPGenerator::deallocVar(const string& var) {
 
 void CPPGenerator::writeStr(string expression)
 {
-  //printIndent();
+	*cur_stream << expression;
+}
+
+void CPPGenerator::writeStrWI(string expression)
+{
+	printIndent();
 	*cur_stream << expression;
 }
 
@@ -222,49 +227,31 @@ void CPPGenerator::closeScope(void) {
 
 void CPPGenerator::coutExpr(const string& expr, bool newline) {
   printIndent();
-  *cur_stream << "cout << " << expr; 
+  *cur_stream << "cout << " << expr;
   if (newline) {
     *cur_stream << " << endl";
   }
   *cur_stream << ";" << endl;
 }
 
-void CPPGenerator::coutExprLine(const string& expr) {
+void CPPGenerator::cinExpr(const string& expr, bool readln) {
   printIndent();
-  istringstream iss(expr);
-  //split by commas except when inside quoted string
-  *cur_stream << "cout ";
-  while (!iss.eof()) {
-    string chunk = ""; 
-    char ch;
-    iss.get(ch);
-    if (ch == '"') {
-      //double quoted string
-      chunk += ch;
-      while (iss.peek() != '"') {
-        iss.get(ch);
-        //look for escaped double quote
-        if (ch == '\\') {
-          chunk += ch;
-          if (iss.peek() == '"') {
-            iss.get(ch);
-          }
-        }
-        chunk += ch;
-      }
-      chunk += ch;
-      //dump it
-      *cur_stream << "<<" << chunk;
-    } else if (ch == ',') {
-      //TODO
-      *cur_stream << "<<" << chunk;
-    }
+  *cur_stream << "cin >> " << expr << ";" << endl;
+  if(readln) {
+	  *cur_stream << "cin.ignore(1000, '\n');" << endl;
   }
 }
 
-void CPPGenerator::cinExpr(const string& expr) {
-  printIndent();
-  *cur_stream << "cin >> " << expr << ";" << endl;
+void CPPGenerator::coutLn(void)
+{
+	printIndent();
+	*cur_stream << "cout << endl;" << endl;
+}
+
+void CPPGenerator::cinLn(void)
+{
+	printIndent();
+	*cur_stream << "cin.ignore(1000, '\n');" << endl;
 }
 
 void CPPGenerator::closeAllScopes(void) {
