@@ -254,6 +254,22 @@ void CPPGenerator::cinLn(void)
 	*cur_stream << "cin.ignore(1000, '\n');" << endl;
 }
 
+void CPPGenerator::defineIO(queue<string> params) {
+  //take up to the first 2 and #define them to cin, cout respectively
+  //do input
+  if (params.empty()) {
+    return;
+  }
+  *before_main << "#define " << params.front() << " cin" << endl;
+  params.pop();
+
+  //do output if a param is there
+  if (params.empty()) {
+    return;
+  }
+  *before_main << "#define " << params.front() << " cout" << endl;
+}
+
 void CPPGenerator::closeAllScopes(void) {
   while (scope_stack.top() != main && !scope_stack.empty()) {
     //*scope_stack.top() << "}" << endl;

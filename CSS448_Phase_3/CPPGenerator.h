@@ -63,6 +63,8 @@ public:
   void cinExpr(const string&, bool readln = false);
   void coutLn(void);
   void cinLn(void);
+
+  void defineIO(queue<string>);
 private:
 	  void popScope(void);
 

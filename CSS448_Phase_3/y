@@ -120,6 +120,7 @@ ProgramModule      :  yprogram
 ProgramParameters  :  yleftparen  IdentList  
                       yrightparen
                       {
+                        codegen.defineIO(ident_queue);
                         program_helper->AddParameterNames(ident_queue);
                       } 
                    ;
@@ -197,9 +198,6 @@ VariableDecl       :  {
                         var_dec_helper = new VarDecHelper();
                       } 
                       IdentList  ycolon 
-                      {
-                        //var_dec_helper->AddVars(ident_queue);
-                      } 
                       Type
                       {
                         codegen.declareVars(ident_queue, type_ptr);
@@ -879,11 +877,11 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
 
 UnaryOperator      :  yplus 
                       {
-                        expression += " + ";
+                        expression += "+";
                       } 
                    |  yminus 
                       {
-                        expression += " - ";
+                        expression += "-";
                       } 
                    ;
 MultOperator       :  ymultiply 
