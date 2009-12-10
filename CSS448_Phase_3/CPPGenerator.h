@@ -10,6 +10,8 @@
 #include "IdentTypes/Constant.h"
 #include "ParsingHelpers/ConstDecHelper.h"
 #include "ParsingHelpers/ArrayHelper.h"
+#include "ParsingHelpers/PointerHelper.h"
+#include "ParsingHelpers/RecordHelper.h"
 
 using namespace std;
 
@@ -34,6 +36,8 @@ public:
   void declareConst(ConstDecHelper*, Constant*);
   
   void declareArray(ArrayHelper*);
+  void declarePointer(PointerHelper*);
+  void declareRecord(RecordHelper*);
 
   void startIfExpr(void);
   void closeIfExpr(void);

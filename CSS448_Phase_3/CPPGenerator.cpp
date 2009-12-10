@@ -127,6 +127,28 @@ void CPPGenerator::declareArray(ArrayHelper* arrayHelper) {
 	ranges = NULL;
 }
 
+void CPPGenerator::declarePointer(PointerHelper* pointerHelper) {
+	string declaredType = pointerHelper->getDeclaredType();
+	string pointerName = pointerHelper->getName();
+
+	*before_main << "struct " << declaredType << ";\n";
+	*before_main << "typedef " << declaredType << "* " << pointerName << ";\n";
+}
+
+void CPPGenerator::declareRecord(RecordHelper* recordHelper) {
+	vector<RecordField*>* recordFields = recordHelper->getRecordFields();
+
+	*before_main << "struct " << recordHelper->getTypeName() << " {\n";
+	for(int i = 0; i < recordFields->size(); i++)
+	{
+		*before_main << "   " << (*recordFields)[i]->getTypePtrName() << " ";
+		*before_main << (*recordFields)[i]->getName() << ";\n";
+	}
+	*before_main << "};\n";
+
+	recordFields = NULL;
+}
+
 void CPPGenerator::startIfExpr(void) {
   printIndent();
   *cur_stream << "if (";

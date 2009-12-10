@@ -74,6 +74,8 @@ bool readingIO = false;
 string IO_Operator = "";
 bool readingIndices = false;
 
+// pointer
+string pointerString = "";
 
 extern string s;
 
@@ -384,6 +386,7 @@ RecordType         :  yrecord
                       {record_helper = new RecordHelper(name);} 
                       FieldListSequence  
                       {
+                        codegen.declareRecord(record_helper);
                         type_ptr = record_helper->sendToSt(symTable);
                         delete record_helper;
                         record_helper = NULL;
@@ -423,6 +426,7 @@ PointerType        :  ycaret
                         pointer_helper = new PointerHelper(name); /*name is matched in the caling rule*/
                         pointer_helper->setDeclaredType(s);/*get the name of what it's supposed to point to*/
                         pointer_helper->sendToSt(symTable);
+                        codegen.declarePointer(pointer_helper);
                         delete pointer_helper;
                         pointer_helper = NULL;
                         
@@ -681,13 +685,14 @@ DesignatorList     :  Designator
 Designator         :  yident 
                       {
                         expression += s;
+                        pointerString = s;
                       } 
                       DesignatorStuff 
                    ;
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
                    ;
-theDesignatorStuff :  ydot yident 
+theDesignatorStuff :  ydot {expression += ".";} yident {expression += s; pointerString = s;}
                    |  yleftbracket 
                       {
                         expression += "[";
@@ -699,6 +704,12 @@ theDesignatorStuff :  ydot yident
                         readingIndices = false;
                       } 
                    |  ycaret 
+                      {
+						expression = expression.substr(0, expression.length() - pointerString.length());
+						expression += "(*";
+						expression += pointerString;
+						expression += ")";
+					  }
                    ;
 ActualParameters   :  yleftparen  ExpList  yrightparen
                    ;
@@ -800,7 +811,8 @@ ProcedureDecl      :  ProcedureHeading
                           codegen.declareProc(type_ptr->getName(), param_name_queue);
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
-                        }
+                          while(!param_queue.empty()) {param_queue.pop();}
+						}
                         delete procedure_helper;
                         procedure_helper = NULL;
                         type_ptr = NULL;
@@ -822,6 +834,7 @@ FunctionDecl       :  FunctionHeading
                           codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
+                          while(!param_queue.empty()) {param_queue.pop();}       
                           type_ptr = NULL;
                         } else {
                           cout << "Error: function return type is incorrect" << endl;
