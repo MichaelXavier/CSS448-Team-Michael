@@ -111,6 +111,22 @@ void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
   }
 }
 
+void CPPGenerator::declareArray(ArrayHelper* arrayHelper) {
+	string name = arrayHelper->getName();
+	string typeName = arrayHelper->getType()->getName();
+	vector<int>* ranges = arrayHelper->getRangeValues();
+
+	printIndent();
+	*before_main << "typedef " << typeName << " " << name << "[" << (*ranges)[0];
+	for(int i = 1; i < ranges->size(); i++) {
+		*before_main << ", " << (*ranges)[i];
+	}
+	*before_main << "];" << endl;
+
+	delete ranges;
+	ranges = NULL;
+}
+
 void CPPGenerator::startIfExpr(void) {
   printIndent();
   *cur_stream << "if (";
@@ -180,12 +196,12 @@ void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc)
 
 void CPPGenerator::allocVar(const string& var) {
   printIndent();
-  *cur_stream << "new " << var << ";" << endl;
+  *cur_stream << "new " << var;// << ";" << endl;
 }
 
 void CPPGenerator::deallocVar(const string& var) {
   printIndent();
-  *cur_stream << "delete " << var << ";" << endl;
+  *cur_stream << "delete " << var;// << ";" << endl;
 }
 
 void CPPGenerator::writeStr(string expression)
@@ -231,7 +247,7 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  *cur_stream << ";" << endl;
+  //*cur_stream << ";" << endl;
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
@@ -252,6 +268,27 @@ void CPPGenerator::cinLn(void)
 {
 	printIndent();
 	*cur_stream << "cin.ignore(1000, '\n');" << endl;
+}
+
+void CPPGenerator::defineIO(queue<string> params) {
+  //take up to the first 2 and #define them to cin, cout respectively
+  //do input
+  if (params.empty()) {
+    return;
+  }
+  *before_main << "#define " << params.front() << " cin" << endl;
+  params.pop();
+
+  //do output if a param is there
+  if (params.empty()) {
+    return;
+  }
+  *before_main << "#define " << params.front() << " cout" << endl;
+}
+
+void CPPGenerator::callProc(const string& proc, const string& expr) {
+  printIndent();
+  *cur_stream << proc << '(' << expr << ')';//FIXME: semicolon?
 }
 
 void CPPGenerator::closeAllScopes(void) {

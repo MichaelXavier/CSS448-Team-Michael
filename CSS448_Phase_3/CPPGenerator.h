@@ -9,6 +9,7 @@
 #include "IdentTypes/IdentRecord.h"
 #include "IdentTypes/Constant.h"
 #include "ParsingHelpers/ConstDecHelper.h"
+#include "ParsingHelpers/ArrayHelper.h"
 
 using namespace std;
 
@@ -31,6 +32,8 @@ public:
   void addInclude(const string&);
 
   void declareConst(ConstDecHelper*, Constant*);
+  
+  void declareArray(ArrayHelper*);
 
   void startIfExpr(void);
   void closeIfExpr(void);
@@ -63,8 +66,12 @@ public:
   void cinExpr(const string&, bool readln = false);
   void coutLn(void);
   void cinLn(void);
+
+  void defineIO(queue<string>);
+
+  void callProc(const string&, const string&);
 private:
-	  void popScope(void);
+  void popScope(void);
 
   void closeAllScopes(void);
 

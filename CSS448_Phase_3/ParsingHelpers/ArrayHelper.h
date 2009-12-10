@@ -2,7 +2,7 @@
 #define ARRAYHELPER_H
 
 #include <iostream>
-#include <queue>
+#include <vector>
 #include <string>
 #include "TypeHelper.h"
 #include "../IdentTypes/ArrayType.h"
@@ -22,13 +22,17 @@ public:
 
   IdentRecord* sendToSt(STObject* st);
 
+  vector<int>* getRangeValues();
+  string getName() { return typeName; }
+  IdentRecord* getType() { return typePtr; }
+
 private:
   struct Range {
     int low;
     int high;
   };
 
-  queue<Range*> ranges;
+  vector<Range*> ranges;
 
   bool validate(void);
 

@@ -120,6 +120,7 @@ ProgramModule      :  yprogram
 ProgramParameters  :  yleftparen  IdentList  
                       yrightparen
                       {
+                        codegen.defineIO(ident_queue);
                         program_helper->AddParameterNames(ident_queue);
                       } 
                    ;
@@ -197,9 +198,6 @@ VariableDecl       :  {
                         var_dec_helper = new VarDecHelper();
                       } 
                       IdentList  ycolon 
-                      {
-                        //var_dec_helper->AddVars(ident_queue);
-                      } 
                       Type
                       {
                         codegen.declareVars(ident_queue, type_ptr);
@@ -310,6 +308,7 @@ ArrayType          :  yarray
                         /*will fail validation if there's a problem*/
                         cout << "DEBUG: Inserting array into the ST" << endl;
                         type_ptr = array_helper->sendToSt(symTable);
+                        codegen.declareArray(array_helper);
                         delete array_helper; 
                         array_helper = NULL;
                       }
@@ -452,8 +451,11 @@ FieldList          :  IdentList
 
 /***************************  Statements  ************************************/
 
-StatementSequence  :  Statement  
-                   |  StatementSequence  ysemicolon  Statement
+StatementSequence  :  Statement
+                   |  StatementSequence  
+                   	  {
+                         codegen.writeStr(";\n");
+                      }  ysemicolon Statement
                    ;
 Statement          :  Assignment
                    |  ProcedureCall
@@ -469,12 +471,30 @@ Statement          :  Assignment
                    ; 
 Assignment         :  Designator yassign {expression += " = ";} Expression
                       { 
-                        codegen.writeStrWI(expression + ";\n");
+                        codegen.writeStrWI(expression);
                         expression = "";
                       }
                    ;
 ProcedureCall      :  yident 
-                   |  yident ActualParameters
+                      {
+                        if (symTable->lookup(s) == NULL) {
+                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                        } else {
+                          codegen.callProc(s, "");
+                        }
+                      }
+                   |  yident 
+                      { 
+                        name = s;
+                      }
+                      ActualParameters
+                      {
+                        if (symTable->lookup(s) == NULL) {
+                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                        } else {
+                          codegen.callProc(name, expression);
+                        }
+                      }
                    ;
 IfStatement        :  yif  
                       { 
@@ -879,11 +899,11 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
 
 UnaryOperator      :  yplus 
                       {
-                        expression += " + ";
+                        expression += "+";
                       } 
                    |  yminus 
                       {
-                        expression += " - ";
+                        expression += "-";
                       } 
                    ;
 MultOperator       :  ymultiply 

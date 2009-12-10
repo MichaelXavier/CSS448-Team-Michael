@@ -20,4 +20,5 @@ var
   end;
 
 begin
+  new(integer);
 end.
