@@ -111,6 +111,22 @@ void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
   }
 }
 
+void CPPGenerator::declareArray(ArrayHelper* arrayHelper) {
+	string name = arrayHelper->getName();
+	string typeName = arrayHelper->getType()->getName();
+	vector<int>* ranges = arrayHelper->getRangeValues();
+
+	printIndent();
+	*before_main << "typedef " << typeName << " " << name << "[" << (*ranges)[0];
+	for(int i = 1; i < ranges->size(); i++) {
+		*before_main << ", " << (*ranges)[i];
+	}
+	*before_main << "];" << endl;
+
+	delete ranges;
+	ranges = NULL;
+}
+
 void CPPGenerator::startIfExpr(void) {
   printIndent();
   *cur_stream << "if (";

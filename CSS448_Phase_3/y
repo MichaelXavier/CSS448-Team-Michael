@@ -308,6 +308,7 @@ ArrayType          :  yarray
                         /*will fail validation if there's a problem*/
                         cout << "DEBUG: Inserting array into the ST" << endl;
                         type_ptr = array_helper->sendToSt(symTable);
+                        codegen.declareArray(array_helper);
                         delete array_helper; 
                         array_helper = NULL;
                       }
@@ -450,12 +451,11 @@ FieldList          :  IdentList
 
 /***************************  Statements  ************************************/
 
-StatementSequence  :  Statement  
-                   |  StatementSequence  ysemicolon
-                      {
-                        codegen.writeStr(";\n");
-                      }
-                      Statement
+StatementSequence  :  Statement
+                   |  StatementSequence  
+                   	  {
+                         codegen.writeStr(";\n");
+                      }  ysemicolon Statement
                    ;
 Statement          :  Assignment
                    |  ProcedureCall

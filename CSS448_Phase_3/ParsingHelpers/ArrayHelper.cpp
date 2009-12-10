@@ -3,13 +3,23 @@ ArrayHelper::ArrayHelper(const string& type_name) : TypeHelper(type_name) {
   typePtr = NULL;
 }
 ArrayHelper::~ArrayHelper() {
-  while (!ranges.empty()) {
-    Range* tempRange = ranges.front();
-	delete tempRange;
-	tempRange = NULL;
-    ranges.pop();
-    }
+	for(int i = 0; i < ranges.size(); i++) {
+		delete ranges[i];
+		ranges[i] = NULL;
+	}
+	ranges.clear();
 }
+
+vector<int>* ArrayHelper::getRangeValues()
+{
+	vector<int>* q = new vector<int>();
+	for(int i = 0; i < ranges.size(); i++)
+	{
+		q->push_back(ranges[i]->high - ranges[i]->low);
+	}
+	return q;
+}
+
 bool ArrayHelper::addDimension(int low, int high) {
   if (!clean) { return false; }
   //Do not allow a range that goes in reverse
@@ -17,7 +27,7 @@ bool ArrayHelper::addDimension(int low, int high) {
     Range* range = new Range; 
     range->low = low;
     range->high = high;
-    ranges.push(range);
+    ranges.push_back(range);
   } else {
     clean = false; 
     cout << "Error: low range bound greater than higher range bound." << endl;
@@ -59,17 +69,17 @@ IdentRecord* ArrayHelper::sendToSt(STObject* st) {
 
   IdentRecord* arr = new ArrayType(typeName);
   ArrayType* arr_temp = static_cast<ArrayType*>(arr);
-  
+ 
+
   //Add dimensions
-  while (!ranges.empty()) {
-    Range* range = ranges.front();
-    if (range != NULL) { 
-      arr_temp->addDimension(range->low, range->high);
-	  delete range;
-	  range = NULL;
-      ranges.pop();
-    }
+  for(int i = 0; i < ranges.size(); i++) {
+	  Range* range = ranges[i];
+	  if(range != NULL) {
+		arr_temp->addDimension(range->low, range->high);
+	  }
   }
+
+
   arr_temp->setTypePtr(typePtr);
 
   if (st->insert(arr, arraytype) != NULL) {
