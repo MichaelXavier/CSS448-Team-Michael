@@ -37,3 +37,15 @@ void Constant::display(ostream& sout, int depth)const {
     }
   }
 }
+
+string Constant::toString(void)const {
+  ostringstream oss;
+  if (type == "s") {
+    oss << s;
+  } else if(type == "b") {
+    oss << (b ? "true" : "false");
+  } else if(type == "i") {
+    oss << i;
+  }
+  return oss.str();
+}

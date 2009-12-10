@@ -62,3 +62,35 @@ void checkPointers(vector<PointerType*>& ptrs) {
 void dumpPointer(PointerType* ptr) {
   //TODO: need an ST method for this  
 }
+
+string convertSetExpr(const string& expr) {
+  if (expr.length() == 0) {
+    return "new IntSet()";
+  }
+  istringstream iss(expr);
+  ostringstream oss;
+  int i;
+  while (!iss.eof() && iss >> i) {
+    //oss << i;
+    //range
+    if (iss.peek() == '.') {
+      iss.get();
+      if (iss.peek() == '.') {
+        iss.get();
+        oss << "*(new IntSet(" << i << ", ";
+        iss >> i;
+        oss << i << "))";
+      }
+    } else {
+      //just a single element
+      oss << "*(new IntSet(" << i << "))";
+    }
+
+    //see if there's more
+    if (iss.peek() == ',') {
+      iss.get();
+      oss << " + ";
+    }
+  }
+  return oss.str();
+}

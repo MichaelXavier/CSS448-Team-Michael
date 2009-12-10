@@ -270,6 +270,21 @@ void CPPGenerator::cinLn(void)
 	*cur_stream << "cin.ignore(1000, '\n');" << endl;
 }
 
+void CPPGenerator::declareSetType(const string& name, int low, int high) {
+  if (low <= high) {
+    ostringstream oss;
+    oss << "IntSet(" << low << ", " << high << ")";
+    typeDef(name, oss.str());
+  } else {
+    cout << "Error: low range of set " << name << " is greater than the high range." << endl;
+  }
+}
+
+void CPPGenerator::typeDef(const string& name, const string& body) {
+  printIndent();
+  *cur_stream << "typedef " << body << " " << name << ";" << endl;
+}
+
 void CPPGenerator::defineIO(queue<string> params) {
   //take up to the first 2 and #define them to cin, cout respectively
   //do input
