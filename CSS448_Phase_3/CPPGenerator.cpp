@@ -72,7 +72,7 @@ void CPPGenerator::declareProc(const string& name, ProcedureHelper& helper) {
     }
     params.pop();
     if (!params.empty()) {
-      *oss << ",";
+      *oss << ", ";
     }
   }
   *oss << ") {" << endl;
@@ -106,7 +106,7 @@ void CPPGenerator::declareFunct(const string& name, FunctionHelper& helper) {
     }
     params.pop();
     if (!params.empty()) {
-      *oss << ",";
+      *oss << ", ";
     }
   }
   *oss << ") {" << endl;
@@ -130,20 +130,22 @@ void CPPGenerator::addInclude(const string& include) {
 }
 
 void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
+  //FIXME: this is a bit of a hack, if the current scope is main, define it up as a global
   if (c != NULL) {
     printIndent();
-    *cur_stream << "const "; 
+    ostringstream* out = (cur_stream == main) ? before_main : cur_stream;
+    *out << "const "; 
     
     string constType = c->getConstType();
     
     if (constType == "s") {
-      *cur_stream << "char* " << ch->getConstName() << " = " << c->getConstString();
+      *out << "char* " << ch->getConstName() << " = " << c->getConstString();
     } else if(constType == "b") {
-      *cur_stream << "bool " << ch->getConstName() << " = " << (c->getConstBool() ? "true" : "false");
+      *out << "bool " << ch->getConstName() << " = " << (c->getConstBool() ? "true" : "false");
     } else if(constType == "i") {
-      *cur_stream << "int " << ch->getConstName() << " = " << c->getConstInt();
+      *out << "int " << ch->getConstName() << " = " << c->getConstInt();
     }    
-    *cur_stream << ";" << endl;
+    *out << ";" << endl;
   }
 }
 
