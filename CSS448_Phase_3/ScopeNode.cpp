@@ -107,8 +107,15 @@ void ScopeNode::printScope(ostream& sout) {
 IdentRecord* ScopeNode::lookup(const string& name) {
   map<string, IdentRecord*>::iterator result = records.find(name);
 
-  //Not found in current scope, check parent
+  //Not found in current scope
   if (result == records.end()) {
+    // Check scope root parameters
+	IdentRecord* searchParameters = scopeRoot->lookupParameter(name);
+	if(searchParameters != NULL) {
+		return searchParameters;
+	}
+
+	// Check parent scopes
     if (parentScope == NULL) {
       return NULL;
     } else {

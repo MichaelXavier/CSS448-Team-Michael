@@ -131,7 +131,11 @@ void CPPGenerator::declarePointer(PointerHelper* pointerHelper) {
 	string declaredType = pointerHelper->getDeclaredType();
 	string pointerName = pointerHelper->getName();
 
-	*before_main << "struct " << declaredType << ";\n";
+	if(declaredType != "integer" && declaredType != "boolean" 
+		&& declaredType != "char" && declaredType != "real")
+	{
+		*before_main << "struct " << declaredType << ";\n";
+	}
 	*before_main << "typedef " << declaredType << "* " << pointerName << ";\n";
 }
 

@@ -17,8 +17,12 @@ public:
   bool hasConflictingParams(const IdentRecord*)const;
 
   void setReturnType(IdentRecord* ret) { returnType = ret; }
+	
+  void display(ostream& sout, int depth)const;
 
-	void display(ostream& sout, int depth)const;
+  // Returns a pointer to a parameter if it is stored in parameters
+  IdentRecord* lookupParameter(const string&) const;
+
 private:
   IdentRecord* returnType;			// Return type
   vector<Parameter*> parameters;	// List of params

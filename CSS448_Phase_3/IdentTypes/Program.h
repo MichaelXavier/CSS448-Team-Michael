@@ -21,6 +21,9 @@ public:
   // any of the identifier names of parameters stored in this Procedure
   bool hasConflictingParams(const IdentRecord*)const;
 
+    // Returns a pointer to a parameter if it is stored in parameters
+  IdentRecord* lookupParameter(const string&) const;
+
 private:
   vector<ProgramParameter*> parameters; // List of Program's parameters
 };

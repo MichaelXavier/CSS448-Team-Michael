@@ -35,6 +35,12 @@ public:
         << identName << endl; return true;
   }
 
+  virtual IdentRecord* lookupParameter(const string&) const
+  {
+	  cout << "WARNING: IdentRecord's lookupParameter called for name"
+           << identName << endl; return NULL;
+  }
+
 protected:
   string identName;					// The name of the identifier
 

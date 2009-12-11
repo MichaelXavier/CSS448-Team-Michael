@@ -59,3 +59,16 @@ bool Program::insertParameter(ProgramParameter* parameter) {
   parameters.push_back(parameter);
   return true;
 }
+
+
+// lookupParameter
+// Returns a pointer to a parameter if it is stored in parameters
+IdentRecord* Program::lookupParameter(const string& str) const
+{
+	for(int i = 0; i < parameters.size(); i++)
+	{
+		if(parameters[i]->getName() == str)
+			return (IdentRecord*)parameters[i];
+	}
+	return NULL;
+}
