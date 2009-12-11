@@ -12,6 +12,8 @@ public:
 	void setTypePtr(IdentRecord* type) {typePtr = type;}
 	void setVar(bool var) {passByRef = var;}
 
+  IdentRecord* getTypePtr(void) { return typePtr; }
+
 private:
 	IdentRecord* typePtr; // The data type of this parameter
 	bool passByRef;	// var = 0 means pass by value, 

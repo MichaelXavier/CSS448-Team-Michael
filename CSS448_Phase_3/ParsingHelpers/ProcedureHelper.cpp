@@ -44,6 +44,9 @@ IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
     return NULL;
   }
 
+  //preserve the params for use in cppgenerator
+  queue<Parameter*> temp_params;
+
   Procedure* proc = new Procedure(typeName);
     //Add dimensions
   while (!params.empty()) {
@@ -64,13 +67,16 @@ IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
           parameter = NULL;
           params.pop();
         }
+        params = temp_params;
         return NULL;
       } else {
+        temp_params.push(parameter);
         params.pop();
       }
     }
   }
 
+  params = temp_params;
   if (st->insert(proc, procedure) != NULL) {
     return proc;
   } else {

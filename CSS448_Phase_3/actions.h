@@ -46,3 +46,4 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs);
 void checkPointers(vector<PointerType*>& ptrs);
 void dumpPointer(PointerType* ptr);
 string convertSetExpr(const string& expr);
+string convertSingleQuote(const string& expr);

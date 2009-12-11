@@ -505,6 +505,7 @@ ProcedureCall      :  yident
                         } else {
                           codegen.callProc(name, expression);
                         }
+                        expression = "";
                       }
                    ;
 IfStatement        :  yif  
@@ -621,7 +622,7 @@ ForStatement       :  yfor  yident
                         expression = "";
                         name = "";
                         //codegen.startBlock();
-                        codegen.writeStr("\n");//DEBUG
+                        //codegen.writeStr("\n");//DEBUG
                       }
                       ydo  Statement
                       {
@@ -777,7 +778,7 @@ Factor             :  ynumber
                       }
                    |  ystring 
                       {
-                        expression += s;
+                        expression += convertSingleQuote(s);
                       }
                    |  Designator
                    |  yleftparen 
@@ -846,7 +847,8 @@ ProcedureDecl      :  ProcedureHeading
                         type_ptr = procedure_helper->sendToSt(symTable);
                         if (type_ptr != NULL) {
                           //codegen it
-                          codegen.declareProc(type_ptr->getName(), param_name_queue);
+                          //codegen.declareProc(type_ptr->getName(), param_name_queue);
+                          codegen.declareProc(type_ptr->getName(), *procedure_helper);
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
                           while (!param_queue.empty()) { param_queue.pop(); }
@@ -870,7 +872,8 @@ FunctionDecl       :  FunctionHeading
                           type_ptr = function_helper->sendToSt(symTable);
                           //codegen it
                           if (type_ptr != NULL) {
-                            codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
+                            //codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
+                            codegen.declareFunct(type_ptr->getName(), *function_helper);
                             //clear param queue
                             while (!param_name_queue.empty()) { param_name_queue.pop(); }
                             while (!param_queue.empty()) { param_queue.pop(); }

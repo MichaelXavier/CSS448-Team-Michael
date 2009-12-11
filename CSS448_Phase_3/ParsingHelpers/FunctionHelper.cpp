@@ -46,6 +46,9 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
     return NULL;
   }
 
+  //preserve the params for use in cppgenerator
+  queue<Parameter*> temp_params;
+
   Function* func = new Function(typeName);
   func->setReturnType(returnType);
   //Add dimensions
@@ -68,12 +71,16 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
           parameter = NULL;
           params.pop();
         }
+        params = temp_params;
         return NULL;
+      } else {
+        temp_params.push(parameter);
+        params.pop();
       }
-	  params.pop();
     }
   }
 
+  params = temp_params;
   if (st->insert(func, function) != NULL) {
     return func;
   } else {

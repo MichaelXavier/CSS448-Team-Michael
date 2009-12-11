@@ -12,6 +12,8 @@
 #include "ParsingHelpers/ArrayHelper.h"
 #include "ParsingHelpers/PointerHelper.h"
 #include "ParsingHelpers/RecordHelper.h"
+#include "ParsingHelpers/FunctionHelper.h"
+#include "ParsingHelpers/ProcedureHelper.h"
 
 using namespace std;
 
@@ -29,7 +31,8 @@ public:
   void declareVars(queue<string> idents, IdentRecord* type);
 
   void declareProc(const string&, queue<string>);
-  void declareFunct(const string&, queue<string>, const string&);
+  void declareProc(const string&, ProcedureHelper&);
+  void declareFunct(const string&, FunctionHelper&);
 
   void addInclude(const string&);
 

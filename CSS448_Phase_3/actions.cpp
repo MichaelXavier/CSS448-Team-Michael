@@ -95,3 +95,14 @@ string convertSetExpr(const string& expr) {
   }
   return oss.str();
 }
+
+string convertSingleQuote(const string& expr) {
+  string ret(expr);
+  if (ret[0] == '\'') {
+    ret.replace(0, 1, "\"");
+  }
+  if (ret[ret.length() - 1] == '\'') {
+    ret.replace(ret.length() - 1, 1, "\"");
+  }
+  return ret;
+}
