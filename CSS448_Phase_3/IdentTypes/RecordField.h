@@ -12,6 +12,7 @@ public:
 
 	void display(ostream& sout, int depth)const;
 	void setTypePtr(IdentRecord* ptr) {typePtr = ptr;}
+	string getTypePtrName();
 
 private:
 	IdentRecord* typePtr;
