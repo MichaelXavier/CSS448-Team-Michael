@@ -68,6 +68,7 @@ queue<Range*> ranges_queue;
 
 // expressions
 string expression = "";
+string set_expression = "";
 
 // I/O
 bool readingIO = false;
@@ -401,18 +402,23 @@ SetType            :  yset
                       { 
                         Range* currentRange = ranges_queue.front();
                         ranges_queue.pop();
-                        if (currentRange->type == "i") {
+                        /*if (currentRange->type == "i") {
                           set_helper->setRange(currentRange->lowInt, currentRange->highInt);
                         } else if (currentRange->type == "b") {
                           set_helper->setRange(currentRange->lowBool, currentRange->highBool);
                         } else if (currentRange->type == "s") {
                           set_helper->setRange(currentRange->lowString, currentRange->highString);
-                        }
-                        /*will fail validation if there's a problem*/
-                        if (set_helper->sendToSt(symTable)) {
-                          type_ptr = symTable->lookup(name);
+                        }*/
+                        //FIXME: I believe only integers are allowed as set members
+                        if (currentRange->type == "i") {
+                          set_helper->setRange(currentRange->lowInt, currentRange->highInt);
+                          /*will fail validation if there's a problem*/
+                          type_ptr = set_helper->sendToSt(symTable);
+                          if (type_ptr != NULL) {
+                            codegen.declareSetType(name, currentRange->lowInt, currentRange->highInt);
+                          }
                         } else {
-                          type_ptr = NULL;
+                          cout << "Error: invalid member for declared set." << endl;
                         }
                         delete set_helper; 
                         set_helper = NULL;
@@ -786,15 +792,45 @@ Factor             :  ynumber
                       }
                       Factor 
                    |  Setvalue
+                      {
+                        expression += convertSetExpr(set_expression);
+                        set_expression = "";
+                      }
                    ;
-Setvalue           :  yleftbracket ElementList  yrightbracket
+Setvalue           :  yleftbracket  ElementList  yrightbracket
                    |  yleftbracket yrightbracket
                    ;
 ElementList        :  Element  
-                   |  ElementList  ycomma  Element
+                   |  ElementList  ycomma
+                      {
+                        set_expression += ",";
+                      }
+                      Element
                    ;
 Element            :  ConstExpression  
-                   |  ConstExpression  ydotdot  ConstExpression 
+                      {
+                        if (const_temp != NULL) {
+                          set_expression += const_temp->toString();
+                        }
+                      }
+
+
+                   |  ConstExpression
+                      {
+                        if (const_temp != NULL) {
+                          set_expression += const_temp->toString();
+                        }
+                      }
+                      ydotdot
+                      {
+                        set_expression += "..";
+                      }
+                      ConstExpression 
+                      {
+                        if (const_temp != NULL) {
+                          set_expression += const_temp->toString();
+                        }
+                      }
                    ;
 
 /***************************  Subprogram Stuff  ******************************/
@@ -811,8 +847,8 @@ ProcedureDecl      :  ProcedureHeading
                           codegen.declareProc(type_ptr->getName(), param_name_queue);
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
-                          while(!param_queue.empty()) {param_queue.pop();}
-						}
+                          while (!param_queue.empty()) { param_queue.pop(); }
+                        }
                         delete procedure_helper;
                         procedure_helper = NULL;
                         type_ptr = NULL;
@@ -831,11 +867,15 @@ FunctionDecl       :  FunctionHeading
                           function_helper->SetReturnType(tempPtr);
                           type_ptr = function_helper->sendToSt(symTable);
                           //codegen it
-                          codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
-                          //clear param queue
-                          while (!param_name_queue.empty()) { param_name_queue.pop(); }
-                          while(!param_queue.empty()) {param_queue.pop();}       
-                          type_ptr = NULL;
+                          if (type_ptr != NULL) {
+                            codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
+                            //clear param queue
+                            while (!param_name_queue.empty()) { param_name_queue.pop(); }
+                            while (!param_queue.empty()) { param_queue.pop(); }
+                            type_ptr = NULL;
+                          } else  {
+                            cout << "Error: function failed to insert into the ST." << endl;
+                          }
                         } else {
                           cout << "Error: function return type is incorrect" << endl;
                         }

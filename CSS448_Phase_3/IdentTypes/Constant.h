@@ -1,6 +1,7 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
 #include <iostream>
+#include <sstream>
 #include "IdentRecord.h"
 
 class Constant : public IdentRecord {
@@ -32,6 +33,8 @@ public:
   bool getConstBool(void) {return b;}
   IdentRecord* getConstIR(void) {return ir;}
   string getConstType(void) { cout << "DEBUG: getConstType called." << endl; return type;}
+
+  string toString(void)const;
 
 private:
   int i;

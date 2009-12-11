@@ -19,3 +19,12 @@ void RecordField::display(ostream& sout, int depth) const {
   printIndent(sout, depth);
 	sout << identName << " " << typePtr->getName();
 }
+
+
+string RecordField::getTypePtrName()
+{
+	if(typePtr != NULL)
+		return typePtr->getName();
+	else
+		return "Error: typePtr of field: " + identName + " is NULL\n";
+}

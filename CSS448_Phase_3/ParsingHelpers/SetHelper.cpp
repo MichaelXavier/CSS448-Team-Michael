@@ -11,7 +11,8 @@ bool SetHelper::setRange(int low, int high)
 	{
 		cout << "Error: low value is greater than high value for set" << endl;
 		return false;
-	}	rangeLow = low;
+	}
+  rangeLow = low;
 	rangeHigh = high;
 	return true;
 }
@@ -37,9 +38,9 @@ IdentRecord* SetHelper::sendToSt(STObject* st)
 	SetType* setRecordTemp = static_cast<SetType*>(setRecord);
 	setRecordTemp->setRange(rangeLow, rangeHigh);
 	setRecordTemp = NULL;
-	if (st->insert(setRecord, settype) != NULL) {
+  setRecord = st->insert(setRecord, settype);
+	if (setRecord == NULL) {
     cout << "Error: Failed to insert set into ST " << typeName << endl;
-    return NULL;
 	}
 
 	return setRecord;

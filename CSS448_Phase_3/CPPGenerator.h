@@ -71,10 +71,14 @@ public:
   void coutLn(void);
   void cinLn(void);
 
+  void declareSetType(const string&, int, int);
+
   void defineIO(queue<string>);
 
   void callProc(const string&, const string&);
 private:
+  void typeDef(const string&, const string&);
+
   void popScope(void);
 
   void closeAllScopes(void);

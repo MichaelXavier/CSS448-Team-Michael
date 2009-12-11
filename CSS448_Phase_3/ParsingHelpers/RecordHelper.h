@@ -15,6 +15,8 @@ public:
 	bool setCurrentFieldType(IdentRecord* type);
 	bool addFields(STObject*);
 	IdentRecord* sendToSt(STObject*);
+	vector<RecordField*>* getRecordFields() {return &fields;}
+	string getTypeName() {return typeName;}
 
 private:
 	vector<string> currentFieldNames;
