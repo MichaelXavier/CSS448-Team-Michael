@@ -19,12 +19,12 @@ CPPGenerator::~CPPGenerator(void) {
 
 void CPPGenerator::setup(void) {
   addInclude("<iostream>");
-  *before_main << "#typedef integer int" << endl
-    << "#typedef real double" << endl
-    << "#typedef boolean bool" << endl
-    << "#define True true" << endl
+  *before_main << "#define True true" << endl
     << "#define False false" << endl
     << "#define Nil NULL" << endl //TODO: more?
+    << "typedef int integer;" << endl
+    << "typedef double real;" << endl
+    << "typedef bool boolean;" << endl
     << endl << "using namespace std;" << endl << endl;
     *main << "int main(void) {" << endl;
 }

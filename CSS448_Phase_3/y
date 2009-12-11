@@ -19,7 +19,8 @@ extern int error_count;
 
 STObject* symTable;
 
-CPPGenerator codegen(cout);
+//CPPGenerator codegen(cout);
+CPPGenerator codegen(cerr);
 
 //variable/const stuff
 string name;

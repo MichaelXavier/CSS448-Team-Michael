@@ -85,6 +85,8 @@ void STObject::printST(void) {
   {
 	  scopeExit();
   }
+
+  closeAllScopes();
 //	currentScope = rootScope; // Sets the current scope 
 							  // as root scope after printing ST
 //	currentScopeNumber = 0;
@@ -92,6 +94,12 @@ void STObject::printST(void) {
 	cout << endl;
 }
 
+void STObject::closeAllScopes(void) {
+  while(currentScopeNumber != 0)
+  {
+	  scopeExit();
+  }
+}
 
 // scopeEntry
 // Creates a new scope, adds it to the current scope's list of child scopes,

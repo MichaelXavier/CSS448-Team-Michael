@@ -9,7 +9,8 @@ void startProgram(Program* newProg) {
 }
 
 void endProgram(void) {
-  symTable->printST();//FIXME: re we supposed to print?
+  //symTable->printST();//FIXME: re we supposed to print?
+  symTable->closeAllScopes();
   delete symTable;
   symTable = NULL;
 }
