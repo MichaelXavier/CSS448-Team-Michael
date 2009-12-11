@@ -619,11 +619,12 @@ ForStatement       :  yfor  yident
                         codegen.completeFor(name, expression, increment);
                         expression = "";
                         name = "";
-                        codegen.startBlock();
+                        //codegen.startBlock();
+                        codegen.writeStr("\n");//DEBUG
                       }
                       ydo  Statement
                       {
-                        codegen.endBlock();
+                        //codegen.endBlock();
                       }
                    ;
 WhichWay           :  yto  

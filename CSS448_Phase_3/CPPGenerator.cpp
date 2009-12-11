@@ -269,7 +269,6 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  //*cur_stream << ";" << endl;
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
@@ -283,7 +282,7 @@ void CPPGenerator::cinExpr(const string& expr, bool readln) {
 void CPPGenerator::coutLn(void)
 {
 	printIndent();
-	*cur_stream << "cout << endl;" << endl;
+	*cur_stream << "cout << endl;";
 }
 
 void CPPGenerator::cinLn(void)
