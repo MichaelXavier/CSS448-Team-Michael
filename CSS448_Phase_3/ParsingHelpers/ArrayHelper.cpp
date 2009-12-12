@@ -75,7 +75,6 @@ bool ArrayHelper::setTypePtr(IdentRecord* type) {
     cout << "Error: cannot set NULL typePtr." << endl;
     return false;
   } else {
-    cout << "DEBUG: type successfully set for " << typeName << endl;
     typePtr = type;
     return true;
   }

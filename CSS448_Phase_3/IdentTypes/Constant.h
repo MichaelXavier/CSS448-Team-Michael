@@ -15,16 +15,14 @@ public:
 
   void setConstFactor(int value) { 
     i = value;
-    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
     type.clear();
     type = "i";
-    cout << "DEBUG: type set to " << type << endl;}
+  }
   void setConstFactor(const string& value) {  
     s = value;
-    cout << "DEBUG: str const fact set to " << value << " " << s << endl;
     type.clear();
     type = "s";
-    cout << "DEBUG: type set to " << type << endl; }
+  }
   void setConstFactor(bool value) { b = value; type = "b"; }
   void setConstFactor(IdentRecord* value) { ir = value; type = "ir"; }
 
@@ -32,7 +30,7 @@ public:
   string getConstString(void) { return s;}
   bool getConstBool(void) {return b;}
   IdentRecord* getConstIR(void) {return ir;}
-  string getConstType(void) { cout << "DEBUG: getConstType called." << endl; return type;}
+  string getConstType(void) { return type;}
 
   string toString(void)const;
 

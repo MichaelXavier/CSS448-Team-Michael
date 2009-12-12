@@ -85,7 +85,6 @@ void CPPGenerator::declareProc(const string& name, ProcedureHelper& helper) {
 
   // Prints the name of the procedure
   *oss << "void " << name << " (";
-  //if (params.empty()) { cout << "DEBUG: params on declareFunct is empty" << endl; }
 
   // Prints the parameters
   Parameter* param;
@@ -126,7 +125,6 @@ void CPPGenerator::declareFunct(const string& name, FunctionHelper& helper) {
 
   // Prints name and return type of function
   *oss << ret_type->getName() << " " << name << "(";
-  //if (params.empty()) { cout << "DEBUG: params on declareFunct is empty" << endl; }
 
   // Prints function parameters
   Parameter* param;
@@ -422,10 +420,6 @@ void CPPGenerator::endBlock(void) {
 
 // closeScope
 void CPPGenerator::closeScope(void) {
-  //FIXME: is it safe to assume we will always end with a curly?
-  //cout << "DEBUG: closing scope" << endl;
-
-  //*cur_stream << "}" << endl;
   endBlock();
 
   if (scope_stack.top() != main && !scope_stack.empty()) {
@@ -444,7 +438,6 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  //*cur_stream << ";" << endl;//DEBUG
 }
 
 

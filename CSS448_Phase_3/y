@@ -20,7 +20,7 @@ extern int error_count;
 STObject* symTable;
 
 //CPPGenerator codegen(cout);
-CPPGenerator codegen(cerr);
+CPPGenerator codegen(cout);
 
 //variable/const stuff
 string name;
@@ -134,12 +134,10 @@ ProgramParameters  :  yleftparen  IdentList
                    ;
 IdentList          :  yident 
                       { 
-                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
                         ident_queue.push(s);
                       }
                    |  IdentList ycomma yident
                       {
-                        cout << "DEBUG: pushing " << s << " to ident queue." << endl;
                         ident_queue.push(s);
                       }
                    ;
@@ -263,7 +261,6 @@ ConstFactor        :  yident
                         if (strToInt(s, parsed_int)) {
                           const_temp->setConstFactor(parsed_int);
                         } else {
-                          cout << "DEBUG: setConstFactor: " << s << " with " << parsed_int << endl;//DEBUG
                           const_temp->setConstFactor(parsed_int);
                         }                      
                       }
@@ -286,9 +283,7 @@ ConstFactor        :  yident
                    ;
 Type               :  yident 
                       {
-                        cout << "DEBUG: looking up " << s << endl;
                         type_ptr = symTable->lookup(s);
-                        cout << "DEBUG: found s? "  << ((type_ptr != NULL) ? "yes" : "no") << endl; 
                       }
                    |  ArrayType
                    |  PointerType
@@ -318,9 +313,8 @@ ArrayType          :  yarray
                       yrightbracket  yof Type 
                       { 
                         array_helper->setTypePtr(type_ptr);
-                        type_ptr = NULL;//DEBUG: set it null so we don't delete it later
+                        type_ptr = NULL;//set it null so we don't delete it later
                         /*will fail validation if there's a problem*/
-                        cout << "DEBUG: Inserting array into the ST" << endl;
                         type_ptr = array_helper->sendToSt(symTable);
                         codegen.declareArray(array_helper);
                         delete array_helper; 
@@ -681,7 +675,6 @@ ForStatement       :  yfor  yident
                         expression = "";
                         name = "";
                         codegen.startBlock();
-                        //codegen.writeStr("\n");//DEBUG
                       }
                       ydo  Statement
                       {
@@ -800,7 +793,6 @@ theDesignatorStuff :  ydot
                         
                         /**/
                         // Checks if the indices are of an array, in order to calculate index offsets
-                        cout << "DEBUG: looking up designatorString " << designatorString << endl;
                         IdentRecord* temp = symTable->lookup(designatorString);
                         if (temp != NULL) {
                           if(temp->getInstanceName() == "Variable")
@@ -1086,7 +1078,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                           param_queue.push(param);
                           ident_queue.pop();
                         }
-                        ident_temp = NULL;//DEBUG: set it null so we don't delete it later
+                        ident_temp = NULL;//set it null so we don't delete it later
                       }
                    |  IdentList  /* have the param names now */
                       ycolon  yident
@@ -1098,7 +1090,7 @@ OneFormalParam     :  yvar  IdentList /* have the param names now */
                           param_queue.push(param);
                           ident_queue.pop();
                         }
-                        ident_temp = NULL;//DEBUG: set it null so we don't delete it later
+                        ident_temp = NULL;//set it null so we don't delete it later
                       }
                    ;
 

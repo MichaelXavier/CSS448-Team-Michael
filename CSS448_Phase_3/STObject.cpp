@@ -164,12 +164,9 @@ IdentRecord* STObject::lookup(const string& name) {
 
   // Checks the symbol table for the identifier name
   for(std::vector<IdentRecord*>::iterator it = identTable.begin(); it != identTable.end(); ++it) {
-    //cout << "DEBUG: checking SIT: does given " << name << " == " << (*it)->getName() << (name == (*it)->getName() ? "yes" : "no") << endl;
     if (name == (*it)->getName()) {
-      cout << "DEBUG: FOUND " << (*it)->getName() << endl;
       return (*it);
     }
-    //cout << "DEBUG: STILL LOOKING" << endl;
   }
 
   cout << "Couldn't find type with name " << name << endl;

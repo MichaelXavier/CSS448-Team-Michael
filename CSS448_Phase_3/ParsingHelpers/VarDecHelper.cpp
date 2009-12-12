@@ -31,7 +31,6 @@ bool VarDecHelper::AddVar(const string& name)
 // Variable names are added to queue
 bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
-    cout << "DEBUG: adding var to VarDecHelper queue: " << idents.front() << endl;
     if (!AddVar(idents.front())) {
       //clear the stack and bail
       while (!idents.empty()) {
@@ -73,7 +72,6 @@ IdentRecord* VarDecHelper::sendToSt(STObject* st)
 			varRecord = new Variable(varNames[i]);
 			varRecord->setTypePtr(typePtr);
 	
-			cout << "DEBUG: Inserting " << varNames[i] << endl;
 			if(!st->insert(varRecord, variable))
 			{
 				// variable already exists, handle error
