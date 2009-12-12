@@ -39,6 +39,20 @@ IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
   }
   switch (type) {
     case function:
+      if (scopeEntry(new_rec, type)) {
+        //FIXME: experimental, set up return variable
+        Variable* var = new Variable(new_rec->getName());
+        if (!currentScope->insertRecord(var)) {
+          delete var;
+        }
+        return new_rec;
+      } else {
+        // This handles when a parent scope procedure/function/program has
+        // the same identifier
+        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n"; 
+        return NULL;
+      }
+      break;
     case procedure:
       if (scopeEntry(new_rec, type)) {
         return new_rec;

@@ -4,7 +4,7 @@
 #include <queue>
 #include <string>
 #include "TypeHelper.h"
-#include "../IdentTypes/Procedure.h"
+#include "../IdentTypes/Function.h"
 using namespace std;
 class FunctionHelper : public TypeHelper {
 public:
@@ -17,8 +17,10 @@ public:
 
   queue<Parameter*> getParams(void) { return params; }
   IdentRecord* getReturnType(void) { return returnType; }
+  Function* getFunctPtr(void) { return funct_ptr; }
 private:
   queue<Parameter*> params;
   IdentRecord* returnType;
+  Function* funct_ptr;
 };
 #endif

@@ -3,6 +3,7 @@
 FunctionHelper::FunctionHelper(const string& type_name) : TypeHelper(type_name) 
 {
 	returnType = NULL;
+  funct_ptr = NULL;
 }
 
 FunctionHelper::~FunctionHelper(void) {
@@ -82,6 +83,7 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
 
   params = temp_params;
   if (st->insert(func, function) != NULL) {
+    funct_ptr = func; //FIXME: experimental
     return func;
   } else {
     delete func;

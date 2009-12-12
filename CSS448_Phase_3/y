@@ -920,7 +920,8 @@ FunctionDecl       :  FunctionHeading
                       }
                       ysemicolon  Block
                       { 
-                        codegen.closeScope();//close function scope on codegen
+                        codegen.closeFunct();//FIXME: experimental
+                        //codegen.closeScope();//close function scope on codegen
                         checkPointers(pointer_list);
                         symTable->scopeExit();
                       }

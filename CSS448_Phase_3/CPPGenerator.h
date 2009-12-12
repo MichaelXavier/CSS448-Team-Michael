@@ -33,6 +33,7 @@ public:
   void declareProc(const string&, queue<string>);
   void declareProc(const string&, ProcedureHelper&);
   void declareFunct(const string&, FunctionHelper&);
+  void closeFunct(void);
 
   void addInclude(const string&);
 
@@ -92,6 +93,7 @@ private:
   ostringstream* before_main;
   ostringstream* main;
   stack<ostringstream*>scope_stack;
+  stack<Function*>funct_stack;
   vector<ostringstream*>function_streams;
   ostream& output; 
 

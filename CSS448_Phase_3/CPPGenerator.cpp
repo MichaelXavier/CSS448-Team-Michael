@@ -114,6 +114,8 @@ void CPPGenerator::declareFunct(const string& name, FunctionHelper& helper) {
   //Push to function vector for later
   function_streams.push_back(oss);
 
+  funct_stack.push(helper.getFunctPtr());
+
   //We are now in this function's scope
   scope_stack.push(oss);
 
@@ -122,6 +124,22 @@ void CPPGenerator::declareFunct(const string& name, FunctionHelper& helper) {
 
   //Reset indent level for this scope
   indent_level = 1;
+
+  //Declare function return variable
+  printIndent();
+  queue<string>ret_name;
+  ret_name.push(funct_stack.top()->getName()); 
+  declareVars(ret_name, ret_type);
+}
+
+void CPPGenerator::closeFunct(void) {
+  if (!funct_stack.empty()) {
+    printIndent();
+    *cur_stream << "return " << funct_stack.top()->getName() << ";" << endl;
+    funct_stack.pop();
+  }
+  //FIXME: experimental, add return statement
+  closeScope();
 }
 
 void CPPGenerator::addInclude(const string& include) {
@@ -311,6 +329,7 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
+  *cur_stream << ";" << endl;//DEBUG
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
