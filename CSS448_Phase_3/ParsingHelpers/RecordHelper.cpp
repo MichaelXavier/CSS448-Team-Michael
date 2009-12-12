@@ -1,22 +1,36 @@
 #include "RecordHelper.h"
 
+
+// Constructor
 RecordHelper::RecordHelper(const string& type_name) : TypeHelper(type_name)
 {
 }
 
+
+// Destructor
 RecordHelper::~RecordHelper()
 {
 }
 
+
+// addFieldName
+// Adds a field name
 bool RecordHelper::addFieldName(const string& str)
 {
 	currentFieldNames.push_back(str);
 }
+
+
+// setCurrentFieldType
+// Sets current field type
 bool RecordHelper::setCurrentFieldType(IdentRecord* type)
 {
 	currentFieldType = type;
 }
 
+
+// addFields
+// Adds fields to field vector
 bool RecordHelper::addFields(STObject* st)
 {
 		RecordField* fieldRecord;
@@ -30,11 +44,15 @@ bool RecordHelper::addFields(STObject* st)
 							  // can be added
 }
 
+
+// sendToSt
+// Creates a record object and sends to ST
 IdentRecord* RecordHelper::sendToSt(STObject* st)
 {
 	IdentRecord* record = new RecordType(typeName);
 	RecordType* record_temp = static_cast<RecordType*>(record);
 	
+	// Adds fields to record object
 	for(int i = 0; i < fields.size(); i++)
 	{
 		if (!record_temp->insertField(fields[i])) {
@@ -42,6 +60,7 @@ IdentRecord* RecordHelper::sendToSt(STObject* st)
       return NULL;
 		}
 	}
+	// Sends record object to ST
 	if (!st->insert(record, recordtype)) {
       cout << "Error: Failed to insert record to ST with name " << typeName << endl;
       return NULL;
@@ -50,6 +69,9 @@ IdentRecord* RecordHelper::sendToSt(STObject* st)
 	return record;
 }
 
+
+// clearCurrentFieldNames
+// Clears the current field names
 void RecordHelper::clearCurrentFieldNames()
 {
 	currentFieldNames.clear();

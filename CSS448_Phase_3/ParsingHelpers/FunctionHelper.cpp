@@ -1,18 +1,21 @@
 #include "FunctionHelper.h"
 
+
+// Constructor
 FunctionHelper::FunctionHelper(const string& type_name) : TypeHelper(type_name) 
 {
 	returnType = NULL;
   funct_ptr = NULL;
 }
 
+
+// Destructor
 FunctionHelper::~FunctionHelper(void) {
-   /*Parameter* tempParam = params.front();
-   delete tempParam;
-   tempParam = NULL;
-   params.pop();*///FIXME: causing a crash, looks like scopeNode deletes this
 }
 
+
+// AddParameters
+// Adds parameters to the parameter queue
 bool FunctionHelper::AddParameters(queue<Parameter*> params) {
   while (!params.empty()) {
     Parameter* param = params.front();
@@ -32,6 +35,9 @@ bool FunctionHelper::AddParameters(queue<Parameter*> params) {
   return true;
 }
 
+
+// AddParameter
+// Adds a parameter to the parameter queue
 bool FunctionHelper::AddParameter(Parameter* param) {
   if (param != NULL) {
     params.push(param);
@@ -42,6 +48,9 @@ bool FunctionHelper::AddParameter(Parameter* param) {
   }
 }
 
+
+// sendToSt
+// Creates function object and sends it to the symbol table
 IdentRecord* FunctionHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return NULL;

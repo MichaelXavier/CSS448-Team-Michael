@@ -1,10 +1,19 @@
 #include "SetHelper.h"	
+
+// Constructor
 SetHelper::SetHelper(const string& type_name) : TypeHelper(type_name)
 {
 }
+
+
+// Destructor
 SetHelper::~SetHelper(void)
 {
 }
+
+
+// setRange
+// Sets low and high range values of set
 bool SetHelper::setRange(int low, int high)
 {
 	if(low > high)
@@ -17,6 +26,9 @@ bool SetHelper::setRange(int low, int high)
 	return true;
 }
 
+
+// setRange
+// Sets low and high range values of set
 bool SetHelper::setRange(const string& low, const string& high)
 {
 	if (low.length() != 1) {
@@ -30,6 +42,9 @@ bool SetHelper::setRange(const string& low, const string& high)
   return setRange(low[0], high[0]);
 }
 
+
+// sendToSt
+// Creates a set object and sends to ST
 IdentRecord* SetHelper::sendToSt(STObject* st)
 {	
   //FIXME: need to call validate, need to define validate. validate must call base class's validate. Reference ArrayHelper for more info

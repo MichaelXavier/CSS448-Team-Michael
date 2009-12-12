@@ -1,15 +1,21 @@
 #include "ProgramHelper.h"
 
+
+// Constructor
 ProgramHelper::ProgramHelper(const string& name)
 {
 	programName = name;
 }
 
+
+// Destructor
 ProgramHelper::~ProgramHelper(void)
 {
 }
 
 
+// AddParameterName
+// Adds a parameter name to the parameter queue
 bool ProgramHelper::AddParameterName(const string& name)
 {
   //Do not allow duplicate parameter names
@@ -24,6 +30,9 @@ bool ProgramHelper::AddParameterName(const string& name)
   return true;
 }
 
+
+// AddParameterNames
+// Adds parameter names to the parameter queue
 bool ProgramHelper::AddParameterNames(queue<string>& idents) {
 	while (!idents.empty()) {
     if (!AddParameterName(idents.front())) {
@@ -38,6 +47,9 @@ bool ProgramHelper::AddParameterNames(queue<string>& idents) {
   return true;
 }
 
+
+// GetProgramObj
+// Creates a program object and returns a pointer to it
 Program* ProgramHelper::GetProgramObj()
 {
 	Program* program = new Program(programName);

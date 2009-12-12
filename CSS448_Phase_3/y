@@ -70,18 +70,18 @@ queue<Range*> ranges_queue;
 // expressions
 string expression = "";
 string set_expression = "";
-string pointerString = "";
+string designatorString = "";
 
 // I/O
 bool readingIO = false;
 string IO_Operator = "";
 bool readingIndices = false;
 
-// pointer
-string designatorString = "";
-
 // array indices
 queue<int>* arrayIndexQueue = NULL;
+
+// function calls
+bool allowFunctionCall = false;
 
 extern string s;
 
@@ -381,12 +381,14 @@ Subrange           :  {
                       }
                    |  ystring 
                       {
+                        deleteSingleQuote(s);
                         range_temp = new Range; 
                         range_temp->lowString = s;
                         range_temp->type = "s";
                       } 
                       ydotdot  ystring
                       {
+                        deleteSingleQuote(s);
                         range_temp->highString = s;
                         ranges_queue.push(range_temp);
                         range_temp = NULL;
@@ -521,18 +523,20 @@ Statement          :  Assignment
 Assignment         :  Designator yassign 
                       {
                         expression += " = ";
+                        allowFunctionCall = true;
                       } 
                       Expression
                       { 
-                        //pointerString captures the name of the var, if LHS is undefined, dont continue
+                        //designatorString captures the name of the var, if LHS is undefined, dont continue
                         //FIXME: LHS checking disabled, we build up the pointer strik to the point where we can't resolve it
-                        //if (symTable->lookup(pointerString) != NULL) {
+                        //if (symTable->lookup(designatorString) != NULL) {
                           codegen.writeStrWI(expression);
                         //} else {
                           //cout << "Error: LHS of expression '" << expression << "' is undefined." << endl;
                         //}
-                        pointerString = "";
+                        designatorString = "";
                         expression = "";
+                        allowFunctionCall = false;
                       }
                    ;
 ProcedureCall      :  yident 
@@ -662,11 +666,17 @@ ForStatement       :  yfor  yident
                       }  
                       Expression  
                       {
+                      	expression = expression.substr(0, expression.length() - s.length());
+						s = convertDoubleQuote(s);
+						expression += s;
                         codegen.startFor(expression);
                         expression = "";
                       }
                       WhichWay  Expression
                       {
+                      	expression = expression.substr(0, expression.length() - s.length());
+						s = convertDoubleQuote(s);
+						expression += s;
                         codegen.completeFor(name, expression, increment);
                         expression = "";
                         name = "";
@@ -687,7 +697,7 @@ WhichWay           :  yto
                         increment = false;
                       }
                    ;
-IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
+IOStatement        :  yread {readingIO = true; IO_Operator = " >> "; allowFunctionCall = false;}
                       yleftparen  DesignatorList  yrightparen 
                       {
                         codegen.cinExpr(expression, false);
@@ -698,7 +708,7 @@ IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
                       {
                         codegen.cinLn();
                       }
-                   |  yreadln {readingIO = true; IO_Operator = " >> ";}
+                   |  yreadln {readingIO = true; IO_Operator = " >> "; allowFunctionCall = false;}
                       yleftparen DesignatorList  yrightparen 
                       {
                         codegen.cinExpr(expression, true);
@@ -731,7 +741,7 @@ IOStatement        :  yread {readingIO = true; IO_Operator = " >> ";}
 
 DesignatorList     :  Designator  
                       {
-                        pointerString = "";
+                        designatorString = "";
                       }
                    |  DesignatorList  ycomma 
                       {
@@ -743,7 +753,7 @@ DesignatorList     :  Designator
                       }  
                       Designator 
                       {
-                        pointerString = "";
+                        designatorString = "";
                       }
                    ;
 Designator         :  yident 
@@ -767,6 +777,11 @@ Designator         :  yident
                    ;
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
+                   |  ActualParameters 
+					  { 
+						if(allowFunctionCall == false)
+							cout << "Error: incorrect function call.";
+					  }
                    ;
 theDesignatorStuff :  ydot 
                    
@@ -775,7 +790,7 @@ theDesignatorStuff :  ydot
                       } 
                       yident 
                       {
-                        expression += s; pointerString = s;
+                        expression += s; designatorString = s;
                       }
                    |  yleftbracket 
                       {
@@ -818,13 +833,20 @@ theDesignatorStuff :  ydot
                       } 
                    |  ycaret 
                       {
-                        expression = expression.substr(0, expression.length() - pointerString.length());
+                        expression = expression.substr(0, expression.length() - designatorString.length());
                         expression += "(*";
-                        expression += pointerString;
+                        expression += designatorString;
                         expression += ")";
                       }
                    ;
-ActualParameters   :  yleftparen  ExpList  yrightparen
+ActualParameters   :  yleftparen  
+					  {
+						expression += "("; 
+					  }
+					  ExpList  yrightparen
+					  {
+						expression += ")"; 
+					  }
                    ;
 ExpList            :  Expression   
                    |  ExpList  ycomma 

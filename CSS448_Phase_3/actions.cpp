@@ -1,5 +1,8 @@
 #include "actions.h"
 
+
+// startProgram
+// Initializes the symbol table, with a program IdentRecord
 void startProgram(Program* newProg) {
   try {
     symTable = new STObject(newProg);
@@ -8,6 +11,9 @@ void startProgram(Program* newProg) {
   }
 }
 
+
+// endProgram
+// Deletes symbol table, closes all scopes
 void endProgram(void) {
   //symTable->printST();//FIXME: re we supposed to print?
   symTable->closeAllScopes();
@@ -15,6 +21,9 @@ void endProgram(void) {
   symTable = NULL;
 }
 
+
+// strToInt
+// Converts a string to an int
 bool strToInt(string& str, int& target) {
   istringstream iss(str);
   if (iss >> target) {
@@ -24,6 +33,9 @@ bool strToInt(string& str, int& target) {
   }
 }
 
+
+// intToString
+// Converts an int to a string
 bool intToString(string& target, int& number) {
   stringstream iss;
   if(iss << number) {
@@ -35,11 +47,15 @@ bool intToString(string& target, int& number) {
   }
 }
 
-//Loop through pointers declared so far, see if any are supposed to point to this.
+
+// resolvePointers
+// Checks if a type matches that of any unresolved pointers
+// If so, the pointer is resolved
 void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 	vector<PointerType*>::iterator it;
 	int i = 0;
-  for(it = ptrs.begin(); it != ptrs.end(); it++) {
+	// Cycles through all unresolved pointers
+    for(it = ptrs.begin(); it != ptrs.end(); it++) {
     if (newTypePtr == NULL) {
       cout << "Error: newTypePtr argument passed to resolvePointers is NULL" << endl;
       return;
@@ -50,6 +66,8 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
       continue;
       //TODO: further error handling?
     }
+	// If a pointer is found that should point to the newTypePtr type, the pointer is set to point
+	// to newTypePtr
     if (newTypePtr->getName() == ptrs[i]->getDeclaredType()) {
       ptrs[i]->setPointObj(newTypePtr);
     }
@@ -57,6 +75,9 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
   }
 }
 
+
+// checkPointers
+// Checks if there are any unresolved point
 void checkPointers(vector<PointerType*>& ptrs) {
   for(unsigned int i = 0; i < ptrs.size(); i++) {
     if (ptrs[i] == NULL) {
@@ -71,10 +92,14 @@ void checkPointers(vector<PointerType*>& ptrs) {
   ptrs.clear();
 }
 
+
+// dumpPointer
 void dumpPointer(PointerType* ptr) {
   //TODO: need an ST method for this  
 }
 
+
+// convertSetExpr
 string convertSetExpr(const string& expr) {
   if (expr.length() == 0) {
     return "new IntSet()";
@@ -107,6 +132,9 @@ string convertSetExpr(const string& expr) {
   return oss.str();
 }
 
+
+// convertSingleQuote
+// Converts single quotes to double quotes
 string convertSingleQuote(const string& expr) {
   string ret(expr);
   if (ret[0] == '\'') {
@@ -116,4 +144,30 @@ string convertSingleQuote(const string& expr) {
     ret.replace(ret.length() - 1, 1, "\"");
   }
   return ret;
+}
+
+
+// convertDoubleQuote
+// Converts double quotes to single quotes
+string convertDoubleQuote(string & expr) {
+  string ret(expr);
+  if (ret[0] == '\"') {
+    ret.replace(0, 1, "\'");
+  }
+  if (ret[ret.length() - 1] == '\"') {
+    ret.replace(ret.length() - 1, 1, "\'");
+  }
+  return ret;
+}
+
+
+// deleteSingleQuote
+// Deletes single quotes around a string
+void deleteSingleQuote(string& expr) {
+	if(expr[0] == '\'') {
+		expr.replace(0,1,"");
+	}
+	if(expr[expr.length() - 1] == '\'') {
+		expr.replace(expr.length() - 1, 1, "");
+	}
 }

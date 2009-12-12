@@ -1,3 +1,8 @@
+// ConstantHelper.h
+// This class is used for storing information about Constant objects from 'y' and
+// eventually creating the Constant object and adding it to the symbol table.
+// Helper objects are also used for code generation.
+
 #ifndef CONSTDECHELPER_H
 #define CONSTDECHELPER_H
 #include <iostream>
@@ -9,24 +14,26 @@
 #include "TypeHelper.h"
 using namespace std;
 
-class ConstDecHelper// : public TypeHelper
+class ConstDecHelper
 {
 public:
-	//ConstDecHelper(const string& type_name);
-	ConstDecHelper(void); //FIXME: added because there isn't really a need to name a "collection" of Constants
-	~ConstDecHelper(void);
-  //FIXME: constfactors can be strings, numbers, true, false, nil, or idents
+	ConstDecHelper(void);	// Constructor
+	~ConstDecHelper(void);  // Destructor
+
+	// Sends the stored Constant object to the symbol table
 	IdentRecord* sendToSt(STObject* st);
-	bool setConstName(string name);
+
+	bool setConstName(string name);	// Sets name of constant object
+	string getConstName(void) { return constName; }  // Gets name of constant object
+	
+	// Makes a copy of parameter Constant object and stores it
 	void setConstObj(Constant* obj);
 
-  string getConstName(void) { return constName; }
-  //IdentRecord* getConstObj(void) { return constObj; }
 private:
-	string constName;
-	IdentRecord* constObj;
+	string constName; // Name of constant
+	IdentRecord* constObj; // Store Constant
     bool clean;
-    bool validate(void); 
+    bool validate(void);  // Error checking
 };
 #endif
 

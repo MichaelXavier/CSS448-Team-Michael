@@ -1,3 +1,8 @@
+// ProgramHelper.h
+// This class is used for storing information about Program objects from 'y' and
+// eventually creating the Program object returning a pointer to it.
+// Helper objects are also used for code generation.
+
 #ifndef PROGRAMHELPER_H
 #define PROGRAMHELPER_H
 #include <iostream>
@@ -10,15 +15,19 @@
 class ProgramHelper
 {
 public:
-	ProgramHelper(const string&);
-	~ProgramHelper(void);
+	ProgramHelper(const string&);  // Constructor
+	~ProgramHelper(void);		   // Destructor
+
+	// Adds a parameter name to parameter queue
 	bool AddParameterName(const string&);
 
-  //Pop a queue, on failure, clear the stack
+    // Adds parameter names to parameter queue
 	bool AddParameterNames(queue<string>&);
-	Program* GetProgramObj(void);
+
+	// Creates a program object and returns a pointer to it
+	Program* GetProgramObj(void); 
 private:
-	string programName;
-	vector<string> parameterNames;
+	string programName;   // The name of the program object
+	vector<string> parameterNames; // The program parameters
 };
 #endif

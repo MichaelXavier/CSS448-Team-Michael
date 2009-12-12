@@ -1,16 +1,17 @@
 #include "ProcedureHelper.h"
 
+
+// Constructor
 ProcedureHelper::ProcedureHelper(const string& type_name) : TypeHelper(type_name) {}
 
+
+// Destructor
 ProcedureHelper::~ProcedureHelper(void) {
-  /*while (!params.empty()) {
-   Parameter* tempParam = params.front();
-   delete tempParam;
-   tempParam = NULL;
-   params.pop();
-  }*///FIXME: causing a crash, looks like scopeNode deletes this
 }
 
+
+// AddParameters
+// Adds parameters to the parameter queue
 bool ProcedureHelper::AddParameters(queue<Parameter*> params) {
   while (!params.empty()) {
     Parameter* param = params.front();
@@ -29,6 +30,9 @@ bool ProcedureHelper::AddParameters(queue<Parameter*> params) {
   return true;
 }
 
+
+// AddParameter
+// Adds a parameter to the parameter queue
 bool ProcedureHelper::AddParameter(Parameter* param) {
   if (param != NULL) {
     params.push(param);
@@ -39,6 +43,9 @@ bool ProcedureHelper::AddParameter(Parameter* param) {
   }
 }
 
+
+// sendToSt
+// Creates a procedure object and sends it to the symbol table.
 IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
   if (!validate()) {
     return NULL;
