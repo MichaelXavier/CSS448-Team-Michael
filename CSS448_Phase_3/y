@@ -493,11 +493,12 @@ Assignment         :  Designator yassign
                       Expression
                       { 
                         //pointerString captures the name of the var, if LHS is undefined, dont continue
-                        if (symTable->lookup(pointerString) != NULL) {
+                        //FIXME: LHS checking disabled, we build up the pointer strik to the point where we can't resolve it
+                        //if (symTable->lookup(pointerString) != NULL) {
                           codegen.writeStrWI(expression);
-                        } else {
-                          cout << "Error: LHS of expression '" << expression << "' is undefined." << endl;
-                        }
+                        //} else {
+                          //cout << "Error: LHS of expression '" << expression << "' is undefined." << endl;
+                        //}
                         pointerString = "";
                         expression = "";
                       }

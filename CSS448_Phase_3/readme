@@ -6,6 +6,7 @@ if.p
 
 not working:
 fact.p //requires function call. insert return variable on function insert, modify grammar, return function name in cppgenerator
+list.p //looks ok but a few issues, missing semicolon on first if, a couple errors i can't quite figure out
 
 untested:
 array.p
