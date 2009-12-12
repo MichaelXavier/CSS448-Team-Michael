@@ -473,21 +473,49 @@ FieldList          :  IdentList
 /***************************  Statements  ************************************/
 
 StatementSequence  :  Statement
-                   |  StatementSequence  
-                   	  {
-                         codegen.writeStr(";\n");
-                      }  ysemicolon Statement
+                   |  StatementSequence  ysemicolon Statement
                    ;
 Statement          :  Assignment
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  ProcedureCall
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  IfStatement
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  CaseStatement
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  WhileStatement
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  RepeatStatement
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  ForStatement
                    |  IOStatement
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
                    |  MemoryStatement
-                   |  ybegin StatementSequence yend
+                   	  {
+                         codegen.writeStr(";\n");
+                      } 
+                   |  ybegin 
+                   	  {
+                         codegen.startBlock();
+                      } 
+                      StatementSequence yend
+                   	  {
+                         codegen.endBlock();
+                      } 
                    |  /*** empty ***/
                    ; 
 Assignment         :  Designator yassign 
@@ -642,12 +670,12 @@ ForStatement       :  yfor  yident
                         codegen.completeFor(name, expression, increment);
                         expression = "";
                         name = "";
-                        //codegen.startBlock();
+                        codegen.startBlock();
                         //codegen.writeStr("\n");//DEBUG
                       }
                       ydo  Statement
                       {
-                        //codegen.endBlock();
+                        codegen.endBlock();
                       }
                    ;
 WhichWay           :  yto  

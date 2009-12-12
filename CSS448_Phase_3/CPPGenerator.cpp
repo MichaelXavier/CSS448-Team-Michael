@@ -329,12 +329,12 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  *cur_stream << ";" << endl;//DEBUG
+  //*cur_stream << ";" << endl;//DEBUG
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
   printIndent();
-  *cur_stream << "cin >> " << expr << ";" << endl;
+  *cur_stream << "cin >> " << expr;// << ";" << endl;
   if(readln) {
 	  *cur_stream << "cin.ignore(1000, '\n');" << endl;
   }
@@ -349,7 +349,7 @@ void CPPGenerator::coutLn(void)
 void CPPGenerator::cinLn(void)
 {
 	printIndent();
-	*cur_stream << "cin.ignore(1000, '\n');" << endl;
+	*cur_stream << "cin.ignore(1000, '\n')";//;" << endl;
 }
 
 void CPPGenerator::declareSetType(const string& name, int low, int high) {
