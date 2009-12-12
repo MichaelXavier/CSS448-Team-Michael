@@ -3,6 +3,7 @@
 
 // Constructor
 RecordType::RecordType(const string& name) : IdentRecord(name) {
+	instanceName = "RecordType";
 }
 
 

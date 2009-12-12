@@ -9,7 +9,8 @@ void startProgram(Program* newProg) {
 }
 
 void endProgram(void) {
-  symTable->printST();//FIXME: re we supposed to print?
+  //symTable->printST();//FIXME: re we supposed to print?
+  symTable->closeAllScopes();
   delete symTable;
   symTable = NULL;
 }
@@ -21,6 +22,15 @@ bool strToInt(string& str, int& target) {
   } else {
     cout << "Error: unable to parse an int out of string " << str << " in call to strToInt" << endl;
   }
+}
+
+bool intToString(string& target, int& number) {
+	ostringstream iss(target);
+	if(iss << number) {
+		return true;
+	} else {
+		cout << "Error: unable to convert int to string "  << endl;
+	}
 }
 
 //Loop through pointers declared so far, see if any are supposed to point to this.
@@ -93,4 +103,15 @@ string convertSetExpr(const string& expr) {
     }
   }
   return oss.str();
+}
+
+string convertSingleQuote(const string& expr) {
+  string ret(expr);
+  if (ret[0] == '\'') {
+    ret.replace(0, 1, "\"");
+  }
+  if (ret[ret.length() - 1] == '\'') {
+    ret.replace(ret.length() - 1, 1, "\"");
+  }
+  return ret;
 }

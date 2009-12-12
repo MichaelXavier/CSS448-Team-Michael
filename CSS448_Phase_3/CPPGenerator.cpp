@@ -19,12 +19,12 @@ CPPGenerator::~CPPGenerator(void) {
 
 void CPPGenerator::setup(void) {
   addInclude("<iostream>");
-  *before_main << "#typedef integer int" << endl
-    << "#typedef real double" << endl
-    << "#typedef boolean bool" << endl
-    << "#define True true" << endl
+  *before_main << "#define True true" << endl
     << "#define False false" << endl
     << "#define Nil NULL" << endl //TODO: more?
+    << "typedef int integer;" << endl
+    << "typedef double real;" << endl
+    << "typedef bool boolean;" << endl
     << endl << "using namespace std;" << endl << endl;
     *main << "int main(void) {" << endl;
 }
@@ -57,20 +57,56 @@ void CPPGenerator::declareVars(queue<string> idents, IdentRecord* type) {
   }
 }
 
-void CPPGenerator::declareProc(const string& name, queue<string> param_names) {
-  declareFunct(name, param_names, "void");
+void CPPGenerator::declareProc(const string& name, ProcedureHelper& helper) {
+  ostringstream* oss = new ostringstream();
+  queue<Parameter*> params = helper.getParams();
+  *oss << "void " << name << " (";
+  //if (params.empty()) { cout << "DEBUG: params on declareFunct is empty" << endl; }
+
+  Parameter* param;
+  while (!params.empty()) {
+    param = params.front();
+    IdentRecord* param_type = param->getTypePtr();
+    if (param != NULL && param_type != NULL) {
+      *oss << param_type->getName() << " " << param->getName(); 
+    }
+    params.pop();
+    if (!params.empty()) {
+      *oss << ", ";
+    }
+  }
+  *oss << ") {" << endl;
+
+  //Push to function vector for later
+  function_streams.push_back(oss);
+
+  //We are now in this function's scope
+  scope_stack.push(oss);
+
+  //set up the current stream to this scope
+  cur_stream = oss;
+
+  //Reset indent level for this scope
+  indent_level = 1;
 }
 
-//Sets current stream to function scope
-void CPPGenerator::declareFunct(const string& name, queue<string> param_names, const string& ret_type) {
+void CPPGenerator::declareFunct(const string& name, FunctionHelper& helper) {
   ostringstream* oss = new ostringstream();
-  //Build the function
-  *oss << ret_type << " " << name << "(";
-  while (!param_names.empty()) {
-    *oss << param_names.front();
-    param_names.pop();
-    if (!param_names.empty()) {
-      *oss << ",";
+  queue<Parameter*> params = helper.getParams();
+  IdentRecord* ret_type = helper.getReturnType();
+  *oss << ret_type->getName() << " " << name << "(";
+  //if (params.empty()) { cout << "DEBUG: params on declareFunct is empty" << endl; }
+
+  Parameter* param;
+  while (!params.empty()) {
+    param = params.front();
+    IdentRecord* param_type = param->getTypePtr();
+    if (param != NULL && param_type != NULL) {
+      *oss << param_type->getName() << " " << param->getName(); 
+    }
+    params.pop();
+    if (!params.empty()) {
+      *oss << ", ";
     }
   }
   *oss << ") {" << endl;
@@ -94,20 +130,22 @@ void CPPGenerator::addInclude(const string& include) {
 }
 
 void CPPGenerator::declareConst(ConstDecHelper* ch, Constant* c) {
+  //FIXME: this is a bit of a hack, if the current scope is main, define it up as a global
   if (c != NULL) {
     printIndent();
-    *cur_stream << "const "; 
+    ostringstream* out = (cur_stream == main) ? before_main : cur_stream;
+    *out << "const "; 
     
     string constType = c->getConstType();
     
     if (constType == "s") {
-      *cur_stream << "char* " << ch->getConstName() << " = " << c->getConstString();
+      *out << "char* " << ch->getConstName() << " = " << c->getConstString();
     } else if(constType == "b") {
-      *cur_stream << "bool " << ch->getConstName() << " = " << (c->getConstBool() ? "true" : "false");
+      *out << "bool " << ch->getConstName() << " = " << (c->getConstBool() ? "true" : "false");
     } else if(constType == "i") {
-      *cur_stream << "int " << ch->getConstName() << " = " << c->getConstInt();
+      *out << "int " << ch->getConstName() << " = " << c->getConstInt();
     }    
-    *cur_stream << ";" << endl;
+    *out << ";" << endl;
   }
 }
 
@@ -217,7 +255,7 @@ void CPPGenerator::startFor(const string& expr) {
 }
 
 void CPPGenerator::completeFor(const string& iter, const string& expr, bool inc) {
-	*cur_stream <<  expr << "; " << iter << (inc ? " <= " : " >= ") << expr << "; " << iter << (inc ? "++" : "--") << ")";
+	*cur_stream << iter << (inc ? " <= " : " >= ") << expr << "; " << iter << (inc ? "++" : "--") << ")";
 }
 
 void CPPGenerator::allocVar(const string& var) {
@@ -273,7 +311,6 @@ void CPPGenerator::coutExpr(const string& expr, bool newline) {
   if (newline) {
     *cur_stream << " << endl";
   }
-  //*cur_stream << ";" << endl;
 }
 
 void CPPGenerator::cinExpr(const string& expr, bool readln) {
@@ -287,7 +324,7 @@ void CPPGenerator::cinExpr(const string& expr, bool readln) {
 void CPPGenerator::coutLn(void)
 {
 	printIndent();
-	*cur_stream << "cout << endl;" << endl;
+	*cur_stream << "cout << endl";
 }
 
 void CPPGenerator::cinLn(void)

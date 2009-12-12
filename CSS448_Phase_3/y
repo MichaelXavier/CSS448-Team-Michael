@@ -19,7 +19,8 @@ extern int error_count;
 
 STObject* symTable;
 
-CPPGenerator codegen(cout);
+//CPPGenerator codegen(cout);
+CPPGenerator codegen(cerr);
 
 //variable/const stuff
 string name;
@@ -76,7 +77,10 @@ string IO_Operator = "";
 bool readingIndices = false;
 
 // pointer
-string pointerString = "";
+string designatorString = "";
+
+// array indices
+queue<int>* arrayIndexQueue = NULL;
 
 extern string s;
 
@@ -504,6 +508,7 @@ ProcedureCall      :  yident
                         } else {
                           codegen.callProc(name, expression);
                         }
+                        expression = "";
                       }
                    ;
 IfStatement        :  yif  
@@ -619,11 +624,12 @@ ForStatement       :  yfor  yident
                         codegen.completeFor(name, expression, increment);
                         expression = "";
                         name = "";
-                        codegen.startBlock();
+                        //codegen.startBlock();
+                        //codegen.writeStr("\n");//DEBUG
                       }
                       ydo  Statement
                       {
-                        codegen.endBlock();
+                        //codegen.endBlock();
                       }
                    ;
 WhichWay           :  yto  
@@ -691,29 +697,66 @@ DesignatorList     :  Designator
 Designator         :  yident 
                       {
                         expression += s;
-                        pointerString = s;
+                        designatorString = s;
+                        
+                        /*
+                        if(readingIndices == true && arrayIndexQueue != NULL)
+						{
+							int offset = arrayIndexQueue->front();
+							arrayIndexQueue->pop();
+							expression += "-";
+							string offsetString;
+							intToString(offsetString, offset);
+							expression += offsetString;
+						}
+						*/
                       } 
                       DesignatorStuff 
                    ;
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
                    ;
-theDesignatorStuff :  ydot {expression += ".";} yident {expression += s; pointerString = s;}
+theDesignatorStuff :  ydot {expression += ".";} yident {expression += s; designatorString = s;}
                    |  yleftbracket 
                       {
                         expression += "[";
                         readingIndices = true;
+                        
+                        /*
+                        // Checks if the indices are of an array, in order to calculate index offsets
+						IdentRecord* temp = symTable->lookup(designatorString);
+						if(temp->getInstanceName() == "Variable")
+						{	
+							Variable* tempVar = static_cast<Variable*>(temp);
+							if(tempVar->getTypePtr()->getInstanceName() == "ArrayType")
+							{
+								ArrayType* tempArray = static_cast<ArrayType*>(tempVar->getTypePtr());
+								arrayIndexQueue = tempArray->getLowRangeValues();
+								tempArray = NULL;
+							}
+							tempVar = NULL;
+						}
+						temp = NULL; */
+						
                       } 
                       ExpList yrightbracket 
                       {
                         expression += "]";
                         readingIndices = false;
+
+						if(arrayIndexQueue != NULL) {
+							while(!arrayIndexQueue->empty()) {
+								arrayIndexQueue->pop();
+							}
+							delete arrayIndexQueue;
+							arrayIndexQueue = NULL;
+						}
                       } 
                    |  ycaret 
                       {
-						expression = expression.substr(0, expression.length() - pointerString.length());
+						expression = expression.substr(0, expression.length() - designatorString.length());
 						expression += "(*";
-						expression += pointerString;
+						expression += designatorString;
 						expression += ")";
 					  }
                    ;
@@ -759,7 +802,17 @@ Term               :  Factor
                    ;
 Factor             :  ynumber 
                       {
+                      /*
                         expression += s;
+						if(readingIndices == true && arrayIndexQueue != NULL)
+						{
+							int offset = arrayIndexQueue->front();
+							arrayIndexQueue->pop();
+							expression += "-";
+							string offsetString;
+							intToString(offsetString, offset);
+							expression += offsetString;
+						} */
                       }
                    |  ytrue 
                       {
@@ -775,7 +828,15 @@ Factor             :  ynumber
                       }
                    |  ystring 
                       {
-                        expression += s;
+                        expression += convertSingleQuote(s);
+                        /*
+                        if(readingIndices == true && arrayIndexQueue != NULL)
+						{
+							int offset = arrayIndexQueue->front();
+							arrayIndexQueue->pop();
+							expression += "-";
+							expression += offset;
+						}*/
                       }
                    |  Designator
                    |  yleftparen 
@@ -844,7 +905,8 @@ ProcedureDecl      :  ProcedureHeading
                         type_ptr = procedure_helper->sendToSt(symTable);
                         if (type_ptr != NULL) {
                           //codegen it
-                          codegen.declareProc(type_ptr->getName(), param_name_queue);
+                          //codegen.declareProc(type_ptr->getName(), param_name_queue);
+                          codegen.declareProc(type_ptr->getName(), *procedure_helper);
                           //clear param queue
                           while (!param_name_queue.empty()) { param_name_queue.pop(); }
                           while (!param_queue.empty()) { param_queue.pop(); }
@@ -855,6 +917,7 @@ ProcedureDecl      :  ProcedureHeading
                       }
                       ysemicolon  Block
                       { 
+                        codegen.closeScope();//close function scope on codegen
                         checkPointers(pointer_list);
                         symTable->scopeExit();
                       }
@@ -868,7 +931,8 @@ FunctionDecl       :  FunctionHeading
                           type_ptr = function_helper->sendToSt(symTable);
                           //codegen it
                           if (type_ptr != NULL) {
-                            codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
+                            //codegen.declareFunct(type_ptr->getName(), param_name_queue, tempPtr->getName());
+                            codegen.declareFunct(type_ptr->getName(), *function_helper);
                             //clear param queue
                             while (!param_name_queue.empty()) { param_name_queue.pop(); }
                             while (!param_queue.empty()) { param_queue.pop(); }

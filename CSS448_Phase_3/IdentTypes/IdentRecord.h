@@ -5,6 +5,7 @@
 #define IDENTRECORD_H
 #include <iostream>
 #include <string>
+#include <queue>
 
 using namespace std;
 
@@ -27,6 +28,8 @@ public:
   bool operator==(const IdentRecord& rhs)const;
   bool operator<(const IdentRecord& rhs)const; 
 
+  string getInstanceName() { return instanceName; } 
+
   // This should be overridden for classes that need the
   // hasConflictingParams function.  This is in order to keep
   // 2 levels of inheritance.
@@ -43,6 +46,7 @@ public:
 
 protected:
   string identName;					// The name of the identifier
+  string instanceName;				// Stores the name of the class
 
   // Prints an indent for printing out ST
   void printIndent(ostream& sout, int depth)const; 

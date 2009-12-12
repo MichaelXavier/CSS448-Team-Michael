@@ -14,6 +14,8 @@ public:
   bool AddParameters(queue<Parameter*> params);
   bool AddParameter(Parameter* param);
   IdentRecord* sendToSt(STObject* st);
+
+  queue<Parameter*> getParams(void) { return params; }
 private:
   queue<Parameter*> params;
 };

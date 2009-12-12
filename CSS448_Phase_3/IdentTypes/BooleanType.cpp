@@ -1,6 +1,7 @@
 #include "BooleanType.h"
 
 BooleanType::BooleanType(const string& name) : IdentRecord(name) {
+	instanceName = "BooleanType";
 }
 
 BooleanType::~BooleanType(void) {

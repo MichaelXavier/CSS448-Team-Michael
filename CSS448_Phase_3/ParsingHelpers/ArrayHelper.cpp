@@ -79,7 +79,6 @@ IdentRecord* ArrayHelper::sendToSt(STObject* st) {
 	  }
   }
 
-
   arr_temp->setTypePtr(typePtr);
 
   if (st->insert(arr, arraytype) != NULL) {

@@ -35,6 +35,7 @@ public:
 
   IdentRecord* insert(IdentRecord*, IdType); // Inserts a new IdentRecord into ST
   void printST(void);	// Prints symbol table
+  void closeAllScopes(void);
 
   // Loops up a name in the ST or SIT and returns a pointer to the IdentRecord
   IdentRecord* lookup(const string& name);  

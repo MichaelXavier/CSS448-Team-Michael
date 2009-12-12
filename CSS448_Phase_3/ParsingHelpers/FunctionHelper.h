@@ -14,6 +14,9 @@ public:
   bool AddParameter(Parameter* param);
   bool SetReturnType(IdentRecord* ret) {returnType = ret;}
   IdentRecord* sendToSt(STObject* st);
+
+  queue<Parameter*> getParams(void) { return params; }
+  IdentRecord* getReturnType(void) { return returnType; }
 private:
   queue<Parameter*> params;
   IdentRecord* returnType;

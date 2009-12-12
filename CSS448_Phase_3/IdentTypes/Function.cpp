@@ -4,6 +4,7 @@
 // Constructor
 Function::Function(const string& name) : IdentRecord(name) {
   returnType = NULL;
+  instanceName = "Function";
 }
 
 

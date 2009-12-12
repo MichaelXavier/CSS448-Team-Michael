@@ -4,6 +4,7 @@
 // Constructor
 Parameter::Parameter(const string& name) : IdentRecord(name) {
 	passByRef = false;
+	instanceName = "Parameter";
 }
 
 // Destructor

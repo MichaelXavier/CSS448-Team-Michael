@@ -5,6 +5,7 @@
 SetType::SetType(const string& name) : IdentRecord(name) {
 	m_low = -1;
 	m_high = -1;
+	instanceName = "SetType";
 }
 
 

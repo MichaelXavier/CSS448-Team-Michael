@@ -3,6 +3,7 @@
 
 // ConstrProgramuctor
 ProgramParameter::ProgramParameter(const string& name) : IdentRecord(name) {
+	instanceName = "ProgramParameter";
 }
 
 // Destructor

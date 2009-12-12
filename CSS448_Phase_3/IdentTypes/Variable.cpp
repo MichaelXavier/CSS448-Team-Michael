@@ -2,6 +2,7 @@
 
 // Constructor
 Variable::Variable(const string& name) : IdentRecord(name) {
+	instanceName = "Variable";
 }
 
 
