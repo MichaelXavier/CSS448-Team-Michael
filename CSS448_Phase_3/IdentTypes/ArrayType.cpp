@@ -3,6 +3,7 @@
 // Constructor
 ArrayType::ArrayType(const string& name) : IdentRecord(name) {
   dimensions = 0;
+  instanceName = "ArrayType";
 }
 
 
@@ -47,9 +48,18 @@ void ArrayType::addDimension(int low, int high)
 }
 
 
-
 // setTypePtr
 void ArrayType::setTypePtr(IdentRecord* type)
 {
 	typePtr = type;
+}
+
+
+// Returns a vector of low range values for each dimension
+queue<int>* ArrayType::getLowRangeValues()
+{
+	queue<int>* ret = new queue<int>();
+	for(int i = 0; i < dimensions; i++) 
+		ret->push(ranges[i].low);
+	return ret;
 }

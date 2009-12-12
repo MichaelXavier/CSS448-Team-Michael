@@ -3,6 +3,7 @@
 
 // Constructor
 Procedure::Procedure(const string& name) : IdentRecord(name) {
+	instanceName = "Procedure";
 }
 
 

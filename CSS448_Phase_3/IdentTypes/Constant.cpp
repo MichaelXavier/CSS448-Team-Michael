@@ -8,6 +8,7 @@ Constant::Constant(const string& name) : IdentRecord(name) {
   s = "";
   ir = NULL;
   type = "";
+  instanceName = "Constant";
 }
 
 

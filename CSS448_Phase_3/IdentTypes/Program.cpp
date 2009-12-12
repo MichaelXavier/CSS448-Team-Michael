@@ -3,6 +3,7 @@
 
 // Constructor
 Program::Program(const string& name) : IdentRecord(name) {
+	instanceName = "Program";
 }
 
 

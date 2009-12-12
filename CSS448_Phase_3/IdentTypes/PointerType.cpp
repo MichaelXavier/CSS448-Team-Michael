@@ -4,6 +4,7 @@
 // Constructor
 PointerType::PointerType(const string& name, const string& declared) : IdentRecord(name) {
   declared_type = declared;
+  instanceName = "PointerType";
 }
 
 // Destructor

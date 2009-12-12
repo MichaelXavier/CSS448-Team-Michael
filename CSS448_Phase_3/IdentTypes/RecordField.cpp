@@ -2,6 +2,7 @@
 
 // Constructor
 RecordField::RecordField(const string& name) : IdentRecord(name) {
+	instanceName = "RecordField";
 }
 
 // Destructor

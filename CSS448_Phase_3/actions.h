@@ -42,6 +42,7 @@ extern STObject* symTable;
 void startProgram(Program* newProg);
 void endProgram(void);
 bool strToInt(string& str, int& target);
+bool intToString(string& target, int& number);
 void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs);
 void checkPointers(vector<PointerType*>& ptrs);
 void dumpPointer(PointerType* ptr);

@@ -10,6 +10,7 @@ public:
 
 	void display(ostream& sout, int depth)const;
 	void setTypePtr(IdentRecord* type);
+	IdentRecord* getTypePtr() {return typePtr;}
 
 private:
 	IdentRecord* typePtr;

@@ -24,6 +24,15 @@ bool strToInt(string& str, int& target) {
   }
 }
 
+bool intToString(string& target, int& number) {
+	ostringstream iss(target);
+	if(iss << number) {
+		return true;
+	} else {
+		cout << "Error: unable to convert int to string "  << endl;
+	}
+}
+
 //Loop through pointers declared so far, see if any are supposed to point to this.
 void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 	vector<PointerType*>::iterator it;

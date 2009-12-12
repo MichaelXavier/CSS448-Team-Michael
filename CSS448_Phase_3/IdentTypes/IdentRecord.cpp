@@ -3,6 +3,7 @@
 // Constructor
 IdentRecord::IdentRecord(const string& name) {
   identName = name;
+  instanceName = "IdentRecord";
 }
 
 

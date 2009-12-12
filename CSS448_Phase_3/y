@@ -77,7 +77,10 @@ string IO_Operator = "";
 bool readingIndices = false;
 
 // pointer
-string pointerString = "";
+string designatorString = "";
+
+// array indices
+queue<int>* arrayIndexQueue = NULL;
 
 extern string s;
 
@@ -717,7 +720,19 @@ DesignatorList     :  Designator
 Designator         :  yident 
                       {
                         expression += s;
-                        pointerString = s;
+                        designatorString = s;
+                        
+                        /*
+                        if(readingIndices == true && arrayIndexQueue != NULL)
+						{
+							int offset = arrayIndexQueue->front();
+							arrayIndexQueue->pop();
+							expression += "-";
+							string offsetString;
+							intToString(offsetString, offset);
+							expression += offsetString;
+						}
+						*/
                       } 
                       DesignatorStuff 
                    ;
@@ -737,11 +752,36 @@ theDesignatorStuff :  ydot
                       {
                         expression += "[";
                         readingIndices = true;
+                        
+                        /*
+                        // Checks if the indices are of an array, in order to calculate index offsets
+						IdentRecord* temp = symTable->lookup(designatorString);
+						if(temp->getInstanceName() == "Variable")
+						{	
+							Variable* tempVar = static_cast<Variable*>(temp);
+							if(tempVar->getTypePtr()->getInstanceName() == "ArrayType")
+							{
+								ArrayType* tempArray = static_cast<ArrayType*>(tempVar->getTypePtr());
+								arrayIndexQueue = tempArray->getLowRangeValues();
+								tempArray = NULL;
+							}
+							tempVar = NULL;
+						}
+						temp = NULL; */
+						
                       } 
                       ExpList yrightbracket 
                       {
                         expression += "]";
                         readingIndices = false;
+
+						if(arrayIndexQueue != NULL) {
+							while(!arrayIndexQueue->empty()) {
+								arrayIndexQueue->pop();
+							}
+							delete arrayIndexQueue;
+							arrayIndexQueue = NULL;
+						}
                       } 
                    |  ycaret 
                       {
@@ -793,7 +833,17 @@ Term               :  Factor
                    ;
 Factor             :  ynumber 
                       {
+                      /*
                         expression += s;
+						if(readingIndices == true && arrayIndexQueue != NULL)
+						{
+							int offset = arrayIndexQueue->front();
+							arrayIndexQueue->pop();
+							expression += "-";
+							string offsetString;
+							intToString(offsetString, offset);
+							expression += offsetString;
+						} */
                       }
                    |  ytrue 
                       {
@@ -810,6 +860,14 @@ Factor             :  ynumber
                    |  ystring 
                       {
                         expression += convertSingleQuote(s);
+                        /*
+                        if(readingIndices == true && arrayIndexQueue != NULL)
+                        {
+                          int offset = arrayIndexQueue->front();
+                          arrayIndexQueue->pop();
+                          expression += "-";
+                          expression += offset;
+                        }*/
                       }
                    |  Designator
                    |  yleftparen 

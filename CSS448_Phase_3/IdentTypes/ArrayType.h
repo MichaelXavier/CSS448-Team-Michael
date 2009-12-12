@@ -2,6 +2,7 @@
 #define ARRAYTYPE_H
 #include <iostream>
 #include <vector>
+#include <queue>
 #include "IdentRecord.h"
 
 using namespace std;
@@ -15,6 +16,11 @@ public:
 	void display(ostream& sout, int depth)const; // Displays data
 	void addDimension(int, int); // Adds a dimension to the array
 	void setTypePtr(IdentRecord*);   // Sets the type pointer
+
+	queue<int>* getLowRangeValues(); // Returns a queue of low range values
+									  // for each dimension
+
+	int getNumberDimensions() { return dimensions;}
 
 private:
 	// The low and high values of an array dimension
