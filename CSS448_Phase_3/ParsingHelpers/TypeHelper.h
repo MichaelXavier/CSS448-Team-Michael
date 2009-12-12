@@ -10,7 +10,11 @@
 #include <string>
 #include "../IdType.h"
 #include "../STObject.h"
+
 using namespace std;
+
+extern void yyerror(const char *s);
+
 class TypeHelper {
 public: 
   TypeHelper(const string& type_name); // Constructor

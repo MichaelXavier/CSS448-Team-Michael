@@ -11,6 +11,8 @@
 
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class ScopeNode {
 public:
   ScopeNode(IdentRecord*, ScopeNode* parent = NULL, int depth = 0);

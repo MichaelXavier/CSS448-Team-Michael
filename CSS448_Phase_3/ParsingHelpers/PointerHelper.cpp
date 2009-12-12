@@ -18,11 +18,11 @@ PointerHelper::~PointerHelper() {
 bool PointerHelper::setTypePtr(IdentRecord* type) {
   if (typePtr != NULL) {
     clean = false;
-    cout << "Error: typePtr already set." << endl;
+    yyerror("Error: typePtr already set.");
     return false;
   } else if (type == NULL) {
     clean = false;
-    cout << "Error: cannot set NULL typePtr." << endl;
+    yyerror("Error: cannot set NULL typePtr.");
     return false;
   } else {
     typePtr = type;
@@ -37,11 +37,11 @@ bool PointerHelper::setTypePtr(IdentRecord* type) {
 bool PointerHelper::setDeclaredType(const string& declared) {
   if (declared_type.length() != 0) {
     clean = false;
-    cout << "Error: declared_type already set." << endl;
+    yyerror("Error: declared_type already set.");
     return false;
   } else if (declared.length() == 0) {
     clean = false;
-    cout << "Error: cannot set empty declared_type." << endl;
+    yyerror("Error: cannot set empty declared_type.");
     return false;
   } else {
 	  declared_type = declared;
@@ -79,7 +79,8 @@ bool PointerHelper::validate(void) {
   }
   if (declared_type.length() == 0) {
     clean = false;
-    cout << "Error: empty declared type for " << typeName << endl;
+    ostringstream oss("Error: empty declared type for "); oss << typeName;
+    yyerror(oss.str().c_str());
   }
 
   return clean;

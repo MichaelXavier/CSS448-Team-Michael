@@ -41,6 +41,7 @@ using namespace std;
 
 extern string s;  // string from lexical analyzer
 extern STObject* symTable;  // pointer to the symbol table stored in 'y'
+extern void yyerror(const char *s);
 
 // Initializes the symbol table, with a program IdentRecord
 void startProgram(Program* newProg);

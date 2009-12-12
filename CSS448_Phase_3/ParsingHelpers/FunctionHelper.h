@@ -13,6 +13,8 @@
 
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class FunctionHelper : public TypeHelper {
 public:
   FunctionHelper(const string& type_name);  // Constructor

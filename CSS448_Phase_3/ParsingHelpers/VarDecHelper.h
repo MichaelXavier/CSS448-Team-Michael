@@ -16,6 +16,8 @@
 #include "../STObject.h"
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class VarDecHelper
 {
 public:

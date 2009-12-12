@@ -213,8 +213,9 @@ VariableDecl       :  {
                           var_dec_helper->sendToSt(symTable);
                           while (!ident_queue.empty()) { ident_queue.pop(); }
                         } else {
-                          cout << "Error: variable(s) being declared have undefined type: ";
-                          while (!ident_queue.empty()) { cout << ident_queue.front() << ", "; ident_queue.pop(); }
+                          ostringstream oss("Error: variable(s) being declared have undefined type: ");
+                          while (!ident_queue.empty()) { oss << ident_queue.front() << ", "; ident_queue.pop(); }
+                          yyerror(oss.str().c_str());
                         }
                         delete var_dec_helper;
                         var_dec_helper = NULL;
@@ -235,7 +236,8 @@ ConstFactor        :  yident
                       {
                           ident_temp = symTable->lookup(s);	
                           if(ident_temp == NULL) {
-                            cout << "Error: unable to locate temporary ident for this constant given the name " << s << endl;
+                            ostringstream oss("Error: unable to locate temporary ident for this constant given the name "); oss << s;
+                            yyerror(oss.str().c_str());
                           } else {
                             Constant* findConst = static_cast<Constant*>(ident_temp);
                             string constType = findConst->getConstType();
@@ -249,7 +251,8 @@ ConstFactor        :  yident
                             } else if(constType == "i") {
                               const_temp->setConstFactor(findConst->getConstInt());
                             } else {
-                              cout << "Error: cannot handle constant with an invalid constType " << constType << endl;
+                              ostringstream oss("Error: cannot handle constant with an invalid constType "); oss << constType;
+                              yyerror(oss.str().c_str());
                             }
                         }
                       }
@@ -425,7 +428,7 @@ SetType            :  yset
                             codegen.declareSetType(name, currentRange->lowInt, currentRange->highInt);
                           }
                         } else {
-                          cout << "Error: invalid member for declared set." << endl;
+                          yyerror("Error: invalid member for declared set.");
                         }
                         delete set_helper; 
                         set_helper = NULL;
@@ -522,12 +525,10 @@ Assignment         :  Designator yassign
                       Expression
                       { 
                         //designatorString captures the name of the var, if LHS is undefined, dont continue
-                        //FIXME: LHS checking disabled, we build up the pointer strik to the point where we can't resolve it
-                        //if (symTable->lookup(designatorString) != NULL) {
-                          codegen.writeStrWI(expression);
-                        //} else {
-                          //cout << "Error: LHS of expression '" << expression << "' is undefined." << endl;
-                        //}
+                        //NOTE: LHS checking disabled, the way expressions are built will make it too difficult to do
+                        //a lookup on the LHS if it is something like (*recptr).some_member.nested_member
+                        //Because of this, assignment is permitted but will be caught by the C++ compiler.
+                        codegen.writeStrWI(expression);
                         designatorString = "";
                         expression = "";
                         allowFunctionCall = false;
@@ -536,7 +537,8 @@ Assignment         :  Designator yassign
 ProcedureCall      :  yident 
                       {
                         if (symTable->lookup(s) == NULL) {
-                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                          ostringstream oss("Error: no procedure exists with name "); oss << s;
+                          yyerror(oss.str().c_str());
                         } else {
                           codegen.callProc(s, "");
                         }
@@ -548,7 +550,8 @@ ProcedureCall      :  yident
                       ActualParameters
                       {
                         if (symTable->lookup(s) == NULL) {
-                          cout << "Error: no procedure exists with name " << s << endl;//FIXME: check if its a proc?
+                          ostringstream oss("Error: no procedure exists with name "); oss << s;
+                          yyerror(oss.str().c_str());
                         } else {
                           codegen.callProc(name, expression);
                         }
@@ -612,7 +615,8 @@ Case               :  CaseLabelList  ycolon  Statement
 CaseLabelList      :  ConstExpression 
                       {
                         if (const_temp->getConstType() == "s" && const_temp->getConstString().length() > 1) {
-                          cout << "Error: Cannot have a case statement with a length > 0" << endl;
+                          ostringstream oss("Error: Cannot have a case statement with a length > 1");
+                          yyerror(oss.str().c_str());
                         } else {
                           codegen.writeCaseLabel(const_temp);
                         }
@@ -773,7 +777,8 @@ DesignatorStuff    :  /*** empty ***/
                    |  ActualParameters 
                       { 
                         if(allowFunctionCall == false) {
-                          cout << "Error: incorrect function call.";
+                          ostringstream oss("Error: incorrect function call.");
+                          yyerror(oss.str().c_str());
                         }
                       }
                    ;
@@ -1019,10 +1024,12 @@ FunctionDecl       :  FunctionHeading
                             while (!param_queue.empty()) { param_queue.pop(); }
                             type_ptr = NULL;
                           } else  {
-                            cout << "Error: function failed to insert into the ST." << endl;
+                            ostringstream oss("Error: function failed to insert into the ST: "); oss << s;
+                            yyerror(oss.str().c_str());
                           }
                         } else {
-                          cout << "Error: function return type is incorrect" << endl;
+                          ostringstream oss("Error: return type is incorrect for function:"); oss << s;
+                          yyerror(oss.str().c_str());
                         }
                         delete function_helper;
                         function_helper = NULL;
@@ -1169,7 +1176,7 @@ Relation           :  yequal
 /* program section */
 
 void yyerror(const char *s) {
-   cout << s << endl;
+   cerr << s << endl;
 }
 
 extern int yylex();

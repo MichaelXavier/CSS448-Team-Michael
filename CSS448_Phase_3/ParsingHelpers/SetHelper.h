@@ -12,6 +12,8 @@
 #include "../IdentTypes/SetType.h"
 #include "TypeHelper.h"
 
+extern void yyerror(const char *s);
+
 class SetHelper : public TypeHelper
 {
 public:

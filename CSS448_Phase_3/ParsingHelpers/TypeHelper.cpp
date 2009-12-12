@@ -19,7 +19,7 @@ TypeHelper::~TypeHelper(void) {
 bool TypeHelper::validate(void) {
   if (typeName.length() == 0) {
     clean = false;
-    cout << "Error: empty TypeName." << endl;
+    yyerror("Error: empty TypeName.");
   }
   return clean;
 }

@@ -12,6 +12,8 @@
 #include "../IdentTypes/Procedure.h"
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class ProcedureHelper : public TypeHelper {
 public:
   ProcedureHelper(const string& type_name); // Constructor

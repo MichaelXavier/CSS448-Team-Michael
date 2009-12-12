@@ -179,7 +179,6 @@ void CPPGenerator::closeFunct(void) {
 // addInclude
 //  Prints a #include statement
 void CPPGenerator::addInclude(const string& include) {
-  //FIXME: error check?
   *before_main << "#include " << include << endl;
 }
 
@@ -481,7 +480,8 @@ void CPPGenerator::declareSetType(const string& name, int low, int high) {
     oss << "IntSet(" << low << ", " << high << ")";
     typeDef(name, oss.str());
   } else {
-    cout << "Error: low range of set " << name << " is greater than the high range." << endl;
+    ostringstream oss("Error: low range of set "); oss << name << " is greater than the high range.";
+    yyerror(oss.str().c_str());
   }
 }
 

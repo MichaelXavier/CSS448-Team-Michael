@@ -18,6 +18,8 @@
 #include "ParsingHelpers/FunctionHelper.h"
 #include "ParsingHelpers/ProcedureHelper.h"
 
+extern void yyerror(const char *s);
+
 using namespace std;
 
 class CPPGenerator {

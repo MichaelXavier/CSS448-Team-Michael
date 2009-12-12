@@ -34,13 +34,14 @@ STObject::~STObject(void) {
 // This inserts an IdentRecord into the ST.  
 IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
   if (new_rec == NULL) {
-    cout << "Error: cannot insert a NULL item into the ST " << endl;
+    yyerror("Error: cannot insert a NULL item into the ST ");
     return NULL;
   }
+  ostringstream oss; //For errors
   switch (type) {
     case function:
       if (scopeEntry(new_rec, type)) {
-        //FIXME: experimental, set up return variable
+        //Set up return variable. It is valid C++ to have a variable with the same name as a function in the function.
         Variable* var = new Variable(new_rec->getName());
         if (!currentScope->insertRecord(var)) {
           delete var;
@@ -49,7 +50,8 @@ IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
       } else {
         // This handles when a parent scope procedure/function/program has
         // the same identifier
-        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n"; 
+        oss << "Error: id already in ST: \"" << new_rec->getName() << "\"";
+        yyerror(oss.str().c_str());
         return NULL;
       }
       break;
@@ -59,14 +61,16 @@ IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
       } else {
         // This handles when a parent scope procedure/function/program has
         // the same identifier
-        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n"; 
+        oss << "Error: id already in ST: \"" << new_rec->getName() << "\"";
+        yyerror(oss.str().c_str());
         return NULL;
       }
       break;
     case program:
 		// A program can't be inserted since this was already done when
 		// the ST was created
-        cout << "Error: cannot nest Program types: \"" << new_rec->getName() << "\"\n";
+        oss << "Error: cannot nest Program types: \"" << new_rec->getName() << "\"";
+        yyerror(oss.str().c_str());
         return NULL;
       break;
     default:
@@ -77,7 +81,8 @@ IdentRecord* STObject::insert(IdentRecord* new_rec, IdType type) {
       if(recordInsert == true) {
         return new_rec;
       } else {
-        cout << "Error: id already in ST: \"" << new_rec->getName() << "\"\n";
+        oss << "Error: id already in ST: \"" << new_rec->getName() << "\"";
+        yyerror(oss.str().c_str());
         return NULL;
       }
       break;

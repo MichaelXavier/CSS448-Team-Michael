@@ -7,7 +7,7 @@ void startProgram(Program* newProg) {
   try {
     symTable = new STObject(newProg);
   } catch(char * err) {
-    cout << "Error while setting up program: " << err << endl;
+    yyerror("Error while setting up program: ");
   }
 }
 
@@ -29,7 +29,8 @@ bool strToInt(string& str, int& target) {
   if (iss >> target) {
     return true;
   } else {
-    cout << "Error: unable to parse an int out of string " << str << " in call to strToInt" << endl;
+    ostringstream oss("Error: unable to parse an int out of string "); oss << str << " in call to strToInt";
+    yyerror(oss.str().c_str());
   }
 }
 
@@ -43,7 +44,7 @@ bool intToString(string& target, int& number) {
     iss >> target;
     return true;
   } else {
-    cout << "Error: unable to convert int to string " << endl;
+    yyerror("Error: unable to convert int to string ");
   }
 }
 
@@ -57,12 +58,13 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 	// Cycles through all unresolved pointers
     for(it = ptrs.begin(); it != ptrs.end(); it++) {
     if (newTypePtr == NULL) {
-      cout << "Error: newTypePtr argument passed to resolvePointers is NULL" << endl;
+      yyerror("Error: newTypePtr argument passed to resolvePointers is NULL");
       return;
       //TODO: further error handling?
     }
     if (ptrs[i] == NULL) {
-      cout << "Error: PointerType* NULL in ptrs argument to resolvePointers at index" << i << ". Skipping." << endl;
+      ostringstream oss("Error: PointerType* NULL in ptrs argument to resolvePointers at index "); oss << i << ". Skipping.";
+      yyerror(oss.str().c_str());
       continue;
       //TODO: further error handling?
     }
@@ -81,7 +83,8 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 void checkPointers(vector<PointerType*>& ptrs) {
   for(unsigned int i = 0; i < ptrs.size(); i++) {
     if (ptrs[i] == NULL) {
-      cout << "Error: PointerType* NULL in ptrs argument to checkPointers at index" << i << ". Skipping." << endl;
+      ostringstream oss("Error: PointerType* NULL in ptrs argument to checkPointers at index "); oss << i << ". Skipping.";
+      yyerror(oss.str().c_str());
       continue;
     }
     if(ptrs[i]->getTypePtr() == NULL)

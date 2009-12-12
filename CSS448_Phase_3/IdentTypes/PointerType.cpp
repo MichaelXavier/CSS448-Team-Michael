@@ -17,7 +17,8 @@ PointerType::~PointerType(void) {
 void PointerType::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
     // typePtr must be set in order to print data
-    sout << "Error: typePtr of " << identName << " not set";
+    ostringstream oss("Error: typePtr of "); oss << identName << " not set";
+    yyerror(oss.str().c_str());
     return;
   }
   printIndent(sout, depth);
@@ -29,10 +30,10 @@ void PointerType::display(ostream& sout, int depth)const {
 // Sets typePtr and checks if obj's identifier matches declared_type
 void PointerType::setPointObj(IdentRecord* obj) {
   if (obj == NULL) {
-    cout << "Warning: setting the  pointer target of a PointerType to NULL" << endl;
+    yyerror("Warning: setting the  pointer target of a PointerType to NULL");
     typePtr = NULL;
   } else if (obj->getName() != declared_type) {
-    cout << "Error: pointObj identifier name does not match the declared name" << endl;
+    yyerror("Error: pointObj identifier name does not match the declared name");
   } else {
     typePtr = obj;
   }

@@ -18,7 +18,7 @@ bool SetHelper::setRange(int low, int high)
 {
 	if(low > high)
 	{
-		cout << "Error: low value is greater than high value for set" << endl;
+    yyerror("Error: low value is greater than high value for set");
 		return false;
 	}
   rangeLow = low;
@@ -32,11 +32,13 @@ bool SetHelper::setRange(int low, int high)
 bool SetHelper::setRange(const string& low, const string& high)
 {
 	if (low.length() != 1) {
-    cout << "Error: invalid size for range lower bound " << low << " given for set " << endl;
+    ostringstream oss("Error: invalid size for range lower bound "); oss << low << " given for set ";
+    yyerror(oss.str().c_str());
     return false;
   }
   if (high.length() != 1) {
-    cout << "Error: invalid size for range high bound " << high << " given for set" << endl;
+    ostringstream oss("Error: invalid size for range high bound "); oss << high << " given for set ";
+    yyerror(oss.str().c_str());
     return false;
   }
   return setRange(low[0], high[0]);
@@ -55,7 +57,8 @@ IdentRecord* SetHelper::sendToSt(STObject* st)
 	setRecordTemp = NULL;
   setRecord = st->insert(setRecord, settype);
 	if (setRecord == NULL) {
-    cout << "Error: Failed to insert set into ST " << typeName << endl;
+    ostringstream oss("Error: Failed to insert set into ST "); oss << typeName;
+    yyerror(oss.str().c_str());
 	}
 
 	return setRecord;

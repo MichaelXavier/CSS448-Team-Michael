@@ -27,6 +27,8 @@
 
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class STObject {
 
 public:

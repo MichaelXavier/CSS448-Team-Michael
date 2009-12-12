@@ -21,7 +21,7 @@ bool VarDecHelper::AddVar(const string& name)
     varNames.push_back(name);
     return true;
   } else {
-    cout << "Error: cannot declare a zero-length variable name." << endl;
+    yyerror("Error: cannot declare a zero-length variable name.");
     return false;
   }
 }
@@ -62,7 +62,7 @@ IdentRecord* VarDecHelper::sendToSt(STObject* st)
 	if(typePtr == NULL)
 	{
 		// error handling, type was not found in ST
-    cout << "Error: variable missing type" << endl;
+    yyerror("Error: variable missing type");
     return NULL;
 	}
 	else
@@ -75,7 +75,8 @@ IdentRecord* VarDecHelper::sendToSt(STObject* st)
 			if(!st->insert(varRecord, variable))
 			{
 				// variable already exists, handle error
-				cout << "Variable " << varNames[i] << " already exists and could not be inserted" << endl;
+        ostringstream oss("Error: Variable "); oss << varNames[i] << " already exists and could not be inserted";
+        yyerror(oss.str().c_str());
 				delete varRecord;
 				return NULL;
 			}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "IdentRecord.h"
 
+extern void yyerror(const char *s);
 
 class PointerType : public IdentRecord {
 public:

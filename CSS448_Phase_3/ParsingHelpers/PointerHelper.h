@@ -15,7 +15,11 @@
 #include <string>
 #include "TypeHelper.h"
 #include "../IdentTypes/ArrayType.h"
+
 using namespace std;
+
+extern void yyerror(const char *s);
+
 class PointerHelper : public TypeHelper {
 public:
   PointerHelper(const string& type_name);  // Constructor

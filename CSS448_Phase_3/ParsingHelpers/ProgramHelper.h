@@ -12,6 +12,8 @@
 #include "../IdType.h"
 #include "../IdentTypes/Program.h"
 
+extern void yyerror(const char *s);
+
 class ProgramHelper
 {
 public:

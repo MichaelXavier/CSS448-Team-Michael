@@ -22,7 +22,8 @@ bool ProgramHelper::AddParameterName(const string& name)
 	for(int i = 0; i < parameterNames.size(); i++)
 	{
     if (parameterNames[i] == name) {
-      cout << "ERROR: duplicate program parameter name " << name << endl;
+      ostringstream oss("ERROR: duplicate program parameter name "); oss << name;
+      yyerror(oss.str().c_str());
       return false;
       }
 	}

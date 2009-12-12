@@ -14,6 +14,8 @@
 
 using namespace std;
 
+extern void yyerror(const char *s);
+
 class ArrayHelper : public TypeHelper {
 public:
   ArrayHelper(const string& type_name); // Constructor

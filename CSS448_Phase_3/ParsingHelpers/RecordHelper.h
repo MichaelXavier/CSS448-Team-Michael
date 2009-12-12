@@ -15,6 +15,9 @@
 #include "../IdType.h"
 #include "../IdentTypes/RecordType.h"
 #include "TypeHelper.h"
+
+extern void yyerror(const char *s);
+
 class RecordHelper : public TypeHelper
 {
 public:
