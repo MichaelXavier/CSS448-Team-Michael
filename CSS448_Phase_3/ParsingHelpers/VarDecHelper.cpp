@@ -1,12 +1,20 @@
 #include "VarDecHelper.h"
 
+
+// Constructor
 VarDecHelper::VarDecHelper(void)
 {
 }
+
+
+// Destructor
 VarDecHelper::~VarDecHelper(void)
 {
 }
 
+
+// AddVar
+// A variable name is added to queue
 bool VarDecHelper::AddVar(const string& name)
 {
   if (name.length() > 0) {
@@ -17,6 +25,10 @@ bool VarDecHelper::AddVar(const string& name)
     return false;
   }
 }
+
+
+// AddVars
+// Variable names are added to queue
 bool VarDecHelper::AddVars(queue<string>& idents) {
   while (!idents.empty()) {
     cout << "DEBUG: adding var to VarDecHelper queue: " << idents.front() << endl;
@@ -32,12 +44,19 @@ bool VarDecHelper::AddVars(queue<string>& idents) {
   return true;
 }
 
+
+// SetMemberType
+// Variable type is set
 bool VarDecHelper::SetMemberType(IdentRecord* type)
 {
   //TODO: validations
   typePtr = type;
 	return true;
 }
+
+
+// sendToSt
+// Creates variables and sends them to the symbol table/
 IdentRecord* VarDecHelper::sendToSt(STObject* st)
 {
   Variable* varRecord;
