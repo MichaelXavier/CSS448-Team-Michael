@@ -216,11 +216,13 @@ void CPPGenerator::declareArray(ArrayHelper* arrayHelper) {
 	vector<int>* ranges = arrayHelper->getRangeValues();
 
 	printIndent();
-	*before_main << "typedef " << typeName << " " << name << "[" << (*ranges)[0];
-	for(int i = 1; i < ranges->size(); i++) {
-		*before_main << "][" << (*ranges)[i];
-	}
-	*before_main << "];" << endl;
+  if (ranges != NULL) {
+    *before_main << "typedef " << typeName << " " << name << "[" << (*ranges)[0];
+    for(int i = 1; i < ranges->size(); i++) {
+      *before_main << "][" << (*ranges)[i];
+    }
+    *before_main << "];" << endl;
+  }
 
 	delete ranges;
 	ranges = NULL;
@@ -480,7 +482,7 @@ void CPPGenerator::declareSetType(const string& name, int low, int high) {
     oss << "IntSet(" << low << ", " << high << ")";
     typeDef(name, oss.str());
   } else {
-    ostringstream oss("Error: low range of set "); oss << name << " is greater than the high range.";
+    ostringstream oss; oss << "Error: low range of set " << name << " is greater than the high range.";
     yyerror(oss.str().c_str());
   }
 }

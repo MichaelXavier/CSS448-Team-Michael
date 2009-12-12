@@ -56,14 +56,14 @@ IdentRecord* RecordHelper::sendToSt(STObject* st)
 	for(int i = 0; i < fields.size(); i++)
 	{
 		if (!record_temp->insertField(fields[i])) {
-      ostringstream oss("Error: Failed to insert field on record "); oss << typeName;
+      ostringstream oss; oss << "Error: Failed to insert field on record " << typeName;
       yyerror(oss.str().c_str());
       return NULL;
 		}
 	}
 	// Sends record object to ST
 	if (!st->insert(record, recordtype)) {
-      ostringstream oss("Error: Failed to insert record to ST with name "); oss << typeName;
+      ostringstream oss; oss << "Error: Failed to insert record to ST with name " << typeName;
       yyerror(oss.str().c_str());
       return NULL;
 	}

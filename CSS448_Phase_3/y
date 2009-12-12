@@ -162,7 +162,9 @@ ConstantDefList    :  ConstantDef
                    ;
 TypeDefBlock       :  /*** empty ***/
                    |  ytype  TypeDefList          
-                      {/* checkPointers(declared_ptr_helpers);*/}
+                      {
+                        checkPointers(pointer_list);
+                      }
                    ;
 TypeDefList        :  TypeDef  ysemicolon
                    |  TypeDefList TypeDef ysemicolon  
@@ -213,7 +215,7 @@ VariableDecl       :  {
                           var_dec_helper->sendToSt(symTable);
                           while (!ident_queue.empty()) { ident_queue.pop(); }
                         } else {
-                          ostringstream oss("Error: variable(s) being declared have undefined type: ");
+                          ostringstream oss; oss << "Error: variable(s) being declared have undefined type: ";
                           while (!ident_queue.empty()) { oss << ident_queue.front() << ", "; ident_queue.pop(); }
                           yyerror(oss.str().c_str());
                         }
@@ -236,7 +238,7 @@ ConstFactor        :  yident
                       {
                           ident_temp = symTable->lookup(s);	
                           if(ident_temp == NULL) {
-                            ostringstream oss("Error: unable to locate temporary ident for this constant given the name "); oss << s;
+                            ostringstream oss; oss << "Error: unable to locate temporary ident for this constant given the name " << s;
                             yyerror(oss.str().c_str());
                           } else {
                             Constant* findConst = static_cast<Constant*>(ident_temp);
@@ -251,7 +253,7 @@ ConstFactor        :  yident
                             } else if(constType == "i") {
                               const_temp->setConstFactor(findConst->getConstInt());
                             } else {
-                              ostringstream oss("Error: cannot handle constant with an invalid constType "); oss << constType;
+                              ostringstream oss; oss << "Error: cannot handle constant with an invalid constType " << constType;
                               yyerror(oss.str().c_str());
                             }
                         }
@@ -307,7 +309,14 @@ ArrayType          :  yarray
                           } else if (currentRange->type == "b") {
                             array_helper->addDimension(currentRange->lowBool, currentRange->highBool);
                           } else if (currentRange->type == "s") {
-                            array_helper->addDimension(currentRange->lowString, currentRange->highString);
+                            if (validRange(currentRange->lowString, currentRange->highString)) {
+                              array_helper->addDimension(currentRange->lowString, currentRange->highString);
+                            } else {
+                              ostringstream oss; oss << "Error: Invalid subscript range: " << currentRange->lowString << " to " << currentRange->highString;
+                              yyerror(oss.str().c_str());
+                              delete array_helper;
+                              array_helper = NULL;//do not allow a print or insert;
+                            }
                           }
                           delete currentRange;
                           currentRange = NULL;
@@ -315,13 +324,15 @@ ArrayType          :  yarray
                       }
                       yrightbracket  yof Type 
                       { 
-                        array_helper->setTypePtr(type_ptr);
+                        if (array_helper != NULL) {
+                          array_helper->setTypePtr(type_ptr);
+                          /*will fail validation if there's a problem*/
+                          type_ptr = array_helper->sendToSt(symTable);
+                          codegen.declareArray(array_helper);
+                          delete array_helper; 
+                          array_helper = NULL;
+                        }
                         type_ptr = NULL;//set it null so we don't delete it later
-                        /*will fail validation if there's a problem*/
-                        type_ptr = array_helper->sendToSt(symTable);
-                        codegen.declareArray(array_helper);
-                        delete array_helper; 
-                        array_helper = NULL;
                       }
                    ;
 
@@ -537,7 +548,7 @@ Assignment         :  Designator yassign
 ProcedureCall      :  yident 
                       {
                         if (symTable->lookup(s) == NULL) {
-                          ostringstream oss("Error: no procedure exists with name "); oss << s;
+                          ostringstream oss; oss << "Error: no procedure exists with name " << s;
                           yyerror(oss.str().c_str());
                         } else {
                           codegen.callProc(s, "");
@@ -550,7 +561,7 @@ ProcedureCall      :  yident
                       ActualParameters
                       {
                         if (symTable->lookup(s) == NULL) {
-                          ostringstream oss("Error: no procedure exists with name "); oss << s;
+                          ostringstream oss; oss << "Error: no procedure exists with name " << s;
                           yyerror(oss.str().c_str());
                         } else {
                           codegen.callProc(name, expression);
@@ -615,8 +626,7 @@ Case               :  CaseLabelList  ycolon  Statement
 CaseLabelList      :  ConstExpression 
                       {
                         if (const_temp->getConstType() == "s" && const_temp->getConstString().length() > 1) {
-                          ostringstream oss("Error: Cannot have a case statement with a length > 1");
-                          yyerror(oss.str().c_str());
+                          yyerror("Error: Cannot have a case statement with a length > 1");
                         } else {
                           codegen.writeCaseLabel(const_temp);
                         }
@@ -777,8 +787,7 @@ DesignatorStuff    :  /*** empty ***/
                    |  ActualParameters 
                       { 
                         if(allowFunctionCall == false) {
-                          ostringstream oss("Error: incorrect function call.");
-                          yyerror(oss.str().c_str());
+                          yyerror("Error: incorrect function call.");
                         }
                       }
                    ;
@@ -1024,11 +1033,11 @@ FunctionDecl       :  FunctionHeading
                             while (!param_queue.empty()) { param_queue.pop(); }
                             type_ptr = NULL;
                           } else  {
-                            ostringstream oss("Error: function failed to insert into the ST: "); oss << s;
+                            ostringstream oss; oss << "Error: function failed to insert into the ST: " << s;
                             yyerror(oss.str().c_str());
                           }
                         } else {
-                          ostringstream oss("Error: return type is incorrect for function:"); oss << s;
+                          ostringstream oss; oss << "Error: return type is incorrect for function:" << s;
                           yyerror(oss.str().c_str());
                         }
                         delete function_helper;

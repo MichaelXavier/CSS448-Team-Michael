@@ -43,7 +43,7 @@ bool FunctionHelper::AddParameter(Parameter* param) {
     params.push(param);
     return true;
   } else {
-    ostringstream oss("Error: cannot add a NULL parameter to Function "); oss << typeName;
+    ostringstream oss; oss << "Error: cannot add a NULL parameter to Function " << typeName;
     yyerror(oss.str().c_str());
     return false;
   }
@@ -70,7 +70,7 @@ IdentRecord* FunctionHelper::sendToSt(STObject* st) {
     if (parameter != NULL) { 
       if (!func->insertParameter(parameter)) {
         //Can't insert, bail out  
-        ostringstream oss("Error: failed to insert parameter into Function "); oss << typeName;
+        ostringstream oss; oss << "Error: failed to insert parameter into Function " << typeName;
         yyerror(oss.str().c_str());
         //delete func;//FIXME: crashing
         //delete parameter;//FIXME: crashing

@@ -1,3 +1,13 @@
+README File
+
+CSS448 Fall 2009 - Pascal to C++ Translator
+Michael Xavier
+Mikhail Elbert
+===========================================
+
+Build Notes:
+a simple "make" will do. Note that it compiles with the -g flag for debugging purposes but that can be disabled easily in Makefile.inc if it isn't desired.
+
 Working Test Files:
 add.p //FIXME: cout in for body is printing semicolons on newline, offset on brackets is forgetting the offset integer
 simplest.p

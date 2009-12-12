@@ -15,8 +15,22 @@ ConstDecHelper::~ConstDecHelper(void) {
 // Sets name of constant object
 bool ConstDecHelper::setConstName(string name) {
 	constName = name;
-}// setConstObj// Makes a copy of parameter Constant object and stores itvoid ConstDecHelper::setConstObj(Constant* obj){	constObj = new Constant(constName);	Constant* ptr = static_cast<Constant*>(constObj);	string constType = obj->getConstType();	if(constType == "s")		ptr->setConstFactor(obj->getConstString());	else if(constType == "b")		ptr->setConstFactor(obj->getConstBool());	else if(constType == "i")		ptr->setConstFactor(obj->getConstInt());}
-
+}
+// setConstObj
+//Makes a copy of parameter Constant object and stores it
+void ConstDecHelper::setConstObj(Constant* obj)
+{
+  constObj = new Constant(constName);
+  Constant* ptr = static_cast<Constant*>(constObj);
+  string constType = obj->getConstType();
+  if(constType == "s") {
+    ptr->setConstFactor(obj->getConstString());
+  } else if(constType == "b") {
+    ptr->setConstFactor(obj->getConstBool());
+  } else if(constType == "i") { 
+    ptr->setConstFactor(obj->getConstInt());
+  }
+}
 
 // sendToSt
 // Sends the stored Constant object to the symbol table

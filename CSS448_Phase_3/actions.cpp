@@ -29,7 +29,7 @@ bool strToInt(string& str, int& target) {
   if (iss >> target) {
     return true;
   } else {
-    ostringstream oss("Error: unable to parse an int out of string "); oss << str << " in call to strToInt";
+    ostringstream oss; oss << "Error: unable to parse an int out of string " << str << " in call to strToInt";
     yyerror(oss.str().c_str());
   }
 }
@@ -63,7 +63,7 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
       //TODO: further error handling?
     }
     if (ptrs[i] == NULL) {
-      ostringstream oss("Error: PointerType* NULL in ptrs argument to resolvePointers at index "); oss << i << ". Skipping.";
+      ostringstream oss; oss << "Error: PointerType* NULL in ptrs argument to resolvePointers at index " << i << ". Skipping.";
       yyerror(oss.str().c_str());
       continue;
       //TODO: further error handling?
@@ -83,13 +83,14 @@ void resolvePointers(IdentRecord* newTypePtr, vector<PointerType*>& ptrs) {
 void checkPointers(vector<PointerType*>& ptrs) {
   for(unsigned int i = 0; i < ptrs.size(); i++) {
     if (ptrs[i] == NULL) {
-      ostringstream oss("Error: PointerType* NULL in ptrs argument to checkPointers at index "); oss << i << ". Skipping.";
+      ostringstream oss; oss << "Error: PointerType* NULL in ptrs argument to checkPointers at index " << i << ". Skipping.";
       yyerror(oss.str().c_str());
       continue;
     }
     if(ptrs[i]->getTypePtr() == NULL)
     {
-      cout << "Stray pointer found with name " << ptrs[i]->getName() << " and declared type " << ptrs[i]->getDeclaredType() << endl;
+      ostringstream oss; oss << "Error: Stray pointer found with name " << ptrs[i]->getName() << " and declared type " << ptrs[i]->getDeclaredType();
+      yyerror(oss.str().c_str());
     }
   }
   ptrs.clear();
@@ -173,4 +174,10 @@ void deleteSingleQuote(string& expr) {
 	if(expr[expr.length() - 1] == '\'') {
 		expr.replace(expr.length() - 1, 1, "");
 	}
+}
+
+// validRange
+// Checks a string-type array range lower/upper bounds, returns if valid
+bool validRange(const string& low, const string& high) {
+  return (low.length() == 1 && high.length() == 1);
 }

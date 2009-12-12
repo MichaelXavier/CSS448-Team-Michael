@@ -17,7 +17,7 @@ PointerType::~PointerType(void) {
 void PointerType::display(ostream& sout, int depth)const {
   if (typePtr == NULL) {
     // typePtr must be set in order to print data
-    ostringstream oss("Error: typePtr of "); oss << identName << " not set";
+    ostringstream oss; oss << "Error: typePtr of " << identName << " not set";
     yyerror(oss.str().c_str());
     return;
   }

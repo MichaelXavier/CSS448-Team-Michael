@@ -75,11 +75,12 @@ bool PointerHelper::validate(void) {
   TypeHelper::validate();
   if (typePtr == NULL) {
     clean = true;
-    cout << "Warning: NULL typePtr for pointer type " << typeName << endl;
+    ostringstream oss; oss << "Warning: NULL typePtr for pointer type " << typeName;
+    yyerror(oss.str().c_str());
   }
   if (declared_type.length() == 0) {
     clean = false;
-    ostringstream oss("Error: empty declared type for "); oss << typeName;
+    ostringstream oss; oss << "Error: empty declared type for " << typeName;
     yyerror(oss.str().c_str());
   }
 

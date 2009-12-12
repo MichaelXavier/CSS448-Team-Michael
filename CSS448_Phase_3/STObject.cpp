@@ -139,9 +139,9 @@ void STObject::scopeExit()
 	{
 		currentScope = currentScope->getParent();
 		currentScopeNumber--;
-	}
-	else
-		cout << "Can't call scopeExit on root (program)" << endl;
+	} else {
+    yyerror("Error: Can't call scopeExit on root (program)");
+  }
 }
 
 
@@ -174,7 +174,8 @@ IdentRecord* STObject::lookup(const string& name) {
     }
   }
 
-  cout << "Couldn't find type with name " << name << endl;
+  ostringstream oss; oss << "Error: Couldn't find type with name" << name;
+  yyerror(oss.str().c_str());
   //Didn't find it
   return NULL;
 }

@@ -38,7 +38,7 @@ bool ProcedureHelper::AddParameter(Parameter* param) {
     params.push(param);
     return true;
   } else {
-    ostringstream oss("Error: cannot add a NULL parameter to Procedure"); oss << typeName;
+    ostringstream oss; oss << "Error: cannot add a NULL parameter to Procedure" << typeName;
     yyerror(oss.str().c_str());
     return false;
   }
@@ -63,7 +63,7 @@ IdentRecord* ProcedureHelper::sendToSt(STObject* st) {
     if (parameter != NULL) { 
       if (!proc->insertParameter(parameter)) {
         //Can't insert, bail out  
-        ostringstream oss("Error: failed to insert parameter into Function "); oss << typeName;
+        ostringstream oss; oss << "Error: failed to insert parameter into Function " << typeName;
         yyerror(oss.str().c_str());
         //delete proc;//FIXME: crashing
         //delete parameter;//FIXME: crashing

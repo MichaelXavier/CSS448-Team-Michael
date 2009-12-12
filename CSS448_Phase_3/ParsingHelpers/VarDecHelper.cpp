@@ -75,7 +75,7 @@ IdentRecord* VarDecHelper::sendToSt(STObject* st)
 			if(!st->insert(varRecord, variable))
 			{
 				// variable already exists, handle error
-        ostringstream oss("Error: Variable "); oss << varNames[i] << " already exists and could not be inserted";
+        ostringstream oss; oss << "Error: Variable " << varNames[i] << " already exists and could not be inserted";
         yyerror(oss.str().c_str());
 				delete varRecord;
 				return NULL;

@@ -52,12 +52,12 @@ bool ArrayHelper::addDimension(int low, int high) {
 // Adds a dimension to the array.  Takes string parameters, makes sure that strings correspond to a character.
 bool ArrayHelper::addDimension(const string& low, const string& high) {
   if (low.length() != 1) {
-    ostringstream oss("Error: invalid size for range lower bound "); oss << low << " given for array " << typeName;
+    ostringstream oss; oss << "Error: invalid size for range lower bound " << low << " given for array " << typeName;
     yyerror(oss.str().c_str());
     return false;
   }
   if (high.length() != 1) {
-    ostringstream oss("Error: invalid size for range higher bound "); oss << high << " given for array " << typeName;
+    ostringstream oss; oss << "Error: invalid size for range higher bound " << high << " given for array " << typeName;
     yyerror(oss.str().c_str());
     return false;
   }
@@ -121,7 +121,7 @@ bool ArrayHelper::validate(void) {
   TypeHelper::validate();
   if (typePtr == NULL) {
     clean = false;
-    ostringstream oss("Error: NULL typePtr for array type "); oss << typeName;
+    ostringstream oss; oss << "Error: NULL typePtr for array type " << typeName;
     yyerror(oss.str().c_str());
   }
   return clean;

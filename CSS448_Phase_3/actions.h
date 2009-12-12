@@ -65,7 +65,7 @@ void checkPointers(vector<PointerType*>& ptrs);
 //
 void dumpPointer(PointerType* ptr);
 
-// 
+// Converts a captured integer set expression to a printing format.
 string convertSetExpr(const string& expr);
 
 // Converts single quotes to double quotes
@@ -76,3 +76,6 @@ string convertDoubleQuote(string& expr);
 
 // Deletes single quotes around a string
 void deleteSingleQuote(string& expr);
+
+// Checks a string-type array range lower/upper bounds, returns if valid
+bool validRange(const string& low, const string& high);
