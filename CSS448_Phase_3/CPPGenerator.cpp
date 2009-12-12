@@ -175,7 +175,7 @@ void CPPGenerator::declareArray(ArrayHelper* arrayHelper) {
 	printIndent();
 	*before_main << "typedef " << typeName << " " << name << "[" << (*ranges)[0];
 	for(int i = 1; i < ranges->size(); i++) {
-		*before_main << ", " << (*ranges)[i];
+		*before_main << "][" << (*ranges)[i];
 	}
 	*before_main << "];" << endl;
 
