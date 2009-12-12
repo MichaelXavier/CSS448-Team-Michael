@@ -1,5 +1,5 @@
 Working Test Files:
-add.p //FIXME: cout in for body is printing semicolons on newline
+add.p //FIXME: cout in for body is printing semicolons on newline, offset on brackets is forgetting the offset integer
 simplest.p
 case.p //FIXME: extraneous newlines
 if.p
