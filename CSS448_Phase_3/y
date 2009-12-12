@@ -763,14 +763,14 @@ Designator         :  yident
                         
                         /**/
                         if(readingIndices == true && arrayIndexQueue != NULL)
-						{
-							int offset = arrayIndexQueue->front();
-							arrayIndexQueue->pop();
-							expression += "-";
-							string offsetString;
-							intToString(offsetString, offset);
-							expression += offsetString;
-						}
+                        {
+                          int offset = arrayIndexQueue->front();
+                          arrayIndexQueue->pop();
+                          expression += "-";
+                          string offsetString;
+                          intToString(offsetString, offset);
+                          expression += offsetString;
+                        }
 						/**/
                       } 
                       DesignatorStuff 
@@ -778,10 +778,11 @@ Designator         :  yident
 DesignatorStuff    :  /*** empty ***/
                    |  DesignatorStuff  theDesignatorStuff
                    |  ActualParameters 
-					  { 
-						if(allowFunctionCall == false)
-							cout << "Error: incorrect function call.";
-					  }
+                      { 
+                        if(allowFunctionCall == false) {
+                          cout << "Error: incorrect function call.";
+                        }
+                      }
                    ;
 theDesignatorStuff :  ydot 
                    
@@ -823,13 +824,13 @@ theDesignatorStuff :  ydot
                         expression += "]";
                         readingIndices = false;
 
-						if(arrayIndexQueue != NULL) {
-							while(!arrayIndexQueue->empty()) {
-								arrayIndexQueue->pop();
-							}
-							delete arrayIndexQueue;
-							arrayIndexQueue = NULL;
-						}
+                        if(arrayIndexQueue != NULL) {
+                          while(!arrayIndexQueue->empty()) {
+                            arrayIndexQueue->pop();
+                          }
+                          delete arrayIndexQueue;
+                          arrayIndexQueue = NULL;
+                        }
                       } 
                    |  ycaret 
                       {
@@ -840,19 +841,19 @@ theDesignatorStuff :  ydot
                       }
                    ;
 ActualParameters   :  yleftparen  
-					  {
-						expression += "("; 
-					  }
-					  ExpList  yrightparen
-					  {
-						expression += ")"; 
-					  }
+                      {
+                      expression += "("; 
+                      }
+                      ExpList  yrightparen
+                      {
+                      expression += ")"; 
+                      }
                    ;
 ExpList            :  Expression   
                    |  ExpList  ycomma 
                       { 
                         if(readingIndices == true) {
-                          expression += ", ";
+                          expression += "][";
                         } else if(readingIO == true) {
                           expression += IO_Operator;
                         } else {
